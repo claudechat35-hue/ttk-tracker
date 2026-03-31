@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поиск недвижимости — ТТК</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:13px;background:#F4F6FA;color:#1a1a2e;min-height:100vh}
+  /* NAV */
+  .nav{background:#1F3864;display:flex;align-items:center;padding:0 20px;height:52px;gap:4px;position:sticky;top:0;z-index:100}
+  .nav-logo{color:#fff;font-size:14px;font-weight:600;margin-right:16px;letter-spacing:-.3px}
+  .nav-logo span{color:#7EC8E3;font-weight:400}
+  .nav-btn{color:#B8C8E8;font-size:12px;padding:6px 14px;border-radius:6px;border:none;background:transparent;cursor:pointer;transition:all .15s}
+  .nav-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+  .nav-btn.active{background:rgba(255,255,255,.15);color:#fff;font-weight:500}
+  .nav-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+  .nav-date{color:#7EC8E3;font-size:11px}
+  .btn-add-nav{background:#16A34A;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer}
+  .btn-add-nav:hover{background:#15803D}
+  .btn-csv-nav{background:transparent;color:#B8C8E8;border:1px solid rgba(255,255,255,.2);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer}
+  .btn-csv-nav:hover{background:rgba(255,255,255,.1);color:#fff}
+  /* VIEWS */
+  .view{display:none;padding:16px 20px}
+  .view.active{display:block}
+  /* DASHBOARD */
+  .dash-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+  .metric-card{background:#fff;border-radius:10px;padding:16px 18px;border:1px solid #E2E8F0}
+  .metric-card .label{font-size:11px;color:#64748B;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+  .metric-card .val{font-size:26px;font-weight:700}
+  .metric-card .sub{font-size:11px;color:#94A3B8;margin-top:4px}
+  .dash-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .dash-card{background:#fff;border-radius:10px;padding:16px 18px;border:1px solid #E2E8F0}
+  .dash-card h3{font-size:12px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+  /* funnel */
+  .funnel-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .f-label{font-size:12px;width:180px;flex-shrink:0;color:#334155}
+  .f-bar-wrap{flex:1;background:#F1F5F9;border-radius:4px;height:20px;overflow:hidden}
+  .f-bar{height:100%;border-radius:4px;transition:width .4s;display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
+  .f-bar span{font-size:10px;font-weight:600;color:#fff}
+  .f-count{font-size:12px;font-weight:600;width:20px;text-align:right;color:#475569}
+  /* top3 */
+  .top3-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #F1F5F9}
+  .top3-item:last-child{border:none}
+  .top3-rank{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+  .top3-info{flex:1}
+  .top3-addr{font-size:12px;font-weight:500}
+  .top3-meta{font-size:11px;color:#64748B}
+  .top3-price{font-size:12px;font-weight:600;color:#1F3864}
+  /* district chart */
+  .dist-bars{display:flex;flex-direction:column;gap:6px}
+  .db-row{display:flex;align-items:center;gap:8px}
+  .db-name{font-size:11px;width:130px;flex-shrink:0;color:#475569}
+  .db-wrap{flex:1;background:#F1F5F9;border-radius:3px;height:14px}
+  .db-fill{height:100%;border-radius:3px}
+  .db-cnt{font-size:11px;font-weight:600;color:#475569;width:16px;text-align:right}
+  /* KANBAN */
+  .kb-toolbar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+  .kb-metrics{display:flex;gap:8px;margin-right:auto}
+  .km{background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:4px 12px;font-size:11px;display:flex;align-items:center;gap:5px}
+  .km .v{font-weight:600;font-size:13px}
+  .tbtn{font-size:11px;padding:5px 10px;border-radius:6px;border:1px solid #CBD5E1;background:#fff;cursor:pointer;color:#475569;transition:all .12s}
+  .tbtn:hover{background:#F8FAFC}
+  .tbtn.on{background:#EFF6FF;border-color:#3B82F6;color:#1D4ED8;font-weight:500}
+  .board{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+  .col{min-width:220px;width:220px;flex-shrink:0}
+  .col-hd{padding:8px 10px;border-radius:8px;font-size:11px;font-weight:600;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .col-body{min-height:200px;border-radius:8px;padding:4px;border:2px dashed transparent;transition:all .12s}
+  .col-body.over{border-color:#94A3B8;background:#F8FAFC}
+  .card{background:#fff;border:1px solid #E2E8F0;border-left:3px solid #94A3B8;border-radius:10px;padding:10px 12px;cursor:grab;margin-bottom:6px;transition:opacity .1s}
+  .card:active{cursor:grabbing;opacity:.5}
+  .card.dragging{opacity:.3}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px}
+  .card-addr{font-size:12px;font-weight:600;flex:1;margin-right:6px;line-height:1.3}
+  .pill{font-size:10px;padding:2px 6px;border-radius:6px;white-space:nowrap}
+  .card-row{display:flex;gap:8px;font-size:11px;color:#64748B;margin-bottom:3px}
+  .card-price{font-size:13px;font-weight:700;color:#1F3864;margin-top:4px}
+  .card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+  .dist-tag{font-size:10px;padding:2px 7px;border-radius:6px}
+  .stars{color:#F59E0B;font-size:11px;letter-spacing:1px}
+  .card-acts{display:none;gap:4px}
+  .card:hover .card-acts{display:flex}
+  .ca{font-size:10px;padding:2px 7px;border-radius:5px;border:1px solid #E2E8F0;background:#F8FAFC;cursor:pointer;color:#64748B}
+  .ca:hover{background:#fff;color:#1a1a2e}
+  .ca.del:hover{color:#DC2626;border-color:#FCA5A5}
+  .empty-col{text-align:center;color:#CBD5E1;font-size:11px;padding:24px 6px}
+  /* TABLE */
+  .tbl-toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+  .search-inp{padding:6px 10px;border-radius:6px;border:1px solid #CBD5E1;font-size:12px;width:220px;background:#fff}
+  .table-wrap{background:#fff;border-radius:10px;border:1px solid #E2E8F0;overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  thead tr{background:#1F3864}
+  th{padding:10px 10px;text-align:left;color:#B8C8E8;font-weight:500;font-size:11px;white-space:nowrap}
+  th.sortable{cursor:pointer;user-select:none}
+  th.sortable:hover{color:#fff}
+  tbody tr{border-bottom:1px solid #F1F5F9;transition:background .1s}
+  tbody tr:hover{background:#F8FAFC}
+  td{padding:9px 10px;vertical-align:middle}
+  .status-badge{font-size:10px;padding:3px 8px;border-radius:6px;white-space:nowrap;font-weight:500}
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:200;align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:#fff;border-radius:12px;width:500px;max-width:96vw;max-height:92vh;overflow-y:auto;padding:24px}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .modal-header h3{font-size:15px;font-weight:600}
+  .modal-close{font-size:20px;cursor:pointer;color:#94A3B8;line-height:1;background:none;border:none}
+  .modal-close:hover{color:#475569}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+  .fgrid.full{grid-template-columns:1fr}
+  .field label{display:block;font-size:11px;color:#64748B;margin-bottom:4px;font-weight:500}
+  .field input,.field select,.field textarea{width:100%;padding:7px 10px;border:1px solid #CBD5E1;border-radius:6px;font-size:12px;background:#fff;color:#1a1a2e;font-family:inherit}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#3B82F6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
+  .field textarea{resize:vertical;min-height:60px}
+  .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid #F1F5F9}
+  .btn-cancel{padding:8px 16px;border-radius:6px;border:1px solid #CBD5E1;background:#fff;font-size:12px;cursor:pointer;color:#475569}
+  .btn-save{padding:8px 20px;border-radius:6px;border:none;background:#1F3864;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
+  .btn-save:hover{background:#162E56}
+  /* utils */
+  .tag-kv{background:#DBEAFE;color:#1E40AF}
+  .tag-ap{background:#FCE7F3;color:#9D174D}
+  @media(max-width:700px){.dash-metrics{grid-template-columns:1fr 1fr}.dash-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">ТТК <span>Недвижимость</span></div>
+  <button class="nav-btn active" onclick="showView('dash',this)">Дашборд</button>
+  <button class="nav-btn" onclick="showView('kanban',this)">Канбан</button>
+  <button class="nav-btn" onclick="showView('table',this)">Таблица</button>
+  <div class="nav-right">
+    <span class="nav-date" id="navDate"></span>
+    <button class="btn-csv-nav" onclick="exportCSV()">CSV ↓</button>
+    <button class="btn-add-nav" onclick="openModal(null)">+ Объект</button>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div class="view active" id="view-dash">
+  <div class="dash-metrics" id="dashMetrics"></div>
+  <div class="dash-row">
+    <div class="dash-card"><h3>Воронка по статусам</h3><div id="funnel"></div></div>
+    <div class="dash-card"><h3>Топ объекты</h3><div id="top3"></div></div>
+  </div>
+  <div class="dash-row">
+    <div class="dash-card"><h3>Распределение по районам</h3><div class="dist-bars" id="distBars"></div></div>
+    <div class="dash-card"><h3>Сводка</h3><div id="summary"></div></div>
+  </div>
+</div>
+
+<!-- KANBAN -->
+<div class="view" id="view-kanban">
+  <div class="kb-toolbar">
+    <div class="kb-metrics" id="kbMetrics"></div>
+    <button class="tbtn on" id="fAll" onclick="ft('')">Все</button>
+    <button class="tbtn" id="fKv" onclick="ft('Квартира')">Квартиры</button>
+    <button class="tbtn" id="fAp" onclick="ft('Апартаменты')">Апарт.</button>
+    <button class="tbtn" id="fHi" onclick="fs('Хайтек')">Хайтек</button>
+    <button class="tbtn" id="fMn" onclick="fs('Минимализм')">Минимализм</button>
+  </div>
+  <div class="board" id="board"></div>
+</div>
+
+<!-- TABLE -->
+<div class="view" id="view-table">
+  <div class="tbl-toolbar">
+    <input class="search-inp" placeholder="Поиск по адресу, району..." oninput="renderTable()" id="searchInp">
+    <select class="search-inp" style="width:150px" id="filterStatus" onchange="renderTable()">
+      <option value="">Все статусы</option>
+      <option>На проверке</option><option>Осмотр запланирован</option>
+      <option>Ожидание ответа</option><option>Приоритет</option><option>Отклонён</option>
+    </select>
+    <select class="search-inp" style="width:130px" id="filterType" onchange="renderTable()">
+      <option value="">Все типы</option><option>Квартира</option><option>Апартаменты</option>
+    </select>
+    <span style="margin-left:auto;font-size:11px;color:#64748B" id="tblCount"></span>
+  </div>
+  <div class="table-wrap"><table id="mainTable">
+    <thead><tr>
+      <th style="width:30px">#</th>
+      <th class="sortable" onclick="sortBy('addr')">Адрес ↕</th>
+      <th class="sortable" onclick="sortBy('dist')">Район ↕</th>
+      <th>Тип</th>
+      <th class="sortable" onclick="sortBy('area')">м² ↕</th>
+      <th>Этаж</th>
+      <th class="sortable" onclick="sortBy('price')">Цена ↕</th>
+      <th>₽/м²</th>
+      <th>Стиль</th>
+      <th class="sortable" onclick="sortBy('stars')">★ ↕</th>
+      <th>Метро</th>
+      <th>Статус</th>
+      <th style="width:60px"></th>
+    </tr></thead>
+    <tbody id="tableBody"></tbody>
+  </table></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+<div class="modal">
+  <div class="modal-header">
+    <h3 id="modalTitle">Новый объект</h3>
+    <button class="modal-close" onclick="closeModal()">×</button>
+  </div>
+  <div class="fgrid full"><div class="field"><label>Адрес</label><input id="f-addr" placeholder="ул. Тверская, 4"></div></div>
+  <div class="fgrid">
+    <div class="field"><label>Район</label>
+      <select id="f-dist">
+        <option>Арбат</option><option>Басманный</option><option>Замоскворечье</option>
+        <option>Красносельский</option><option>Мещанский</option><option>Пресненский</option>
+        <option>Таганский</option><option selected>Тверской</option><option>Хамовники</option>
+        <option>Якиманка</option><option>Лефортово</option>
+      </select>
+    </div>
+    <div class="field"><label>Тип</label>
+      <select id="f-type"><option>Квартира</option><option>Апартаменты</option></select>
+    </div>
+  </div>
+  <div class="fgrid">
+    <div class="field"><label>Площадь, м²</label><input id="f-area" type="number" min="38" max="150" placeholder="68"></div>
+    <div class="field"><label>Этаж / всего</label><input id="f-floor" placeholder="5/9"></div>
+  </div>
+  <div class="fgrid">
+    <div class="field"><label>Цена, млн ₽</label><input id="f-price" type="number" step="0.5" placeholder="47.5"></div>
+    <div class="field"><label>Год постройки</label><input id="f-year" type="number" placeholder="1980"></div>
+  </div>
+  <div class="fgrid">
+    <div class="field"><label>Метро</label><input id="f-metro" placeholder="Охотный ряд, 4 мин"></div>
+    <div class="field"><label>Источник</label><input id="f-source" placeholder="ЦИАН, Авито..."></div>
+  </div>
+  <div class="fgrid">
+    <div class="field"><label>Стиль дизайна</label>
+      <select id="f-style"><option>Хайтек</option><option>Минимализм</option><option>Хайтек+Минимализм</option></select>
+    </div>
+    <div class="field"><label>Оценка дизайна</label>
+      <select id="f-stars">
+        <option value="1">1 ★</option><option value="2">2 ★★</option>
+        <option value="3" selected>3 ★★★</option><option value="4">4 ★★★★</option><option value="5">5 ★★★★★</option>
+      </select>
+    </div>
+  </div>
+  <div class="fgrid">
+    <div class="field"><label>Торг, %</label><input id="f-torg" type="number" min="0" max="30" placeholder="5"></div>
+    <div class="field"><label>Статус</label>
+      <select id="f-status">
+        <option value="check">На проверке</option><option value="plan">Осмотр запланирован</option>
+        <option value="wait">Ожидание ответа</option><option value="priority">Приоритет</option>
+        <option value="rejected">Отклонён</option>
+      </select>
+    </div>
+  </div>
+  <div class="fgrid full"><div class="field"><label>Ссылка на объект</label><input id="f-url" placeholder="https://cian.ru/..."></div></div>
+  <div class="fgrid full"><div class="field"><label>Комментарий</label><textarea id="f-comment" placeholder="Заметки по объекту..."></textarea></div></div>
+  <div class="modal-footer">
+    <button class="btn-cancel" onclick="closeModal()">Отмена</button>
+    <button class="btn-save" onclick="saveModal()">Сохранить</button>
+  </div>
+</div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const STORAGE_KEY='ttk_realty_v1';
+const DEFAULT_DATA=[
+  {id:1,addr:'Большая Якиманка, 26',dist:'Якиманка',type:'Квартира',area:68,floor:'5/9',price:47.5,year:1967,metro:'Полянка, 7 мин',style:'Хайтек',stars:5,status:'check',torg:5,source:'ЦИАН',url:'',comment:'Хорошая планировка, уточнить юрид. статус'},
+  {id:2,addr:'Садовническая ул., 14',dist:'Замоскворечье',type:'Апартаменты',area:85,floor:'7/12',price:89,year:2015,metro:'Новокузнецкая, 5 мин',style:'Минимализм',stars:4,status:'plan',torg:10,source:'Авито',url:'',comment:'Переговоры по цене, встреча запланирована'},
+  {id:3,addr:'Пречистенская наб., 9',dist:'Хамовники',type:'Квартира',area:112,floor:'4/6',price:135,year:1980,metro:'Парк Культуры, 3 мин',style:'Хайтек',stars:4,status:'rejected',torg:0,source:'ДомКлик',url:'',comment:'Только через агента — не рассматриваем'},
+  {id:4,addr:'Н. Красносельская, 35',dist:'Красносельский',type:'Квартира',area:54,floor:'3/7',price:34.5,year:2003,metro:'Красносельская, 8 мин',style:'Минимализм',stars:3,status:'check',torg:7,source:'Яндекс.Недвижимость',url:'',comment:'Небольшая площадь, но цена интересная'},
+  {id:5,addr:'Тверская ул., 4',dist:'Тверской',type:'Апартаменты',area:143,floor:'9/14',price:148,year:2018,metro:'Охотный ряд, 4 мин',style:'Хайтек',stars:5,status:'priority',torg:3,source:'Telegram',url:'',comment:'Лучший объект недели — срочно организовать встречу'},
+  {id:6,addr:'Пресненская наб., 10',dist:'Пресненский',type:'Апартаменты',area:92,floor:'8/15',price:112,year:2020,metro:'Дел. центр, 2 мин',style:'Хайтек',stars:5,status:'plan',torg:0,source:'Собственник',url:'',comment:'Флагманский ЖК, переговоры идут'},
+  {id:7,addr:'Арбат, 51',dist:'Арбат',type:'Квартира',area:78,floor:'4/8',price:62,year:1975,metro:'Смоленская, 6 мин',style:'Минимализм',stars:4,status:'wait',torg:5,source:'Авито',url:'',comment:'Ждём ответ по торгу'},
+  {id:8,addr:'Таганская ул., 34',dist:'Таганский',type:'Квартира',area:64,floor:'6/9',price:45,year:1998,metro:'Таганская, 5 мин',style:'Хайтек',stars:3,status:'check',torg:0,source:'ЦИАН',url:'',comment:'Осмотр назначен на след. неделю'},
+];
+const COLS=[
+  {id:'check',label:'На проверке',hbg:'#FEF9C3',hcol:'#713F12',border:'#D97706'},
+  {id:'plan',label:'Осмотр',hbg:'#DBEAFE',hcol:'#1E3A8A',border:'#2563EB'},
+  {id:'wait',label:'Ожидание',hbg:'#FFE4E6',hcol:'#9F1239',border:'#E11D48'},
+  {id:'priority',label:'Приоритет',hbg:'#DCFCE7',hcol:'#14532D',border:'#16A34A'},
+  {id:'rejected',label:'Отклонён',hbg:'#F1F5F9',hcol:'#475569',border:'#94A3B8'},
+];
+const COL2STATUS={check:'На проверке',plan:'Осмотр запланирован',wait:'Ожидание ответа',priority:'Приоритет',rejected:'Отклонён'};
+const STATUS2COL={'На проверке':'check','Осмотр запланирован':'plan','Ожидание ответа':'wait','Приоритет':'priority','Отклонён':'rejected'};
+const DIST_COLORS={Арбат:'#7C3AED',Басманный:'#2563EB',Замоскворечье:'#059669',Красносельский:'#DC2626',Мещанский:'#D97706',Пресненский:'#0891B2',Таганский:'#7C2D12',Тверской:'#1E40AF',Хамовники:'#065F46',Якиманка:'#7E22CE',Лефортово:'#92400E'};
+const STATUS_STYLE={
+  'На проверке':'background:#FEF9C3;color:#713F12',
+  'Осмотр запланирован':'background:#DBEAFE;color:#1E3A8A',
+  'Ожидание ответа':'background:#FFE4E6;color:#9F1239',
+  'Приоритет':'background:#DCFCE7;color:#14532D',
+  'Отклонён':'background:#F1F5F9;color:#475569',
+  'Куплен':'background:#C8F7C5;color:#14532D',
+};
+
+function load(){try{const d=localStorage.getItem(STORAGE_KEY);return d?JSON.parse(d):JSON.parse(JSON.stringify(DEFAULT_DATA))}catch{return JSON.parse(JSON.stringify(DEFAULT_DATA))}}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(cards))}
+
+let cards=load();
+let nextId=Math.max(...cards.map(c=>c.id))+1;
+let ST={type:'',style:'',drag:null,editId:null,sortCol:'',sortAsc:true};
+
+// ── UTILS ─────────────────────────────────────────────────────────────────
+function pm(c){return Math.round(c.price*1e6/c.area/1000)}
+function dc(d){return DIST_COLORS[d]||'#888'}
+function fmt(n){return n.toLocaleString('ru-RU')}
+
+// ── VIEWS ─────────────────────────────────────────────────────────────────
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='dash')renderDash();
+  if(id==='kanban')renderKanban();
+  if(id==='table')renderTable();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────
+function renderDash(){
+  const active=cards.filter(c=>c.status!=='rejected');
+  const avgP=active.length?Math.round(active.reduce((a,c)=>a+c.price,0)/active.length*10)/10:0;
+  const pri=cards.filter(c=>c.status==='priority').length;
+  const avgPM=active.length?Math.round(active.reduce((a,c)=>a+pm(c),0)/active.length):0;
+  document.getElementById('dashMetrics').innerHTML=`
+    <div class="metric-card"><div class="label">Всего объектов</div><div class="val" style="color:#1F3864">${cards.length}</div><div class="sub">За всё время поиска</div></div>
+    <div class="metric-card"><div class="label">В активной работе</div><div class="val" style="color:#059669">${active.length}</div><div class="sub">Исключая отклонённые</div></div>
+    <div class="metric-card"><div class="label">Приоритетных</div><div class="val" style="color:#D97706">${pri}</div><div class="sub">Требуют решения</div></div>
+    <div class="metric-card"><div class="label">Средняя цена</div><div class="val" style="color:#7C3AED">${avgP} <span style="font-size:14px;font-weight:400">млн</span></div><div class="sub">${fmt(avgPM)}k ₽/м²</div></div>`;
+
+  // funnel
+  const funnelEl=document.getElementById('funnel');
+  const maxC=Math.max(...COLS.map(col=>cards.filter(c=>c.status===col.id).length),1);
+  funnelEl.innerHTML=COLS.map(col=>{
+    const cnt=cards.filter(c=>c.status===col.id).length;
+    const pct=Math.max(8,Math.round(cnt/maxC*100));
+    return `<div class="funnel-row">
+      <div class="f-label">${col.label}</div>
+      <div class="f-bar-wrap"><div class="f-bar" style="width:${pct}%;background:${col.border}"><span>${cnt}</span></div></div>
+      <div class="f-count">${cnt}</div>
+    </div>`;
+  }).join('');
+
+  // top3
+  const top3=cards.filter(c=>c.status!=='rejected').sort((a,b)=>b.stars-a.stars||a.price-b.price).slice(0,3);
+  const rankColors=['#F59E0B','#94A3B8','#CD7F32'];
+  document.getElementById('top3').innerHTML=top3.map((c,i)=>`
+    <div class="top3-item">
+      <div class="top3-rank" style="background:${rankColors[i]}22;color:${rankColors[i]}">${i+1}</div>
+      <div class="top3-info">
+        <div class="top3-addr">${c.addr}</div>
+        <div class="top3-meta">${c.dist} · ${c.area} м² · ${'★'.repeat(c.stars)}</div>
+      </div>
+      <div class="top3-price">${c.price} млн</div>
+    </div>`).join('');
+
+  // district bars
+  const distCount={};
+  cards.forEach(c=>{distCount[c.dist]=(distCount[c.dist]||0)+1});
+  const maxD=Math.max(...Object.values(distCount),1);
+  document.getElementById('distBars').innerHTML=Object.entries(distCount).sort((a,b)=>b[1]-a[1]).map(([d,n])=>`
+    <div class="db-row">
+      <div class="db-name">${d}</div>
+      <div class="db-wrap"><div class="db-fill" style="width:${Math.round(n/maxD*100)}%;background:${dc(d)}44;border-right:2px solid ${dc(d)}"></div></div>
+      <div class="db-cnt">${n}</div>
+    </div>`).join('');
+
+  // summary
+  const kv=cards.filter(c=>c.type==='Квартира').length;
+  const ap=cards.filter(c=>c.type==='Апартаменты').length;
+  const ht=cards.filter(c=>c.style==='Хайтек').length;
+  const mn=cards.filter(c=>c.style==='Минимализм').length;
+  const minP=Math.min(...cards.map(c=>c.price));
+  const maxP=Math.max(...cards.map(c=>c.price));
+  document.getElementById('summary').innerHTML=`
+    <table style="width:100%;font-size:12px;border-collapse:collapse">
+      ${[['Квартир / Апартаментов',`${kv} / ${ap}`],['Хайтек / Минимализм',`${ht} / ${mn}`],['Диапазон цен',`${minP}–${maxP} млн ₽`],['Районов охвачено',Object.keys(distCount).length],['Обновлено',new Date().toLocaleDateString('ru-RU')]].map(([l,v],i)=>`
+      <tr style="border-bottom:1px solid #F1F5F9">
+        <td style="padding:7px 0;color:#64748B">${l}</td>
+        <td style="padding:7px 0;font-weight:600;text-align:right">${v}</td>
+      </tr>`).join('')}
+    </table>`;
+}
+
+// ── KANBAN ────────────────────────────────────────────────────────────────
+function vis(){
+  return cards.filter(c=>{
+    if(ST.type&&c.type!==ST.type)return false;
+    if(ST.style&&c.style!==ST.style)return false;
+    return true;
+  });
+}
+function renderKanbanMetrics(){
+  const v=cards.filter(c=>c.status!=='rejected');
+  const avgP=v.length?Math.round(v.reduce((a,c)=>a+c.price,0)/v.length*10)/10:0;
+  document.getElementById('kbMetrics').innerHTML=`
+    <div class="km"><span style="color:#64748B;font-size:11px">Всего</span><span class="v">${cards.length}</span></div>
+    <div class="km"><span style="color:#64748B;font-size:11px">В работе</span><span class="v">${v.length}</span></div>
+    <div class="km"><span style="color:#64748B;font-size:11px">Приоритет</span><span class="v" style="color:#16A34A">${cards.filter(c=>c.status==='priority').length}</span></div>
+    <div class="km"><span style="color:#64748B;font-size:11px">Ср. цена</span><span class="v">${avgP} млн</span></div>`;
+}
+function cardHTML(c){
+  const col=dc(c.dist);
+  const colDef=COLS.find(x=>x.id===c.status)||COLS[0];
+  return `<div class="card" id="card-${c.id}" draggable="true" style="border-left-color:${colDef.border}"
+    ondragstart="onDS(event,${c.id})" ondragend="onDE()">
+    <div class="card-top">
+      <div class="card-addr">${c.addr}</div>
+      <span class="pill ${c.type==='Квартира'?'tag-kv':'tag-ap'}">${c.type==='Квартира'?'Кв.':'Ап.'}</span>
+    </div>
+    <div class="card-row"><span>${c.area} м²</span><span>эт. ${c.floor}</span><span>${c.year}</span></div>
+    <div class="card-row" style="color:#94A3B8">${c.metro||'—'}</div>
+    <div class="card-price">${c.price} млн <span style="font-size:11px;font-weight:400;color:#94A3B8">${pm(c)}k/м²</span></div>
+    <div class="card-footer">
+      <span class="dist-tag" style="background:${col}22;color:${col}">${c.dist}</span>
+      <span style="display:flex;align-items:center;gap:6px">
+        <span class="stars">${'★'.repeat(c.stars)}${'☆'.repeat(5-c.stars)}</span>
+        <span class="card-acts">
+          <button class="ca" onclick="openModal(${c.id})">✎</button>
+          <button class="ca del" onclick="delCard(${c.id})">✕</button>
+        </span>
+      </span>
+    </div>
+  </div>`;
+}
+function renderKanban(){
+  renderKanbanMetrics();
+  const v=vis();
+  const board=document.getElementById('board');
+  board.innerHTML='';
+  COLS.forEach(col=>{
+    const cc=v.filter(c=>c.status===col.id);
+    const el=document.createElement('div');el.className='col';
+    el.innerHTML=`<div class="col-hd" style="background:${col.hbg};color:${col.hcol}">
+      <span>${col.label}</span><span style="background:${col.border}33;padding:1px 7px;border-radius:10px;font-size:10px">${cc.length}</span>
+    </div>
+    <div class="col-body" id="cb-${col.id}"
+      ondragover="onDO(event,'${col.id}')" ondragleave="onDL('${col.id}')" ondrop="onDrop(event,'${col.id}')">
+      ${cc.length?cc.map(cardHTML).join(''):'<div class="empty-col">Нет объектов</div>'}
+    </div>`;
+    board.appendChild(el);
+  });
+}
+function onDS(e,id){ST.drag=id;setTimeout(()=>{const el=document.getElementById('card-'+id);if(el)el.classList.add('dragging')},0)}
+function onDE(){document.querySelectorAll('.col-body').forEach(el=>el.classList.remove('over'));ST.drag=null}
+function onDO(e,id){e.preventDefault();document.getElementById('cb-'+id).classList.add('over')}
+function onDL(id){document.getElementById('cb-'+id).classList.remove('over')}
+function onDrop(e,id){
+  e.preventDefault();
+  if(ST.drag!=null){const c=cards.find(x=>x.id===ST.drag);if(c){c.status=id;save();}}
+  renderKanban();
+}
+function ft(t){ST.type=ST.type===t?'':t;['fAll','fKv','fAp'].forEach(i=>document.getElementById(i).classList.remove('on'));if(!t)document.getElementById('fAll').classList.add('on');if(t==='Квартира')document.getElementById('fKv').classList.add('on');if(t==='Апартаменты')document.getElementById('fAp').classList.add('on');renderKanban()}
+function fs(s){ST.style=ST.style===s?'':s;document.getElementById('fHi').classList.toggle('on',ST.style==='Хайтек');document.getElementById('fMn').classList.toggle('on',ST.style==='Минимализм');renderKanban()}
+function delCard(id){if(confirm('Удалить объект?')){cards=cards.filter(c=>c.id!==id);save();renderKanban();renderDash()}}
+
+// ── TABLE ─────────────────────────────────────────────────────────────────
+function sortBy(col){ST.sortAsc=ST.sortCol===col?!ST.sortAsc:true;ST.sortCol=col;renderTable()}
+function renderTable(){
+  const q=(document.getElementById('searchInp').value||'').toLowerCase();
+  const fs=document.getElementById('filterStatus').value;
+  const ft2=document.getElementById('filterType').value;
+  let rows=cards.filter(c=>{
+    if(q&&!c.addr.toLowerCase().includes(q)&&!c.dist.toLowerCase().includes(q))return false;
+    if(fs&&COL2STATUS[c.status]!==fs)return false;
+    if(ft2&&c.type!==ft2)return false;
+    return true;
+  });
+  if(ST.sortCol){rows.sort((a,b)=>{const av=a[ST.sortCol],bv=b[ST.sortCol];return ST.sortAsc?(av>bv?1:-1):(av<bv?1:-1)})}
+  document.getElementById('tblCount').textContent=`Показано: ${rows.length} из ${cards.length}`;
+  const tbody=document.getElementById('tableBody');
+  tbody.innerHTML=rows.map((c,i)=>{
+    const ss=STATUS_STYLE[COL2STATUS[c.status]]||'';
+    const col=dc(c.dist);
+    return `<tr>
+      <td style="color:#94A3B8">${i+1}</td>
+      <td><strong>${c.addr}</strong>${c.url?` <a href="${c.url}" target="_blank" style="color:#3B82F6;font-size:10px">↗</a>`:''}</td>
+      <td><span style="color:${col};font-weight:500">${c.dist}</span></td>
+      <td><span class="pill ${c.type==='Квартира'?'tag-kv':'tag-ap'}">${c.type}</span></td>
+      <td style="text-align:center;font-weight:500">${c.area}</td>
+      <td style="text-align:center">${c.floor}</td>
+      <td style="font-weight:700;color:#1F3864">${c.price} млн</td>
+      <td style="color:#64748B">${pm(c)}k</td>
+      <td style="color:#475569">${c.style}</td>
+      <td style="color:#F59E0B">${'★'.repeat(c.stars)}</td>
+      <td style="color:#64748B;font-size:11px">${c.metro||'—'}</td>
+      <td><span class="status-badge" style="${ss}">${COL2STATUS[c.status]||c.status}</span></td>
+      <td style="white-space:nowrap">
+        <button class="ca" onclick="openModal(${c.id})" style="margin-right:3px">✎</button>
+        <button class="ca del" onclick="delCard(${c.id})">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────
+function openModal(id){
+  ST.editId=id;
+  const c=id?cards.find(x=>x.id===id):null;
+  document.getElementById('modalTitle').textContent=id?'Редактировать объект':'Новый объект';
+  document.getElementById('f-addr').value=c?c.addr:'';
+  document.getElementById('f-dist').value=c?c.dist:'Тверской';
+  document.getElementById('f-type').value=c?c.type:'Квартира';
+  document.getElementById('f-area').value=c?c.area:'';
+  document.getElementById('f-floor').value=c?c.floor:'';
+  document.getElementById('f-price').value=c?c.price:'';
+  document.getElementById('f-year').value=c?c.year:'';
+  document.getElementById('f-metro').value=c?c.metro:'';
+  document.getElementById('f-source').value=c?c.source:'';
+  document.getElementById('f-url').value=c?c.url:'';
+  document.getElementById('f-style').value=c?c.style:'Хайтек';
+  document.getElementById('f-stars').value=c?c.stars:3;
+  document.getElementById('f-torg').value=c?c.torg:'';
+  document.getElementById('f-status').value=c?c.status:'check';
+  document.getElementById('f-comment').value=c?c.comment:'';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
+function saveModal(){
+  const addr=document.getElementById('f-addr').value.trim();
+  if(!addr){alert('Введите адрес');return}
+  const obj={
+    id:ST.editId||nextId++,addr,
+    dist:document.getElementById('f-dist').value,
+    type:document.getElementById('f-type').value,
+    area:+document.getElementById('f-area').value||50,
+    floor:document.getElementById('f-floor').value||'?',
+    price:+document.getElementById('f-price').value||0,
+    year:+document.getElementById('f-year').value||2000,
+    metro:document.getElementById('f-metro').value,
+    source:document.getElementById('f-source').value,
+    url:document.getElementById('f-url').value,
+    style:document.getElementById('f-style').value,
+    stars:+document.getElementById('f-stars').value,
+    torg:+document.getElementById('f-torg').value||0,
+    status:document.getElementById('f-status').value,
+    comment:document.getElementById('f-comment').value,
+  };
+  if(ST.editId){const i=cards.findIndex(c=>c.id===ST.editId);if(i>=0)cards[i]=obj}
+  else cards.push(obj);
+  save();closeModal();
+  renderDash();renderKanban();renderTable();
+}
+
+// ── CSV EXPORT ────────────────────────────────────────────────────────────
+function exportCSV(){
+  const hdr=['Адрес','Район','Тип','Площадь м²','Этаж','Цена млн','Цена/м² k','Год','Метро','Стиль','Оценка','Торг %','Источник','Статус','Комментарий','Ссылка'];
+  const rows=cards.map(c=>[c.addr,c.dist,c.type,c.area,c.floor,c.price,pm(c),c.year,c.metro,c.style,c.stars,c.torg,c.source,COL2STATUS[c.status]||c.status,c.comment,c.url]);
+  const csv=[hdr,...rows].map(r=>r.map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='ttk_objects_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+document.getElementById('navDate').textContent='Обновлено: '+new Date().toLocaleDateString('ru-RU');
+renderDash();
+</script>
+</body>
+</html>
