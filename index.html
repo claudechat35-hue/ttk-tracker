@@ -352,15 +352,7 @@ function renderDash(){
 
   // district bars
   const distCount={};
-  cards.forEach(c=>{distCount[c.dist]=(distCount[c.dist]||0)+1});
-  const maxD=Math.max(...Object.values(distCount),1);
-  document.getElementById('distBars').innerHTML=Object.entries(distCount).sort((a,b)=>b[1]-a[1]).map(([d,n])=>`
-    <div class="db-row">
-      <div class="db-name">${d}</div>
-      <div class="db-wrap"><div class="db-fill" style="width:${Math.round(n/maxD*100)}%;background:${dc(d)}44;border-right:2px solid ${dc(d)}"></div></div>
-      <div class="db-cnt">${n}</div>
-    </div>`).join('');
-
+  // district bars removed
   // summary
   const kv=cards.filter(c=>c.type==='Квартира').length;
   const ap=cards.filter(c=>c.type==='Апартаменты').length;
