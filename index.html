@@ -9,8 +9,8 @@
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:13px;background:#F4F6FA;color:#1a1a2e;min-height:100vh}
   /* NAV */h
   .nav{background:linear-gradient(135deg,#1a3a6e 0%,#1F3864 100%);display:flex;align-items:center;justify-content:center;padding:0 24px;height:64px;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-  .nav-logo{position:absolute;left:24px;color:#fff;font-size:15px;font-weight:800;letter-spacing:-.3px;white-space:nowrap;text-shadow:0 2px 8px rgba(0,0,0,.9),0 0 30px rgba(0,0,0,.5)}
-  .nav-logo span{color:#BAE6FD;font-weight:500;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+  .nav-logo{display:none}
+  
   .nav-btn{font-size:13px;padding:9px 22px;border-radius:6px;border:none;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px;box-shadow:0 2px 5px rgba(0,0,0,.25)}
   .nav-btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.3)}
   .nav-btn.active{opacity:1;transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.4);filter:brightness(1.15)}
@@ -18,7 +18,7 @@
   .nav-btn-dash{background:#3B82F6;color:#fff}
   .nav-btn-kanban{background:#8B5CF6;color:#fff}
   .nav-btn-table{background:#F59E0B;color:#fff}
-  .nav-right{position:absolute;right:24px;display:flex;gap:8px;align-items:center}
+  .nav-right{position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex;gap:8px;align-items:center}
   .nav-date{color:#7EC8E3;font-size:11px}
   .btn-add-nav{background:#16A34A;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer}
   .btn-add-nav:hover{background:#15803D}
@@ -132,7 +132,6 @@
 <body>
 
 <nav class="nav">
-  <div class="nav-logo">ООО «Караван» <span>— недвижимость Москва</span></div>
   <button class="nav-btn nav-btn-dash active" onclick="showView('dash',this)">Дашборд</button>
   <button class="nav-btn nav-btn-kanban" onclick="showView('kanban',this)">Канбан</button>
   <button class="nav-btn nav-btn-table" onclick="showView('table',this)">Таблица</button>
@@ -270,16 +269,36 @@
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
-const STORAGE_KEY='ttk_realty_v2';
+const STORAGE_KEY='ttk_realty_v4';
 const DEFAULT_DATA=[
-  {id:1,addr:'Большая Якиманка, 26',dist:'Якиманка',type:'Квартира',rooms:3,area:68,floor:'5/9',price:47.5,year:1967,metro:'Полянка, 7 мин',style:'Хайтек',stars:5,status:'check',torg:5,source:'ЦИАН',url:'',comment:'Хорошая планировка, уточнить юрид. статус'},
-  {id:2,addr:'Садовническая ул., 14',dist:'Замоскворечье',type:'Апартаменты',rooms:2,area:85,floor:'7/12',price:89,year:2015,metro:'Новокузнецкая, 5 мин',style:'Минимализм',stars:4,status:'plan',torg:10,source:'Авито',url:'',comment:'Переговоры по цене, встреча запланирована'},
-  {id:3,addr:'Пречистенская наб., 9',dist:'Хамовники',type:'Квартира',rooms:4,area:112,floor:'4/6',price:135,year:1980,metro:'Парк Культуры, 3 мин',style:'Хайтек',stars:4,status:'rejected',torg:0,source:'ДомКлик',url:'',comment:'Только через агента — не рассматриваем'},
-  {id:4,addr:'Н. Красносельская, 35',dist:'Красносельский',type:'Квартира',area:54,floor:'3/7',price:34.5,year:2003,metro:'Красносельская, 8 мин',style:'Минимализм',stars:3,status:'check',torg:7,source:'Яндекс.Недвижимость',url:'',comment:'Небольшая площадь, но цена интересная'},
-  {id:5,addr:'Тверская ул., 4',dist:'Тверской',type:'Апартаменты',area:143,floor:'9/14',price:148,year:2018,metro:'Охотный ряд, 4 мин',style:'Хайтек',stars:5,status:'priority',torg:3,source:'Telegram',url:'',comment:'Лучший объект недели — срочно организовать встречу'},
-  {id:6,addr:'Пресненская наб., 10',dist:'Пресненский',type:'Апартаменты',area:92,floor:'8/15',price:112,year:2020,metro:'Дел. центр, 2 мин',style:'Хайтек',stars:5,status:'plan',torg:0,source:'Собственник',url:'',comment:'Флагманский ЖК, переговоры идут'},
-  {id:7,addr:'Арбат, 51',dist:'Арбат',type:'Квартира',area:78,floor:'4/8',price:62,year:1975,metro:'Смоленская, 6 мин',style:'Минимализм',stars:4,status:'wait',torg:5,source:'Авито',url:'',comment:'Ждём ответ по торгу'},
-  {id:8,addr:'Таганская ул., 34',dist:'Таганский',type:'Квартира',area:64,floor:'6/9',price:45,year:1998,metro:'Таганская, 5 мин',style:'Хайтек',stars:3,status:'check',torg:0,source:'ЦИАН',url:'',comment:'Осмотр назначен на след. неделю'},
+  {id:1,addr:'ул. Гвоздева, 7/4с1',type:'Квартира',rooms:2,area:51.8,floor:'5/12',price:35.9,year:2000,metro:'Крестьянская застава',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_518_m_512_et._7609866216',comment:''},
+  {id:2,addr:'Кутузовский пр-т, 4/2',type:'Квартира',rooms:2,area:56,floor:'9/11',price:59,year:2000,metro:'Киевская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_56_m_911_et._7990694368',comment:''},
+  {id:3,addr:'1-я Миусская ул., 22/24с2',type:'Квартира',rooms:3,area:87,floor:'6/7',price:88,year:2000,metro:'Менделеевская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_87_m_67_et._7990110282',comment:''},
+  {id:4,addr:'пр-т Мира, 53с1',type:'Квартира',rooms:2,area:72.7,floor:'3/6',price:43,year:2000,metro:'Проспект Мира',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_727_m_36_et._8065651722',comment:''},
+  {id:5,addr:'Красноказарменная ул., 14Ак6',type:'Квартира',rooms:2,area:60,floor:'21/24',price:33,year:2000,metro:'Авиамоторная',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_60_m_2124_et._7758018359',comment:''},
+  {id:6,addr:'Открытое шоссе, 6с1',type:'Апартаменты',rooms:2,area:70.3,floor:'20/30',price:39.9,year:2000,metro:'Черкизовская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_703_m_2030_et._7803084661',comment:''},
+  {id:7,addr:'Стремянный пер., 2',type:'Апартаменты',rooms:0,area:48.8,floor:'4/10',price:37,year:2000,metro:'Павелецкая',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/apartamenty-studiya_488_m_410_et._7581436806',comment:''},
+  {id:8,addr:'Зубовский бул., 13',type:'Апартаменты',rooms:2,area:77.5,floor:'7/19',price:69,year:2000,metro:'Парк культуры',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_775_m_719_et._7972170326',comment:''},
+  {id:9,addr:'Малый Толмачёвский пер., 1',type:'Апартаменты',rooms:2,area:64,floor:'4/9',price:82,year:2000,metro:'Третьяковская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_64_m_49_et._3915332557',comment:''},
+  {id:10,addr:'Большая Полянка, 54',type:'Квартира',rooms:2,area:83,floor:'4/5',price:55,year:2000,metro:'Полянка',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_83_m_45_et._7979422534',comment:''},
+  {id:11,addr:'Пречистенская наб., 17/19с1',type:'Квартира',rooms:2,area:56.8,floor:'3/9',price:80.5,year:2000,metro:'Кропоткинская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_568_m_39_et._2624047061',comment:''},
+  {id:12,addr:'Пресненская наб., 12с1',type:'Квартира',rooms:3,area:104.2,floor:'13/31',price:149.9,year:2000,metro:'Выставочная',source:'Собственник',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_1042_m_1331_et._7910131409',comment:''},
+  {id:13,addr:'Нагатинская наб., 10',type:'Квартира',rooms:2,area:77.8,floor:'15/17',price:55,year:2000,metro:'Коломенская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_778_m_1517_et._7929228981',comment:''},
+  {id:14,addr:'Пресненская наб., 12',type:'Квартира',rooms:1,area:51,floor:'40/67',price:72.9,year:2000,metro:'Выставочная',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/1-k._kvartira_51_m_4067_et._7779407197',comment:''},
+  {id:15,addr:'Большой Овчинниковский пер., 20',type:'Квартира',rooms:2,area:80,floor:'5/9',price:69.9,year:2000,metro:'Новокузнецкая',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_80_m_59_et._7920352788',comment:''},
+  {id:16,addr:'Нагатинская ул., 16к2',type:'Квартира',rooms:1,area:43.4,floor:'16/22',price:38,year:2000,metro:'Нагатинская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/1-k._kvartira_434_m_1622_et._2686414112',comment:''},
+  {id:17,addr:'Большой Николоворобинский пер., 10',type:'Квартира',rooms:2,area:73,floor:'8/16',price:73,year:2000,metro:'Таганская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_73_m_816_et._8054743708',comment:''},
+  {id:18,addr:'Пресненская наб., 8с1',type:'Апартаменты',rooms:2,area:85,floor:'57/68',price:70,year:2000,metro:'Деловой центр',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_85_m_5768_et._7894537527',comment:''},
+  {id:19,addr:'Пресненская наб., 12',type:'Квартира',rooms:2,area:61.2,floor:'22/67',price:63.5,year:2000,metro:'Выставочная',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_612_m_2267_et._7254620650',comment:''},
+  {id:20,addr:'Ольховская ул., 14',type:'Квартира',rooms:2,area:62.5,floor:'6/8',price:57.5,year:2000,metro:'Красносельская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_625_m_68_et._7897606983',comment:''},
+  {id:21,addr:'Большая Садовая ул., 4',type:'Квартира',rooms:4,area:116,floor:'3/5',price:78,year:2000,metro:'Маяковская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_116_m_35_et._8041338250',comment:''},
+  {id:22,addr:'Ленинский пр-т, 30',type:'Квартира',rooms:4,area:110,floor:'13/20',price:77,year:2000,metro:'Ленинский пр-т',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_110_m_1320_et._7506101442',comment:''},
+  {id:23,addr:'Мансуровский пер., 4',type:'Апартаменты',rooms:2,area:77.2,floor:'4/8',price:100,year:2000,metro:'Кропоткинская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_772_m_48_et._7795401582',comment:''},
+  {id:24,addr:'Ленинградское шоссе, 37к2',type:'Квартира',rooms:4,area:126,floor:'24/29',price:56,year:2000,metro:'Войковская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_126_m_2429_et._8009740459',comment:''},
+  {id:25,addr:'Гоголевский бул., 29',type:'Квартира',rooms:3,area:79,floor:'6/9',price:99,year:2000,metro:'Кропоткинская',source:'ЦИАН',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_79_m_69_et._7934532356',comment:''},
+  {id:26,addr:'Серебряническая наб., 27',type:'Квартира',rooms:4,area:112,floor:'24/28',price:95,year:2000,metro:'Таганская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_112_m_2428_et._7656237360',comment:''},
+  {id:27,addr:'Малый Козловский пер., 3',type:'Апартаменты',rooms:3,area:75.5,floor:'2/8',price:119,year:2000,metro:'Красные ворота',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._apartamenty_755_m_28_et._7915707518',comment:''},
+  {id:28,addr:'Знаменка ул., 9/12с2',type:'Квартира',rooms:3,area:99,floor:'9/14',price:91.1,year:2000,metro:'Боровицкая',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_99_m_914_et._7982671681',comment:''},
 ];
 const COLS=[
   {id:'check',label:'На проверке',hbg:'#FEF9C3',hcol:'#713F12',border:'#D97706'},
@@ -355,7 +374,7 @@ function renderDash(){
     <div class="top3-item">
       <div class="top3-rank" style="background:${rankColors[i]}22;color:${rankColors[i]}">${i+1}</div>
       <div class="top3-info">
-        <div class="top3-addr">${c.addr}</div>
+        <div class="top3-addr">${c.url?`<a href="${c.url}" target="_blank" style="color:inherit;text-decoration:none">${c.addr} <span style="color:#3B82F6;font-size:10px">↗</span></a>`:c.addr}</div>
         <div class="top3-meta">${c.dist} · ${c.area} м² · ${'★'.repeat(c.stars)}</div>
       </div>
       <div class="top3-price">${c.price} млн</div>
