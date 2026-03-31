@@ -11,9 +11,13 @@
   .nav{background:#1F3864;display:flex;align-items:center;padding:0 20px;height:52px;gap:4px;position:sticky;top:0;z-index:100}
   .nav-logo{color:#fff;font-size:14px;font-weight:600;margin-right:16px;letter-spacing:-.3px}
   .nav-logo span{color:#7EC8E3;font-weight:400}
-  .nav-btn{color:#B8C8E8;font-size:12px;padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);cursor:pointer;transition:all .15s;font-weight:500;letter-spacing:.01em}
-  .nav-btn:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}
-  .nav-btn.active{background:rgba(255,255,255,.95);color:#1F3864;font-weight:700;border-color:transparent;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+  .nav-btn{font-size:13px;padding:8px 18px;border-radius:6px;border:none;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.2px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .nav-btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.25)}
+  .nav-btn.active{opacity:1;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.35);filter:brightness(1.1)}
+  /* Nav button colors */
+  .nav-btn-dash{background:#3B82F6;color:#fff}
+  .nav-btn-kanban{background:#8B5CF6;color:#fff}
+  .nav-btn-table{background:#F59E0B;color:#fff}
   .nav-right{margin-left:auto;display:flex;gap:8px;align-items:center}
   .nav-date{color:#7EC8E3;font-size:11px}
   .btn-add-nav{background:#16A34A;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer}
@@ -129,9 +133,9 @@
 
 <nav class="nav">
   <div class="nav-logo">ООО «Караван» <span>— недвижимость Москва</span></div>
-  <button class="nav-btn active" onclick="showView('dash',this)">Дашборд</button>
-  <button class="nav-btn" onclick="showView('kanban',this)">Канбан</button>
-  <button class="nav-btn" onclick="showView('table',this)">Таблица</button>
+  <button class="nav-btn nav-btn-dash active" onclick="showView('dash',this)">Дашборд</button>
+  <button class="nav-btn nav-btn-kanban" onclick="showView('kanban',this)">Канбан</button>
+  <button class="nav-btn nav-btn-table" onclick="showView('table',this)">Таблица</button>
   <div class="nav-right">
     <span class="nav-date" id="navDate"></span>
     <button class="btn-csv-nav" onclick="exportCSV()">CSV ↓</button>
