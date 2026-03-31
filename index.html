@@ -9,9 +9,9 @@
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:13px;background:#F4F6FA;color:#1a1a2e;min-height:100vh}
   /* NAV */h
   .nav{background:#1F3864;display:flex;align-items:center;padding:0 20px;height:52px;gap:4px;position:sticky;top:0;z-index:100}
-  .nav-logo{color:#fff;font-size:14px;font-weight:600;margin-right:16px;letter-spacing:-.3px}
-  .nav-logo span{color:#7EC8E3;font-weight:400}
-  .nav-btn{font-size:13px;padding:8px 18px;border-radius:6px;border:none;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.2px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .nav-logo{color:#fff;font-size:15px;font-weight:800;margin-right:16px;letter-spacing:-.3px;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+  .nav-logo span{color:#E0F2FE;font-weight:500}
+  .nav-btn{font-size:13px;padding:9px 22px;border-radius:6px;border:none;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
   .nav-btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.25)}
   .nav-btn.active{opacity:1;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.35);filter:brightness(1.1)}
   /* Nav button colors */
@@ -237,9 +237,6 @@
     <div class="field"><label>Источник</label><input id="f-source" placeholder="ЦИАН, Авито..."></div>
   </div>
   <div class="fgrid">
-    <div class="field"><label>Стиль дизайна</label>
-      <select id="f-style"><option>Хайтек</option><option>Минимализм</option><option>Хайтек+Минимализм</option></select>
-    </div>
     <div class="field"><label>Оценка дизайна</label>
       <select id="f-stars">
         <option value="1">1 ★</option><option value="2">2 ★★</option>
@@ -248,7 +245,12 @@
     </div>
   </div>
   <div class="fgrid">
-    <div class="field"><label>Торг, %</label><input id="f-torg" type="number" min="0" max="30" placeholder="5"></div>
+    <div class="field"><label>Оценка дизайна</label>
+      <select id="f-stars">
+        <option value="1">1 ★</option><option value="2">2 ★★</option>
+        <option value="3" selected>3 ★★★</option><option value="4">4 ★★★★</option><option value="5">5 ★★★★★</option>
+      </select>
+    </div>
     <div class="field"><label>Статус</label>
       <select id="f-status">
         <option value="check">На проверке</option><option value="plan">Осмотр запланирован</option>
