@@ -161,6 +161,7 @@
     <button class="tbtn on" id="fAll" onclick="ft('')">Все</button>
     <button class="tbtn" id="fKv" onclick="ft('Квартира')">Квартиры</button>
     <button class="tbtn" id="fAp" onclick="ft('Апартаменты')">Апарт.</button>
+    <button class="tbtn" style="background:#16A34A;color:#fff;margin-left:8px" onclick="openModal()">+ Объект</button>
 
   </div>
   <div class="board" id="board"></div>
@@ -201,7 +202,7 @@
 </div>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay">
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
 <div class="modal">
   <div class="modal-header">
     <h3 id="modalTitle">Новый объект</h3>
@@ -243,13 +244,7 @@
       </select>
     </div>
   </div>
-  <div class="fgrid">
-    <div class="field"><label>Оценка дизайна</label>
-      <select id="f-stars">
-        <option value="1">1 ★</option><option value="2">2 ★★</option>
-        <option value="3" selected>3 ★★★</option><option value="4">4 ★★★★</option><option value="5">5 ★★★★★</option>
-      </select>
-    </div>
+  
     <div class="field"><label>Статус</label>
       <select id="f-status">
         <option value="check">На проверке</option><option value="plan">Осмотр запланирован</option>
