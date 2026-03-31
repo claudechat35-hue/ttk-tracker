@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Поиск недвижимости — ТТК</title>
+<title>ООО «Караван» — Недвижимость Москва</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:13px;background:#F4F6FA;color:#1a1a2e;min-height:100vh}
@@ -127,7 +127,7 @@
 <body>
 
 <nav class="nav">
-  <div class="nav-logo">ТТК <span>Недвижимость</span></div>
+  <div class="nav-logo">ООО «Караван» <span>— недвижимость Москва</span></div>
   <button class="nav-btn active" onclick="showView('dash',this)">Дашборд</button>
   <button class="nav-btn" onclick="showView('kanban',this)">Канбан</button>
   <button class="nav-btn" onclick="showView('table',this)">Таблица</button>
@@ -157,8 +157,7 @@
     <button class="tbtn on" id="fAll" onclick="ft('')">Все</button>
     <button class="tbtn" id="fKv" onclick="ft('Квартира')">Квартиры</button>
     <button class="tbtn" id="fAp" onclick="ft('Апартаменты')">Апарт.</button>
-    <button class="tbtn" id="fHi" onclick="fs('Хайтек')">Хайтек</button>
-    <button class="tbtn" id="fMn" onclick="fs('Минимализм')">Минимализм</button>
+
   </div>
   <div class="board" id="board"></div>
 </div>
@@ -206,12 +205,14 @@
   </div>
   <div class="fgrid full"><div class="field"><label>Адрес</label><input id="f-addr" placeholder="ул. Тверская, 4"></div></div>
   <div class="fgrid">
-    <div class="field"><label>Район</label>
-      <select id="f-dist">
-        <option>Арбат</option><option>Басманный</option><option>Замоскворечье</option>
-        <option>Красносельский</option><option>Мещанский</option><option>Пресненский</option>
-        <option>Таганский</option><option selected>Тверской</option><option>Хамовники</option>
-        <option>Якиманка</option><option>Лефортово</option>
+    <div class="field"><label>Комнат</label>
+      <select id="f-rooms-sel">
+        <option value="1">1 комната</option>
+        <option value="2" selected>2 комнаты</option>
+        <option value="3">3 комнаты</option>
+        <option value="4">4 комнаты</option>
+        <option value="5">5 комнат</option>
+        <option value="6">6 комнат</option>
       </select>
     </div>
     <div class="field"><label>Тип</label>
@@ -365,7 +366,7 @@ function renderDash(){
   const maxP=Math.max(...cards.map(c=>c.price));
   document.getElementById('summary').innerHTML=`
     <table style="width:100%;font-size:12px;border-collapse:collapse">
-      ${[['Квартир / Апартаментов',`${kv} / ${ap}`],['Хайтек / Минимализм',`${ht} / ${mn}`],['Диапазон цен',`${minP}–${maxP} млн ₽`],['Районов охвачено',Object.keys(distCount).length],['Обновлено',new Date().toLocaleDateString('ru-RU')]].map(([l,v],i)=>`
+      ${[['Квартир / Апартаментов',`${kv} / ${ap}`],['Диапазон цен',`${minP}–${maxP} млн ₽`],['Районов охвачено',Object.keys(distCount).length],['Обновлено',new Date().toLocaleDateString('ru-RU')]].map(([l,v],i)=>`
       <tr style="border-bottom:1px solid #F1F5F9">
         <td style="padding:7px 0;color:#64748B">${l}</td>
         <td style="padding:7px 0;font-weight:600;text-align:right">${v}</td>
@@ -489,7 +490,7 @@ function openModal(id){
   const c=id?cards.find(x=>x.id===id):null;
   document.getElementById('modalTitle').textContent=id?'Редактировать объект':'Новый объект';
   document.getElementById('f-addr').value=c?c.addr:'';
-  document.getElementById('f-dist').value=c?c.dist:'Тверской';
+  document.getElementById('f-rooms-sel').value=c?(c.rooms||2):2;
   document.getElementById('f-type').value=c?c.type:'Квартира';
   document.getElementById('f-area').value=c?c.area:'';
   document.getElementById('f-floor').value=c?c.floor:'';
@@ -511,7 +512,7 @@ function saveModal(){
   if(!addr){alert('Введите адрес');return}
   const obj={
     id:ST.editId||nextId++,addr,
-    dist:document.getElementById('f-dist').value,
+    rooms:+document.getElementById('f-rooms-sel').value||2,
     type:document.getElementById('f-type').value,
     area:+document.getElementById('f-area').value||50,
     floor:document.getElementById('f-floor').value||'?',
