@@ -11,9 +11,9 @@
   .nav{background:#1F3864;display:flex;align-items:center;padding:0 20px;height:52px;gap:4px;position:sticky;top:0;z-index:100}
   .nav-logo{color:#fff;font-size:14px;font-weight:600;margin-right:16px;letter-spacing:-.3px}
   .nav-logo span{color:#7EC8E3;font-weight:400}
-  .nav-btn{color:#B8C8E8;font-size:12px;padding:6px 14px;border-radius:6px;border:none;background:transparent;cursor:pointer;transition:all .15s}
-  .nav-btn:hover{background:rgba(255,255,255,.1);color:#fff}
-  .nav-btn.active{background:rgba(255,255,255,.15);color:#fff;font-weight:500}
+  .nav-btn{color:#B8C8E8;font-size:12px;padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);cursor:pointer;transition:all .15s;font-weight:500;letter-spacing:.01em}
+  .nav-btn:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}
+  .nav-btn.active{background:rgba(255,255,255,.95);color:#1F3864;font-weight:700;border-color:transparent;box-shadow:0 1px 4px rgba(0,0,0,.2)}
   .nav-right{margin-left:auto;display:flex;gap:8px;align-items:center}
   .nav-date{color:#7EC8E3;font-size:11px}
   .btn-add-nav{background:#16A34A;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer}
@@ -262,11 +262,11 @@
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
-const STORAGE_KEY='ttk_realty_v1';
+const STORAGE_KEY='ttk_realty_v2';
 const DEFAULT_DATA=[
-  {id:1,addr:'Большая Якиманка, 26',dist:'Якиманка',type:'Квартира',area:68,floor:'5/9',price:47.5,year:1967,metro:'Полянка, 7 мин',style:'Хайтек',stars:5,status:'check',torg:5,source:'ЦИАН',url:'',comment:'Хорошая планировка, уточнить юрид. статус'},
-  {id:2,addr:'Садовническая ул., 14',dist:'Замоскворечье',type:'Апартаменты',area:85,floor:'7/12',price:89,year:2015,metro:'Новокузнецкая, 5 мин',style:'Минимализм',stars:4,status:'plan',torg:10,source:'Авито',url:'',comment:'Переговоры по цене, встреча запланирована'},
-  {id:3,addr:'Пречистенская наб., 9',dist:'Хамовники',type:'Квартира',area:112,floor:'4/6',price:135,year:1980,metro:'Парк Культуры, 3 мин',style:'Хайтек',stars:4,status:'rejected',torg:0,source:'ДомКлик',url:'',comment:'Только через агента — не рассматриваем'},
+  {id:1,addr:'Большая Якиманка, 26',dist:'Якиманка',type:'Квартира',rooms:3,area:68,floor:'5/9',price:47.5,year:1967,metro:'Полянка, 7 мин',style:'Хайтек',stars:5,status:'check',torg:5,source:'ЦИАН',url:'',comment:'Хорошая планировка, уточнить юрид. статус'},
+  {id:2,addr:'Садовническая ул., 14',dist:'Замоскворечье',type:'Апартаменты',rooms:2,area:85,floor:'7/12',price:89,year:2015,metro:'Новокузнецкая, 5 мин',style:'Минимализм',stars:4,status:'plan',torg:10,source:'Авито',url:'',comment:'Переговоры по цене, встреча запланирована'},
+  {id:3,addr:'Пречистенская наб., 9',dist:'Хамовники',type:'Квартира',rooms:4,area:112,floor:'4/6',price:135,year:1980,metro:'Парк Культуры, 3 мин',style:'Хайтек',stars:4,status:'rejected',torg:0,source:'ДомКлик',url:'',comment:'Только через агента — не рассматриваем'},
   {id:4,addr:'Н. Красносельская, 35',dist:'Красносельский',type:'Квартира',area:54,floor:'3/7',price:34.5,year:2003,metro:'Красносельская, 8 мин',style:'Минимализм',stars:3,status:'check',torg:7,source:'Яндекс.Недвижимость',url:'',comment:'Небольшая площадь, но цена интересная'},
   {id:5,addr:'Тверская ул., 4',dist:'Тверской',type:'Апартаменты',area:143,floor:'9/14',price:148,year:2018,metro:'Охотный ряд, 4 мин',style:'Хайтек',stars:5,status:'priority',torg:3,source:'Telegram',url:'',comment:'Лучший объект недели — срочно организовать встречу'},
   {id:6,addr:'Пресненская наб., 10',dist:'Пресненский',type:'Апартаменты',area:92,floor:'8/15',price:112,year:2020,metro:'Дел. центр, 2 мин',style:'Хайтек',stars:5,status:'plan',torg:0,source:'Собственник',url:'',comment:'Флагманский ЖК, переговоры идут'},
