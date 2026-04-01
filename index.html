@@ -10,6 +10,7 @@
   /* NAV */
 .nav{position:relative;background:linear-gradient(135deg,#1a3a6e 0%,#1F3864 100%);display:flex;align-items:center;justify-content:center;padding:0 24px;height:64px;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
   .nav-logo{display:none}
+.nav-logo-text{color:#fff;font-size:15px;font-weight:700;letter-spacing:.5px;margin-right:16px;white-space:nowrap;opacity:.95}
   
   .nav-btn{font-size:13px;padding:9px 22px;border-radius:6px;border:none;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.3px;box-shadow:0 2px 5px rgba(0,0,0,.25)}
   .nav-btn:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 4px 10px rgba(0,0,0,.3)}
@@ -145,6 +146,7 @@
 <body>
 
 <nav class="nav">
+  <div class="nav-logo-text">ООО «Караван»</div>
   <button class="nav-btn nav-btn-dash active" onclick="showView('dash',this)">Дашборд</button>
   <button class="nav-btn nav-btn-kanban" onclick="showView('kanban',this)">Канбан</button>
   <button class="nav-btn nav-btn-table" onclick="showView('table',this)">Таблица</button>
