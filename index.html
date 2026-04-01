@@ -160,7 +160,7 @@
   <div class="dash-metrics" id="dashMetrics"></div>
   <div class="dash-row">
     <div class="dash-card"><h3>Воронка по статусам</h3><div id="funnel"></div></div>
-    <div class="dash-card"><h3>Топ объекты</h3><div id="top3"></div></div>
+    <div class="dash-card"><h3>В приоритете</h3><div id="top3"></div></div>
   </div>
   <div class="dash-row">
     <div class="dash-card" style="grid-column:1/-1"><h3>Сводка</h3><div id="summary"></div></div>
@@ -414,10 +414,10 @@ function renderDash(){
     </div>`;
   }).join('');
 
-  // top3
-  const top3=cards.filter(c=>c.status!=='rejected').sort((a,b)=>b.stars-a.stars||a.price-b.price).slice(0,3);
+  // top3 — приоритетные объекты
+  const top3=cards.filter(c=>c.status==='priority').slice(0,3);
   const rankColors=['#F59E0B','#94A3B8','#CD7F32'];
-  document.getElementById('top3').innerHTML=top3.map((c,i)=>`
+  document.getElementById('top3').innerHTML=top3.length===0?'<div style="padding:24px;text-align:center;color:#94A3B8;font-size:13px">Нет приоритетных объектов.<br>Перетащите карточки в колонку «Приоритет» (макс. 3)</div>':top3.map((c,i)=>`
     <div class="top3-item">
       <div class="top3-rank" style="background:${rankColors[i]}22;color:${rankColors[i]}">${i+1}</div>
       <div class="top3-info">
@@ -511,7 +511,11 @@ function onDO(e,id){e.preventDefault();document.getElementById('cb-'+id).classLi
 function onDL(id){document.getElementById('cb-'+id).classList.remove('over')}
 function onDrop(e,id){
   e.preventDefault();
-  if(ST.drag!=null){const c=cards.find(x=>x.id===ST.drag);if(c){c.status=id;save();}}
+  if(ST.drag!=null){const c=cards.find(x=>x.id===ST.drag);if(c){
+    if(id==='priority'&&cards.filter(x=>x.status==='priority'&&x.id!==c.id).length>=3){
+      alert('Максимум 3 объекта в приоритете');
+    }else{c.status=id;save();}
+  }}
   renderKanban();
 }
 function ft(t){ST.type=ST.type===t?'':t;['fAll','fKv','fAp'].forEach(i=>document.getElementById(i).classList.remove('on'));if(!t)document.getElementById('fAll').classList.add('on');if(t==='Квартира')document.getElementById('fKv').classList.add('on');if(t==='Апартаменты')document.getElementById('fAp').classList.add('on');renderKanban()}
