@@ -485,7 +485,7 @@ function renderTable(){
   const q=(document.getElementById('searchInp').value||'').toLowerCase();
   const fs=document.getElementById('filterStatus').value;
   const ft2=document.getElementById('filterType').value;
-  let rows=cards.filter(c=>{h
+  let rows=cards.filter(c=>{
     if(q&&!c.addr.toLowerCase().includes(q)&&!c.dist.toLowerCase().includes(q))return false;
     if(fs&&COL2STATUS[c.status]!==fs)return false;
     if(ft2&&c.type!==ft2)return false;
