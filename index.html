@@ -141,6 +141,22 @@
 .fg-input{width:100%;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;font-size:13px;color:#1e293b;background:#fff;box-sizing:border-box;outline:none}
 .fg-input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9}
+
+/* ── MOBILE RESPONSIVE ───────────────────────── */
+@media (max-width: 768px) {
+  .nav-logo-text { font-size: 13px; left: 12px; }
+  .nav-right { right: 12px; gap: 6px; }
+  .nav-date { display: none; }
+  .btn-csv-nav { display: none; }
+  .btn-add-nav { padding: 5px 10px; font-size: 12px; }
+  .nav-btn { font-size: 12px; padding: 7px 14px; }
+}
+@media (max-width: 540px) {
+  .nav-logo-text { display: none; }
+  .nav-right { display: none; }
+  .nav { justify-content: center; padding: 0 8px; }
+  .nav-btn { font-size: 12px; padding: 8px 16px; }
+}
 </style>
 </head>
 <body>
