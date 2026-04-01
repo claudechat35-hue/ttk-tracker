@@ -471,7 +471,7 @@ function cardHTML(c){
       <span class="pill ${c.type==='Квартира'?'tag-kv':'tag-ap'}">${c.type==='Квартира'?'Кв.':'Ап.'}</span>${c.rooms?`<span class="rooms-badge">${c.rooms}\u043a</span>`:''}
     </div>
     <div class="card-row"><span>${c.area} м²</span><span>эт. ${c.floor}</span><span>${c.year}</span></div>
-    <div class="card-row" style="color:#94A3B8">${c.metro||'—'}</div>
+    <div class="card-row" style="color:#94A3B8">${c.dist||''}${c.dist&&c.metro?' · ':''}${c.metro||'—'}</div>
     <div class="card-price">${c.price} млн <span style="font-size:11px;font-weight:400;color:#94A3B8">${pm(c)}k/м²</span></div>
     <div class="card-footer">
       <span style="font-size:10px;color:#94A3B8">${c.source||''}</span>
