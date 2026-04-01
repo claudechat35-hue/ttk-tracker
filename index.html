@@ -368,6 +368,8 @@ function load(){try{const d=localStorage.getItem(STORAGE_KEY);return d?JSON.pars
 function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(cards))}
 
 let cards=load();
+// migrate: fill dist from metro if missing
+(function(){let changed=false;cards.forEach(c=>{if(!c.dist&&c.metro&&METRO_TO_DIST[c.metro]){c.dist=METRO_TO_DIST[c.metro];changed=true;}});if(changed)save();})();
 let nextId=Math.max(...cards.map(c=>c.id))+1;
 let ST={type:'',style:'',drag:null,editId:null,sortCol:'',sortAsc:true};
 
