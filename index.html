@@ -427,7 +427,7 @@ function renderDash(){
 
   // district bars
   const distCount={};
-  // district bars removed
+  cards.filter(c=>c.status!=='rejected').forEach(c=>{if(c.dist)distCount[c.dist]=(distCount[c.dist]||0)+1;});
   // summary
   const kv=cards.filter(c=>c.type==='Квартира').length;
   const ap=cards.filter(c=>c.type==='Апартаменты').length;
