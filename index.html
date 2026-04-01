@@ -127,6 +127,19 @@
   .tag-kv{background:#DBEAFE;color:#1E40AF}
   .tag-ap{background:#FCE7F3;color:#9D174D}
   @media(max-width:700px){.dash-metrics{grid-template-columns:1fr 1fr}.dash-row{grid-template-columns:1fr}}
+
+#modalOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.modal-box{background:#fff;border-radius:12px;padding:24px;width:560px;max-width:calc(100vw - 32px);max-height:calc(100vh - 40px);overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);box-sizing:border-box}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-hdr h3{font-size:17px;font-weight:700;color:#1e293b;margin:0}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8;line-height:1;padding:4px 8px;border-radius:4px}
+.modal-close:hover{color:#1e293b;background:#f1f5f9}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin-bottom:0}
+.fgrid .full{grid-column:1/-1}
+.fg-label{font-size:12px;font-weight:600;color:#64748b;margin-bottom:4px;display:block}
+.fg-input{width:100%;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;font-size:13px;color:#1e293b;background:#fff;box-sizing:border-box;outline:none}
+.fg-input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9}
 </style>
 </head>
 <body>
@@ -507,6 +520,7 @@ function renderTable(){
 
 // ── MODAL ─────────────────────────────────────────────────────────────────
 function openModal(id){
+  var ov=document.getElementById('modalOverlay');if(ov)ov.style.display='flex';
   const overlay=document.getElementById('modalOverlay');
   if(overlay)overlay.style.display='flex';
   const sk='ttk_realty_v4';
@@ -570,6 +584,8 @@ function exportCSV(){
 // ── INIT ──────────────────────────────────────────────────────────────────
 document.getElementById('navDate').textContent='Обновлено: '+new Date().toLocaleDateString('ru-RU');
 renderDash();
+
+function closeModal(){var o=document.getElementById('modalOverlay');if(o)o.style.display='none';}
 </script>
 </body>
 </html>
