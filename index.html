@@ -157,6 +157,22 @@
   .nav { justify-content: center; padding: 0 8px; }
   .nav-btn { font-size: 12px; padding: 8px 16px; }
 }
+
+.btn-avito-nav{background:#00AAFF;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-avito-nav:hover{background:#0088DD}
+.avito-import-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center}
+.avito-import-overlay.open{display:flex}
+.avito-import-box{background:#fff;border-radius:12px;padding:24px;width:500px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.avito-import-box h3{margin:0 0 16px;font-size:16px;color:#1a3a6e}
+.avito-import-box input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;margin-bottom:12px}
+.avito-import-box input:focus{outline:none;border-color:#3B82F6}
+.avito-import-hint{font-size:11px;color:#94A3B8;margin-bottom:16px}
+.avito-import-actions{display:flex;gap:8px;justify-content:flex-end}
+.avito-import-actions button{padding:8px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500}
+.avito-import-cancel{background:#f1f5f9;color:#475569}
+.avito-import-go{background:#3B82F6;color:#fff}
+.avito-import-go:hover{background:#2563EB}
+.avito-import-error{color:#EF4444;font-size:12px;margin-bottom:8px;display:none}
 </style>
 </head>
 <body>
@@ -168,6 +184,7 @@
   <button class="nav-btn nav-btn-table" onclick="showView('table',this)">Таблица</button>
   <div class="nav-right">
     <span class="nav-date" id="navDate"></span>
+    <button class="btn-avito-nav" onclick="openAvitoImport()">Авито ↗</button>
     <button class="btn-csv-nav" onclick="exportCSV()">CSV ↓</button>
     <button class="btn-add-nav" onclick="openModal(null)">+ Объект</button>
   </div>
@@ -646,6 +663,114 @@ document.getElementById('navDate').textContent='Обновлено: '+new Date()
 renderDash();
 
 function closeModal(){var o=document.getElementById('modalOverlay');if(o)o.style.display='none';}
+
+// ── AVITO IMPORT ─────────────────────────────────────────────────────────
+function openAvitoImport(){
+  document.getElementById('avitoImportOverlay').classList.add('open');
+  document.getElementById('avitoUrlInput').value='';
+  document.getElementById('avitoImportError').style.display='none';
+  setTimeout(()=>document.getElementById('avitoUrlInput').focus(),100);
+}
+function closeAvitoImport(){
+  document.getElementById('avitoImportOverlay').classList.remove('open');
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeAvitoImport();
+});
+function parseAvitoUrl(url){
+  // Убираем query string
+  const clean = url.split('?')[0].trim();
+  
+  // Комнаты
+  const roomsM = clean.match(/\/(\d+)-k\._/);
+  const rooms = roomsM ? parseInt(roomsM[1]) : (clean.includes('studiya') ? 0 : 2);
+  
+  // Тип
+  const type = clean.includes('apartament') ? 'Апартаменты' : 'Квартира';
+  
+  // Площадь — "_87_m_" или "_872_m_" (87.2) или "_1042_m_" (104.2)
+  const areaM = clean.match(/_(\d{2,4})_m_/);
+  let area = 50;
+  if(areaM){
+    const raw = areaM[1];
+    // 3+ цифр: последняя — дробная (872→87.2, 1042→104.2)
+    area = raw.length >= 3 ? parseFloat(raw.slice(0,-1)+'.'+raw.slice(-1)) : parseFloat(raw);
+  }
+  
+  // Этаж/всего — "_5_9_et_" или "_510_et_"
+  const floorM = clean.match(/_(\d{1,2})_(\d{1,2})_et_/) || clean.match(/_(\d)(\d{2})_et_/);
+  const floor = floorM ? floorM[1]+'/'+floorM[2] : '?/?';
+  
+  // ID объявления — последнее число
+  const idM = clean.match(/_(\d{7,})$/);
+  const avitoId = idM ? parseInt(idM[1]) : null;
+  
+  if(!avitoId) return null;
+  
+  return {url: clean, rooms, type, area, floor, avitoId};
+}
+function doAvitoImport(){
+  const url = document.getElementById('avitoUrlInput').value.trim();
+  const errEl = document.getElementById('avitoImportError');
+  errEl.style.display='none';
+  
+  const parsed = parseAvitoUrl(url);
+  if(!parsed){
+    errEl.style.display='block';
+    return;
+  }
+  
+  closeAvitoImport();
+  
+  // Открываем стандартную форму с предзаполненными данными
+  openModal(null);
+  setTimeout(()=>{
+    // Заполняем поля
+    const sel = (id,val)=>{const el=document.getElementById(id);if(el)el.value=val;};
+    const selOpt = (id,val)=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+      const opt=[...el.options].find(o=>o.value===val||o.text===val);
+      if(opt)el.value=opt.value;
+    };
+    
+    sel('f-url', parsed.url);
+    sel('f-area', parsed.area);
+    sel('f-floor', parsed.floor);
+    selOpt('f-type', parsed.type);
+    
+    // Комнаты
+    const roomsSel=document.getElementById('f-rooms-sel');
+    if(roomsSel){
+      const opt=[...roomsSel.options].find(o=>parseInt(o.value)===parsed.rooms);
+      if(opt)roomsSel.value=opt.value;
+    }
+    
+    // Фокус на поле Адрес чтобы пользователь заполнил его
+    document.getElementById('f-addr').focus();
+    
+    // Подсвечиваем поля которые нужно заполнить вручную
+    ['f-addr','f-price','f-metro'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.style.borderColor='#F59E0B';el.placeholder=el.id==='f-addr'?'← Введи адрес из Авито':el.id==='f-price'?'← Введи цену':el.placeholder;}
+    });
+  }, 150);
+}
+
 </script>
+
+<!-- AVITO IMPORT -->
+<div class="avito-import-overlay" id="avitoImportOverlay">
+  <div class="avito-import-box">
+    <h3>🔗 Импорт с Авито</h3>
+    <input id="avitoUrlInput" type="text" placeholder="https://www.avito.ru/moskva/kvartiry/2-k._kvartira_..." />
+    <div class="avito-import-hint">Вставь ссылку на объявление — адрес, площадь, этаж и цена заполнятся автоматически</div>
+    <div class="avito-import-error" id="avitoImportError">Не удалось распознать ссылку Авито</div>
+    <div class="avito-import-actions">
+      <button class="avito-import-cancel" onclick="closeAvitoImport()">Отмена</button>
+      <button class="avito-import-go" onclick="doAvitoImport()">Открыть форму →</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
