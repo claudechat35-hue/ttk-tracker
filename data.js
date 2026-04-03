@@ -3,41 +3,11 @@ const DEFAULT_CARDS=[{"id":2,"addr":"Кутузовский пр-т, 4/2","type"
 (function(){var K='ttk_realty_v4',e=JSON.parse(localStorage.getItem(K)||'[]');if(e.length<DEFAULT_CARDS.length){if(e.length===0){localStorage.setItem(K,JSON.stringify(DEFAULT_CARDS))}else{var u=new Set(e.map(function(c){return c.url}));var a=0;DEFAULT_CARDS.forEach(function(c){if(c.url&&!u.has(c.url)){e.push(c);a++}});if(a>0)localStorage.setItem(K,JSON.stringify(e))}}})();
 document.addEventListener('DOMContentLoaded',function(){var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);var b=document.querySelector('.btn-avito-nav');if(b)b.remove()});
 
-/* === PATCH v2: Touch Kanban + PWA + Table Scroll === */
+/* === PATCH v3: Touch Kanban + PWA (fixed statuses) === */
 (function(){
-  function addBtns(){
-    var cc=document.querySelectorAll('.card[draggable]');
-    if(!cc.length)return;
-    cc.forEach(function(card){
-      if(card.querySelector('.ksb'))return;
-      var idM=card.id.match(/card-(\d+)/);
-      if(!idM)return;
-      var cid=parseInt(idM[1]);
-      var sts=[{k:'check',i:'\ud83d\udd0d'},{k:'plan',i:'\ud83d\udc41'},{k:'wait',i:'\u23f3'},{k:'priority',i:'\u2b50'},{k:'rejected',i:'\u2717'}];
-      var cur=cards.find(function(c){return c.id===cid});
-      var d=document.createElement('div');
-      d.className='ksb';
-      d.style.cssText='display:flex;gap:4px;margin-top:6px';
-      sts.forEach(function(s){
-        var b=document.createElement('button');
-        b.textContent=s.i;
-        b.style.cssText='font-size:11px;padding:2px 6px;border:1px solid #ddd;border-radius:4px;background:'+(cur&&cur.status===s.k?'#1a3a6e;color:#fff':'#fff')+';cursor:pointer';
-        b.addEventListener('click',function(e){e.stopPropagation();var c=cards.find(function(x){return x.id===cid});if(c){c.status=s.k;save();renderKanban();renderDash()}});
-        d.appendChild(b);
-      });
-      card.appendChild(d);
-    });
-  }
-  /* Auto-apply: retry every 500ms until cards exist, then hook renderKanban */
-  var iv=setInterval(function(){var c=document.querySelectorAll('.card[draggable]');if(c.length){clearInterval(iv);addBtns();if(typeof renderKanban==='function'){var orig=renderKanban;window.renderKanban=function(){orig();setTimeout(addBtns,50)}}}},500);
-  /* PWA */
-  document.addEventListener('DOMContentLoaded',function(){
-    var ml=document.createElement('link');ml.rel='manifest';ml.href='manifest.json';document.head.appendChild(ml);
-    var mt=document.createElement('meta');mt.name='theme-color';mt.content='#1a3a6e';document.head.appendChild(mt);
-    var ai=document.createElement('link');ai.rel='apple-touch-icon';ai.href='icon.svg';document.head.appendChild(ai);
-    /* Table scroll */
-    var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);
-    /* Remove Avito btn */
-    var ab=document.querySelector('.btn-avito-nav');if(ab)ab.remove();
-  });
+var STATUSES=[{k:"check",i:"\ud83d\udd0d"},{k:"plan",i:"\ud83d\udc41"},{k:"wait",i:"\u23f3"},{k:"priority",i:"\u2b50"},{k:"rejected",i:"\u2717"}];
+function addBtns(){document.querySelectorAll(".ksb").forEach(function(e){e.remove()});document.querySelectorAll(".card[draggable]").forEach(function(card){var m=card.id.match(/card-(\d+)/);if(!m)return;var cid=parseInt(m[1]);var cur=cards.find(function(c){return c.id===cid});var d=document.createElement("div");d.className="ksb";d.style.cssText="display:flex;gap:4px;margin-top:6px";STATUSES.forEach(function(s){var b=document.createElement("button");b.textContent=s.i;b.setAttribute("data-cid",cid);b.setAttribute("data-st",s.k);b.style.cssText="font-size:11px;padding:2px 6px;border:1px solid #ddd;border-radius:4px;background:"+(cur&&cur.status===s.k?"#1a3a6e;color:#fff":"#fff")+";cursor:pointer";d.appendChild(b)});card.appendChild(d)})}
+document.addEventListener("click",function(e){var b=e.target;if(!b.hasAttribute("data-st"))return;e.stopPropagation();var cid=parseInt(b.getAttribute("data-cid"));var st=b.getAttribute("data-st");var c=cards.find(function(x){return x.id===cid});if(c){c.status=st;save();renderKanban();renderDash()}},true);
+var iv=setInterval(function(){if(document.querySelectorAll(".card[draggable]").length){clearInterval(iv);addBtns();var orig=renderKanban;window.renderKanban=function(){orig();setTimeout(addBtns,50)}}},500);
+document.addEventListener("DOMContentLoaded",function(){var ml=document.createElement("link");ml.rel="manifest";ml.href="manifest.json";document.head.appendChild(ml);var mt=document.createElement("meta");mt.name="theme-color";mt.content="#1a3a6e";document.head.appendChild(mt);var ai=document.createElement("link");ai.rel="apple-touch-icon";ai.href="icon.svg";document.head.appendChild(ai);var s=document.createElement("style");s.textContent=".table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}";document.head.appendChild(s);var ab=document.querySelector(".btn-avito-nav");if(ab)ab.remove()});
 })();
