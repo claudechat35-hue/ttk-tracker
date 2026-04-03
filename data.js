@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
     var ab=document.querySelector('.btn-avito-nav');if(ab)ab.remove();
     /* Fix missing form fields */
     setTimeout(function(){var mo=document.getElementById('modalOverlay');if(mo){['f-style','f-torg'].forEach(function(id){if(!document.getElementById(id)){var h=document.createElement('input');h.type='hidden';h.id=id;h.value='';mo.appendChild(h)}})}},1000);
+    /* Fix saveModal duplication bug: openModal uses __editId but saveModal reads editId */
+    window.saveModal=function(){var id=window.__editId;var g=function(x){var e=document.getElementById(x);return e?e.value:''};var obj={addr:g('f-addr'),rooms:parseInt(g('f-rooms-sel'))||1,type:g('f-type'),area:parseFloat(g('f-area'))||0,floor:g('f-floor'),price:parseFloat(g('f-price'))||0,year:g('f-year'),metro:g('f-metro'),source:g('f-source'),url:g('f-url'),stars:parseInt(g('f-stars'))||3,status:g('f-status'),comment:g('f-comment'),torg:0};if(id){var idx=cards.findIndex(function(c){return c.id===id});if(idx>=0)Object.assign(cards[idx],obj)}else{obj.id=cards.length?Math.max.apply(null,cards.map(function(c){return c.id}))+1:1;cards.push(obj)};save();closeModal();renderDash();renderKanban()};
     initFirebase();
   });
 })();
