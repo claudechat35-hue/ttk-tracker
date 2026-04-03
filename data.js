@@ -3,12 +3,10 @@ const DEFAULT_CARDS=[{"id":2,"addr":"Кутузовский пр-т, 4/2","type"
 (function(){var K='ttk_realty_v4',e=JSON.parse(localStorage.getItem(K)||'[]');if(e.length<DEFAULT_CARDS.length){if(e.length===0){localStorage.setItem(K,JSON.stringify(DEFAULT_CARDS))}else{var u=new Set(e.map(function(c){return c.url}));var a=0;DEFAULT_CARDS.forEach(function(c){if(c.url&&!u.has(c.url)){e.push(c);a++}});if(a>0)localStorage.setItem(K,JSON.stringify(e))}}})();
 document.addEventListener('DOMContentLoaded',function(){var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);var b=document.querySelector('.btn-avito-nav');if(b)b.remove()});
 
-/* === PATCH v6: Firebase + Touch Drag (fixed) + PWA === */
+/* === PATCH v7: Firebase + Mobile Kanban Buttons + PWA === */
 (function(){
   var KEY='ttk_realty_v4';
-  var STATUSES=[{k:"check",i:"\ud83d\udd0d"},{k:"plan",i:"\ud83d\udc41"},{k:"wait",i:"\u23f3"},{k:"priority",i:"\u2b50"},{k:"rejected",i:"\u2717"}];
-  var COL_IDS=['check','plan','wait','priority','rejected'];
-  var isMobile='ontouchstart' in window;
+  var STATUSES=[{k:"check",i:"\ud83d\udd0d",l:"\u041f\u0440\u043e\u0432."},{k:"plan",i:"\ud83d\udc41",l:"\u041e\u0441\u043c."},{k:"wait",i:"\u23f3",l:"\u0416\u0434\u0430\u0442\u044c"},{k:"priority",i:"\u2b50",l:"\u041f\u0440\u0438\u043e\u0440."},{k:"rejected",i:"\u2717",l:"\u041e\u0442\u043a\u043b."}];
 
   function loadScript(u,cb){var s=document.createElement('script');s.src=u;s.onload=cb;document.head.appendChild(s)}
 
@@ -32,108 +30,51 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
     });
   }
 
-  /* Touch Drag — disable native draggable on mobile, custom implementation */
-  function initTouchDrag(){
-    if(!isMobile)return;
-    var dragCard=null,ghost=null,holdTimer=null,startX=0,startY=0,dragging=false;
-
-    /* Disable native drag on all cards for mobile */
-    function disableNativeDrag(){
-      document.querySelectorAll('.card[draggable]').forEach(function(c){
-        c.setAttribute('draggable','false');
-        c.style.webkitUserSelect='none';
-        c.style.userSelect='none';
-      });
-    }
-    disableNativeDrag();
-
-    /* Also disable after each renderKanban */
-    var _origRK2=window.renderKanban;
-    window.renderKanban=function(){_origRK2();setTimeout(function(){disableNativeDrag();addBtns()},50)};
-
-    document.addEventListener('touchstart',function(e){
-      var card=e.target.closest('.card');
-      if(!card||e.target.closest('.ksb')||e.target.closest('a'))return;
-      startX=e.touches[0].clientX;startY=e.touches[0].clientY;
-      dragCard=card;
-      holdTimer=setTimeout(function(){
-        dragging=true;
-        e.preventDefault&&e.preventDefault();
-        card.style.opacity='0.3';
-        ghost=document.createElement('div');
-        ghost.innerHTML='<b>'+card.querySelector('a,b,strong').textContent.trim().substring(0,25)+'</b>';
-        ghost.style.cssText='position:fixed;z-index:9999;padding:10px 14px;background:#1a3a6e;color:#fff;border-radius:8px;font-size:13px;pointer-events:none;box-shadow:0 8px 25px rgba(0,0,0,.4);left:'+(startX-40)+'px;top:'+(startY-20)+'px;max-width:180px';
-        document.body.appendChild(ghost);
-        COL_IDS.forEach(function(id){var el=document.getElementById('cb-'+id);if(el){el.style.outline='2px dashed #aaa';el.style.transition='outline 0.2s'}});
-        try{navigator.vibrate(30)}catch(e){}
-      },350);
-    },{passive:false});
-
-    document.addEventListener('touchmove',function(e){
-      if(!dragCard)return;
-      var dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;
-      if(!dragging&&(Math.abs(dx)>8||Math.abs(dy)>8)){clearTimeout(holdTimer);holdTimer=null;dragCard=null;return}
-      if(!dragging)return;
-      e.preventDefault();
-      var tx=e.touches[0].clientX,ty=e.touches[0].clientY;
-      if(ghost){ghost.style.left=(tx-40)+'px';ghost.style.top=(ty-20)+'px'}
-      COL_IDS.forEach(function(id){
-        var el=document.getElementById('cb-'+id);if(!el)return;
-        var r=el.getBoundingClientRect();
-        var over=tx>=r.left&&tx<=r.right&&ty>=r.top&&ty<=r.bottom;
-        el.style.outline=over?'3px solid #F5A623':'2px dashed #aaa';
-        el.style.background=over?'rgba(245,166,35,0.1)':'';
-      });
-    },{passive:false});
-
-    document.addEventListener('touchend',function(e){
-      clearTimeout(holdTimer);
-      if(!dragging||!dragCard){dragCard=null;dragging=false;return}
-      var tx=e.changedTouches[0].clientX,ty=e.changedTouches[0].clientY;
-      var targetStatus=null;
-      COL_IDS.forEach(function(id){
-        var el=document.getElementById('cb-'+id);if(!el)return;
-        var r=el.getBoundingClientRect();
-        if(tx>=r.left&&tx<=r.right&&ty>=r.top&&ty<=r.bottom)targetStatus=id;
-        el.style.outline='';el.style.background='';
-      });
-      dragCard.style.opacity='1';
-      if(ghost)ghost.remove();
-      if(targetStatus){
-        var m=dragCard.id.match(/card-(\d+)/);
-        if(m){var cid=parseInt(m[1]);var c=cards.find(function(x){return x.id===cid});if(c&&c.status!==targetStatus){c.status=targetStatus;save();renderKanban();renderDash()}}
-      }
-      dragCard=null;ghost=null;dragging=false;
-    },{passive:true});
-  }
-
-  /* Status buttons */
+  /* Status buttons under each kanban card */
   function addBtns(){
     document.querySelectorAll('.ksb').forEach(function(e){e.remove()});
     document.querySelectorAll('.card').forEach(function(card){
       if(!card.id||!card.id.startsWith('card-'))return;
       var m=card.id.match(/card-(\d+)/);if(!m)return;
       var cid=parseInt(m[1]);var cur=cards.find(function(c){return c.id===cid});
-      var d=document.createElement('div');d.className='ksb';d.style.cssText='display:flex;gap:4px;margin-top:6px';
+      var d=document.createElement('div');d.className='ksb';
       STATUSES.forEach(function(s){
         var b=document.createElement('button');b.textContent=s.i;
         b.setAttribute('data-cid',cid);b.setAttribute('data-st',s.k);
-        b.style.cssText='font-size:11px;padding:2px 6px;border:1px solid #ddd;border-radius:4px;background:'+(cur&&cur.status===s.k?'#1a3a6e;color:#fff':'#fff')+';cursor:pointer';
+        if(cur&&cur.status===s.k)b.classList.add('active');
         d.appendChild(b);
       });
       card.appendChild(d);
     });
   }
 
-  document.addEventListener('click',function(e){var b=e.target;if(!b.hasAttribute('data-st'))return;e.stopPropagation();var cid=parseInt(b.getAttribute('data-cid'));var st=b.getAttribute('data-st');var c=cards.find(function(x){return x.id===cid});if(c){c.status=st;save();renderKanban();renderDash()}},true);
+  /* Event delegation for status buttons (capture phase) */
+  document.addEventListener('click',function(e){
+    var b=e.target;if(!b.hasAttribute('data-st'))return;
+    e.stopPropagation();e.preventDefault();
+    var cid=parseInt(b.getAttribute('data-cid'));
+    var st=b.getAttribute('data-st');
+    var c=cards.find(function(x){return x.id===cid});
+    if(c){c.status=st;save();renderKanban();renderDash()}
+  },true);
 
-  var iv=setInterval(function(){if(document.querySelectorAll('.card').length>5){clearInterval(iv);addBtns();initTouchDrag();if(!isMobile){var orig=renderKanban;window.renderKanban=function(){orig();setTimeout(addBtns,50)}}}},500);
+  /* Hook into renderKanban */
+  var iv=setInterval(function(){
+    if(document.querySelectorAll('.card').length>5){
+      clearInterval(iv);addBtns();
+      var orig=renderKanban;
+      window.renderKanban=function(){orig();setTimeout(addBtns,50)};
+    }
+  },500);
 
+  /* PWA + CSS */
   document.addEventListener('DOMContentLoaded',function(){
     var ml=document.createElement('link');ml.rel='manifest';ml.href='manifest.json';document.head.appendChild(ml);
     var mt=document.createElement('meta');mt.name='theme-color';mt.content='#1a3a6e';document.head.appendChild(mt);
     var ai=document.createElement('link');ai.rel='apple-touch-icon';ai.href='icon.svg';document.head.appendChild(ai);
-    var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);
+    var s=document.createElement('style');
+    s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}.ksb{display:flex;gap:3px;margin-top:8px;flex-wrap:nowrap}.ksb button{font-size:14px;padding:4px 8px;border:1px solid #ddd;border-radius:6px;background:#f8f8f8;cursor:pointer;flex:1;text-align:center;min-height:32px;-webkit-tap-highlight-color:rgba(0,0,0,0.1)}.ksb button:active{background:#e0e0e0;transform:scale(0.95)}.ksb button.active{background:#1a3a6e;color:#fff;border-color:#1a3a6e}@media(max-width:768px){.ksb button{font-size:16px;padding:6px 4px;min-height:38px}}';
+    document.head.appendChild(s);
     var ab=document.querySelector('.btn-avito-nav');if(ab)ab.remove();
     initFirebase();
   });
