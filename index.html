@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ÐÐÐ Â«ÐÐ°ÑÐ°Ð²Ð°Ð½Â» â ÐÐµÐ´Ð²Ð¸Ð¶Ð¸Ð¼Ð¾ÑÑÑ ÐÐ¾ÑÐºÐ²Ð°</title>
+<title>ООО «Караван» — Недвижимость Москва</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:13px;background:#F4F6FA;color:#1a1a2e;min-height:100vh}
@@ -142,7 +142,7 @@
 .fg-input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9}
 
-/* ââ MOBILE RESPONSIVE âââââââââââââââââââââââââ */
+/* ── MOBILE RESPONSIVE ───────────────────────── */
 @media (max-width: 768px) {
   .nav-logo-text { font-size: 13px; left: 12px; }
   .nav-right { right: 12px; gap: 6px; }
@@ -178,15 +178,15 @@
 <body>
 
 <nav class="nav">
-  <div class="nav-logo-text">ÐÐÐ Â«ÐÐ°ÑÐ°Ð²Ð°Ð½Â»</div>
-  <button class="nav-btn nav-btn-dash active" onclick="showView('dash',this)">ÐÐ°ÑÐ±Ð¾ÑÐ´</button>
-  <button class="nav-btn nav-btn-kanban" onclick="showView('kanban',this)">ÐÐ°Ð½Ð±Ð°Ð½</button>
-  <button class="nav-btn nav-btn-table" onclick="showView('table',this)">Ð¢Ð°Ð±Ð»Ð¸ÑÐ°</button>
+  <div class="nav-logo-text">ООО «Караван»</div>
+  <button class="nav-btn nav-btn-dash active" onclick="showView('dash',this)">Дашборд</button>
+  <button class="nav-btn nav-btn-kanban" onclick="showView('kanban',this)">Канбан</button>
+  <button class="nav-btn nav-btn-table" onclick="showView('table',this)">Таблица</button>
   <div class="nav-right">
     <span class="nav-date" id="navDate"></span>
-    <button class="btn-avito-nav" onclick="openAvitoImport()">ÐÐ²Ð¸ÑÐ¾ â</button>
-    <button class="btn-csv-nav" onclick="exportCSV()">CSV â</button>
-    <button class="btn-add-nav" onclick="openModal(null)">+ ÐÐ±ÑÐµÐºÑ</button>
+    <button class="btn-avito-nav" onclick="openAvitoImport()">Авито ↗</button>
+    <button class="btn-csv-nav" onclick="exportCSV()">CSV ↓</button>
+    <button class="btn-add-nav" onclick="openModal(null)">+ Объект</button>
   </div>
 </nav>
 
@@ -194,11 +194,11 @@
 <div class="view active" id="view-dash">
   <div class="dash-metrics" id="dashMetrics"></div>
   <div class="dash-row">
-    <div class="dash-card"><h3>ÐÐ¾ÑÐ¾Ð½ÐºÐ° Ð¿Ð¾ ÑÑÐ°ÑÑÑÐ°Ð¼</h3><div id="funnel"></div></div>
-    <div class="dash-card"><h3>Ð Ð¿ÑÐ¸Ð¾ÑÐ¸ÑÐµÑÐµ</h3><div id="top3"></div></div>
+    <div class="dash-card"><h3>Воронка по статусам</h3><div id="funnel"></div></div>
+    <div class="dash-card"><h3>В приоритете</h3><div id="top3"></div></div>
   </div>
   <div class="dash-row">
-    <div class="dash-card" style="grid-column:1/-1"><h3>Ð¡Ð²Ð¾Ð´ÐºÐ°</h3><div id="summary"></div></div>
+    <div class="dash-card" style="grid-column:1/-1"><h3>Сводка</h3><div id="summary"></div></div>
   </div>
 </div>
 
@@ -206,9 +206,9 @@
 <div class="view" id="view-kanban">
   <div class="kb-toolbar">
     <div class="kb-metrics" id="kbMetrics"></div>
-    <button class="tbtn on" id="fAll" onclick="ft('')">ÐÑÐµ</button>
-    <button class="tbtn" id="fKv" onclick="ft('ÐÐ²Ð°ÑÑÐ¸ÑÐ°')">ÐÐ²Ð°ÑÑÐ¸ÑÑ</button>
-    <button class="tbtn" id="fAp" onclick="ft('ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ')">ÐÐ¿Ð°ÑÑ.</button>
+    <button class="tbtn on" id="fAll" onclick="ft('')">Все</button>
+    <button class="tbtn" id="fKv" onclick="ft('Квартира')">Квартиры</button>
+    <button class="tbtn" id="fAp" onclick="ft('Апартаменты')">Апарт.</button>
     
 
   </div>
@@ -218,31 +218,31 @@
 <!-- TABLE -->
 <div class="view" id="view-table">
   <div class="tbl-toolbar">
-    <input class="search-inp" placeholder="ÐÐ¾Ð¸ÑÐº Ð¿Ð¾ Ð°Ð´ÑÐµÑÑ, ÑÐ°Ð¹Ð¾Ð½Ñ..." oninput="renderTable()" id="searchInp">
+    <input class="search-inp" placeholder="Поиск по адресу, району..." oninput="renderTable()" id="searchInp">
     <select class="search-inp" style="width:150px" id="filterStatus" onchange="renderTable()">
-      <option value="">ÐÑÐµ ÑÑÐ°ÑÑÑÑ</option>
-      <option>ÐÐ° Ð¿ÑÐ¾Ð²ÐµÑÐºÐµ</option><option>ÐÑÐ¼Ð¾ÑÑ Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸ÑÐ¾Ð²Ð°Ð½</option>
-      <option>ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ Ð¾ÑÐ²ÐµÑÐ°</option><option>ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑ</option><option>ÐÑÐºÐ»Ð¾Ð½ÑÐ½</option>
+      <option value="">Все статусы</option>
+      <option>На проверке</option><option>Осмотр запланирован</option>
+      <option>Ожидание ответа</option><option>Приоритет</option><option>Отклонён</option>
     </select>
     <select class="search-inp" style="width:130px" id="filterType" onchange="renderTable()">
-      <option value="">ÐÑÐµ ÑÐ¸Ð¿Ñ</option><option>ÐÐ²Ð°ÑÑÐ¸ÑÐ°</option><option>ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ</option>
+      <option value="">Все типы</option><option>Квартира</option><option>Апартаменты</option>
     </select>
     <span style="margin-left:auto;font-size:11px;color:#64748B" id="tblCount"></span>
   </div>
   <div class="table-wrap"><table id="mainTable">
     <thead><tr>
       <th style="width:30px">#</th>
-      <th class="sortable" onclick="sortBy('addr')">ÐÐ´ÑÐµÑ â</th>
-      <th class="sortable" onclick="sortBy('dist')">Ð Ð°Ð¹Ð¾Ð½ â</th>
-      <th>Ð¢Ð¸Ð¿</th>
-      <th class="sortable" onclick="sortBy('area')">Ð¼Â² â</th>
-      <th>Ð­ÑÐ°Ð¶</th>
-      <th class="sortable" onclick="sortBy('price')">Ð¦ÐµÐ½Ð° â</th>
-      <th>â½/Ð¼Â²</th>
-      <th>ÐÐ¾Ð¼Ð½Ð°Ñ</th>
-      <th class="sortable" onclick="sortBy('stars')">â â</th>
-      <th>ÐÐµÑÑÐ¾</th>
-      <th>Ð¡ÑÐ°ÑÑÑ</th>
+      <th class="sortable" onclick="sortBy('addr')">Адрес ↕</th>
+      <th class="sortable" onclick="sortBy('dist')">Район ↕</th>
+      <th>Тип</th>
+      <th class="sortable" onclick="sortBy('area')">м² ↕</th>
+      <th>Этаж</th>
+      <th class="sortable" onclick="sortBy('price')">Цена ↕</th>
+      <th>₽/м²</th>
+      <th>Комнат</th>
+      <th class="sortable" onclick="sortBy('stars')">★ ↕</th>
+      <th>Метро</th>
+      <th>Статус</th>
       <th style="width:60px"></th>
     </tr></thead>
     <tbody id="tableBody"></tbody>
@@ -253,57 +253,57 @@
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
 <div class="modal">
   <div class="modal-header">
-    <h3 id="modalTitle">ÐÐ¾Ð²ÑÐ¹ Ð¾Ð±ÑÐµÐºÑ</h3>
-    <button class="modal-close" onclick="closeModal()">Ã</button>
+    <h3 id="modalTitle">Новый объект</h3>
+    <button class="modal-close" onclick="closeModal()">×</button>
   </div>
-  <div class="fgrid full"><div class="field"><label>ÐÐ´ÑÐµÑ</label><input id="f-addr" placeholder="ÑÐ». Ð¢Ð²ÐµÑÑÐºÐ°Ñ, 4"></div></div>
+  <div class="fgrid full"><div class="field"><label>Адрес</label><input id="f-addr" placeholder="ул. Тверская, 4"></div></div>
   <div class="fgrid">
-    <div class="field"><label>ÐÐ¾Ð¼Ð½Ð°Ñ</label>
+    <div class="field"><label>Комнат</label>
       <select id="f-rooms-sel">
-        <option value="1">1 ÐºÐ¾Ð¼Ð½Ð°ÑÐ°</option>
-        <option value="2" selected>2 ÐºÐ¾Ð¼Ð½Ð°ÑÑ</option>
-        <option value="3">3 ÐºÐ¾Ð¼Ð½Ð°ÑÑ</option>
-        <option value="4">4 ÐºÐ¾Ð¼Ð½Ð°ÑÑ</option>
-        <option value="5">5 ÐºÐ¾Ð¼Ð½Ð°Ñ</option>
-        <option value="6">6 ÐºÐ¾Ð¼Ð½Ð°Ñ</option>
+        <option value="1">1 комната</option>
+        <option value="2" selected>2 комнаты</option>
+        <option value="3">3 комнаты</option>
+        <option value="4">4 комнаты</option>
+        <option value="5">5 комнат</option>
+        <option value="6">6 комнат</option>
       </select>
     </div>
-    <div class="field"><label>Ð¢Ð¸Ð¿</label>
-      <select id="f-type"><option>ÐÐ²Ð°ÑÑÐ¸ÑÐ°</option><option>ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ</option></select>
+    <div class="field"><label>Тип</label>
+      <select id="f-type"><option>Квартира</option><option>Апартаменты</option></select>
     </div>
   </div>
   <div class="fgrid">
-    <div class="field"><label>ÐÐ»Ð¾ÑÐ°Ð´Ñ, Ð¼Â²</label><input id="f-area" type="number" min="38" max="150" placeholder="68"></div>
-    <div class="field"><label>Ð­ÑÐ°Ð¶ / Ð²ÑÐµÐ³Ð¾</label><input id="f-floor" placeholder="5/9"></div>
+    <div class="field"><label>Площадь, м²</label><input id="f-area" type="number" min="38" max="150" placeholder="68"></div>
+    <div class="field"><label>Этаж / всего</label><input id="f-floor" placeholder="5/9"></div>
   </div>
   <div class="fgrid">
-    <div class="field"><label>Ð¦ÐµÐ½Ð°, Ð¼Ð»Ð½ â½</label><input id="f-price" type="number" step="0.5" placeholder="47.5"></div>
-    <div class="field"><label>ÐÐ¾Ð´ Ð¿Ð¾ÑÑÑÐ¾Ð¹ÐºÐ¸</label><input id="f-year" type="number" placeholder="1980"></div>
+    <div class="field"><label>Цена, млн ₽</label><input id="f-price" type="number" step="0.5" placeholder="47.5"></div>
+    <div class="field"><label>Год постройки</label><input id="f-year" type="number" placeholder="1980"></div>
   </div>
   <div class="fgrid">
-    <div class="field"><label>ÐÐµÑÑÐ¾</label><input id="f-metro" placeholder="ÐÑÐ¾ÑÐ½ÑÐ¹ ÑÑÐ´, 4 Ð¼Ð¸Ð½"></div>
-    <div class="field"><label>ÐÑÑÐ¾ÑÐ½Ð¸Ðº</label><input id="f-source" placeholder="Ð¦ÐÐÐ, ÐÐ²Ð¸ÑÐ¾..."></div>
+    <div class="field"><label>Метро</label><input id="f-metro" placeholder="Охотный ряд, 4 мин"></div>
+    <div class="field"><label>Источник</label><input id="f-source" placeholder="ЦИАН, Авито..."></div>
   </div>
   <div class="fgrid">
-    <div class="field"><label>ÐÑÐµÐ½ÐºÐ° Ð´Ð¸Ð·Ð°Ð¹Ð½Ð°</label>
+    <div class="field"><label>Оценка дизайна</label>
       <select id="f-stars">
-        <option value="1">1 â</option><option value="2">2 ââ</option>
-        <option value="3" selected>3 âââ</option><option value="4">4 ââââ</option><option value="5">5 âââââ</option>
+        <option value="1">1 ★</option><option value="2">2 ★★</option>
+        <option value="3" selected>3 ★★★</option><option value="4">4 ★★★★</option><option value="5">5 ★★★★★</option>
       </select>
     </div>
-    <div class="field"><label>Ð¡ÑÐ°ÑÑÑ</label>
+    <div class="field"><label>Статус</label>
       <select id="f-status">
-        <option value="check">ÐÐ° Ð¿ÑÐ¾Ð²ÐµÑÐºÐµ</option><option value="plan">ÐÑÐ¼Ð¾ÑÑ Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸ÑÐ¾Ð²Ð°Ð½</option>
-        <option value="wait">ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ Ð¾ÑÐ²ÐµÑÐ°</option><option value="priority">ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑ</option>
-        <option value="rejected">ÐÑÐºÐ»Ð¾Ð½ÑÐ½</option>
+        <option value="check">На проверке</option><option value="plan">Осмотр запланирован</option>
+        <option value="wait">Ожидание ответа</option><option value="priority">Приоритет</option>
+        <option value="rejected">Отклонён</option>
       </select>
     </div>
   </div>
-  <div class="fgrid full"><div class="field"><label>Ð¡ÑÑÐ»ÐºÐ° Ð½Ð° Ð¾Ð±ÑÐµÐºÑ</label><input id="f-url" placeholder="https://cian.ru/..."></div></div>
-  <div class="fgrid full"><div class="field"><label>ÐÐ¾Ð¼Ð¼ÐµÐ½ÑÐ°ÑÐ¸Ð¹</label><textarea id="f-comment" placeholder="ÐÐ°Ð¼ÐµÑÐºÐ¸ Ð¿Ð¾ Ð¾Ð±ÑÐµÐºÑÑ..."></textarea></div></div>
+  <div class="fgrid full"><div class="field"><label>Ссылка на объект</label><input id="f-url" placeholder="https://cian.ru/..."></div></div>
+  <div class="fgrid full"><div class="field"><label>Комментарий</label><textarea id="f-comment" placeholder="Заметки по объекту..."></textarea></div></div>
   <div class="modal-footer">
-    <button class="btn-cancel" onclick="closeModal()">ÐÑÐ¼ÐµÐ½Ð°</button>
-    <button class="btn-save" onclick="saveModal()">Ð¡Ð¾ÑÑÐ°Ð½Ð¸ÑÑ</button>
+    <button class="btn-cancel" onclick="closeModal()">Отмена</button>
+    <button class="btn-save" onclick="saveModal()">Сохранить</button>
   </div>
 </div>
 </div>
@@ -311,91 +311,91 @@
 <script src="data.js"></script>
 <script>
 
-  // ÐÐ°Ð¿Ð¿Ð¸Ð½Ð³ Ð¼ÐµÑÑÐ¾ â ÑÐ°Ð¹Ð¾Ð½
+  // Маппинг метро → район
   const METRO_TO_DIST = {
-    'Ð¢Ð²ÐµÑÑÐºÐ°Ñ':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹','Ð§ÐµÑÐ¾Ð²ÑÐºÐ°Ñ':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹','ÐÑÑÐºÐ¸Ð½ÑÐºÐ°Ñ':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹','ÐÐ°ÑÐºÐ¾Ð²ÑÐºÐ°Ñ':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹',
-    'ÐÐµÐ½Ð´ÐµÐ»ÐµÐµÐ²ÑÐºÐ°Ñ':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹','ÐÐ¾Ð²Ð¾ÑÐ»Ð¾Ð±Ð¾Ð´ÑÐºÐ°Ñ':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹','ÐÑÐ¾ÑÐ½ÑÐ¹ Ð ÑÐ´':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹','Ð¢ÐµÐ°ÑÑÐ°Ð»ÑÐ½Ð°Ñ':'Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹',
-    'ÐÐ¾ÑÐ¾Ð²Ð¸ÑÐºÐ°Ñ':'ÐÑÐ±Ð°Ñ','ÐÑÐ±Ð°ÑÑÐºÐ°Ñ':'ÐÑÐ±Ð°Ñ','Ð¡Ð¼Ð¾Ð»ÐµÐ½ÑÐºÐ°Ñ':'ÐÑÐ±Ð°Ñ',
-    'ÐÑÐ¾Ð¿Ð¾ÑÐºÐ¸Ð½ÑÐºÐ°Ñ':'Ð¥Ð°Ð¼Ð¾Ð²Ð½Ð¸ÐºÐ¸','ÐÐ°ÑÐº ÐºÑÐ»ÑÑÑÑÑ':'Ð¥Ð°Ð¼Ð¾Ð²Ð½Ð¸ÐºÐ¸','Ð¤ÑÑÐ½Ð·ÐµÐ½ÑÐºÐ°Ñ':'Ð¥Ð°Ð¼Ð¾Ð²Ð½Ð¸ÐºÐ¸',
-    'ÐÐ¾Ð»ÑÐ½ÐºÐ°':'Ð¯ÐºÐ¸Ð¼Ð°Ð½ÐºÐ°','ÐÐºÑÑÐ±ÑÑÑÐºÐ°Ñ':'Ð¯ÐºÐ¸Ð¼Ð°Ð½ÐºÐ°','Ð¢ÑÐµÑÑÑÐºÐ¾Ð²ÑÐºÐ°Ñ':'Ð¯ÐºÐ¸Ð¼Ð°Ð½ÐºÐ°',
-    'ÐÐ¾Ð²Ð¾ÐºÑÐ·Ð½ÐµÑÐºÐ°Ñ':'ÐÐ°Ð¼Ð¾ÑÐºÐ²Ð¾ÑÐµÑÑÐµ','ÐÐ°Ð²ÐµÐ»ÐµÑÐºÐ°Ñ':'ÐÐ°Ð¼Ð¾ÑÐºÐ²Ð¾ÑÐµÑÑÐµ','ÐÐ¾Ð±ÑÑÐ½Ð¸Ð½ÑÐºÐ°Ñ':'ÐÐ°Ð¼Ð¾ÑÐºÐ²Ð¾ÑÐµÑÑÐµ',
-    'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ°Ñ':'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ¸Ð¹','ÐÑÐµÑÑÑÑÐ½ÑÐºÐ°Ñ Ð·Ð°ÑÑÐ°Ð²Ð°':'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ¸Ð¹','ÐÑÐ¾Ð»ÐµÑÐ°ÑÑÐºÐ°Ñ':'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ¸Ð¹',
-    'ÐÐ°ÑÐºÑÐ¸ÑÑÑÐºÐ°Ñ':'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ¸Ð¹','ÐÐ»Ð¾ÑÐ°Ð´Ñ ÐÐ»ÑÐ¸ÑÐ°':'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ¸Ð¹',
-    'ÐÑÐ¾ÑÐ¿ÐµÐºÑ ÐÐ¸ÑÐ°':'ÐÐµÑÐ°Ð½ÑÐºÐ¸Ð¹','Ð¡ÑÑÐ°ÑÐµÐ²ÑÐºÐ°Ñ':'ÐÐµÑÐ°Ð½ÑÐºÐ¸Ð¹','Ð¦Ð²ÐµÑÐ½Ð¾Ð¹ Ð±ÑÐ»ÑÐ²Ð°Ñ':'ÐÐµÑÐ°Ð½ÑÐºÐ¸Ð¹',
-    'Ð¢ÑÑÐ±Ð½Ð°Ñ':'ÐÐµÑÐ°Ð½ÑÐºÐ¸Ð¹','Ð¡ÑÐµÑÐµÐ½ÑÐºÐ¸Ð¹ Ð±ÑÐ»ÑÐ²Ð°Ñ':'ÐÐµÑÐ°Ð½ÑÐºÐ¸Ð¹',
-    'ÐÑÐ°ÑÐ½Ð¾ÑÐµÐ»ÑÑÐºÐ°Ñ':'ÐÑÐ°ÑÐ½Ð¾ÑÐµÐ»ÑÑÐºÐ¸Ð¹','ÐÑÐ°ÑÐ½ÑÐµ Ð²Ð¾ÑÐ¾ÑÐ°':'ÐÑÐ°ÑÐ½Ð¾ÑÐµÐ»ÑÑÐºÐ¸Ð¹','ÐÐ¾Ð¼ÑÐ¾Ð¼Ð¾Ð»ÑÑÐºÐ°Ñ':'ÐÑÐ°ÑÐ½Ð¾ÑÐµÐ»ÑÑÐºÐ¸Ð¹',
-    'ÐÐµÐ»Ð¾Ð²Ð¾Ð¹ ÑÐµÐ½ÑÑ':'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ¸Ð¹','ÐÑÑÑÐ°Ð²Ð¾ÑÐ½Ð°Ñ':'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ¸Ð¹','ÐÐµÐ¶Ð´ÑÐ½Ð°ÑÐ¾Ð´Ð½Ð°Ñ':'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ¸Ð¹',
-    'Ð£Ð»Ð¸ÑÐ° 1905 Ð³Ð¾Ð´Ð°':'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ¸Ð¹','ÐÐµÐ³Ð¾Ð²Ð°Ñ':'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ¸Ð¹',
-    'ÐÐ¸ÐµÐ²ÑÐºÐ°Ñ':'ÐÐ¾ÑÐ¾Ð³Ð¾Ð¼Ð¸Ð»Ð¾Ð²Ð¾','Ð¡ÑÑÐ´ÐµÐ½ÑÐµÑÐºÐ°Ñ':'ÐÐ¾ÑÐ¾Ð³Ð¾Ð¼Ð¸Ð»Ð¾Ð²Ð¾','ÐÑÑÑÐ·Ð¾Ð²ÑÐºÐ°Ñ':'ÐÐ¾ÑÐ¾Ð³Ð¾Ð¼Ð¸Ð»Ð¾Ð²Ð¾',
-    'Ð Ð°Ð¼ÐµÐ½ÐºÐ¸':'Ð Ð°Ð¼ÐµÐ½ÐºÐ¸','ÐÐ¸ÑÑÑÐ¸Ð½ÑÐºÐ¸Ð¹ Ð¿Ñ-Ñ':'Ð Ð°Ð¼ÐµÐ½ÐºÐ¸',
-    'ÐÑÑÐ»Ð°ÑÑÐºÐ¾Ðµ':'ÐÑÑÐ»Ð°ÑÑÐºÐ¾Ðµ','ÐÐ¾Ð»Ð¾Ð´ÑÐ¶Ð½Ð°Ñ':'ÐÑÑÐ»Ð°ÑÑÐºÐ¾Ðµ',
-    'ÐÐµÐ½Ð¸Ð½ÑÐºÐ¸Ð¹ Ð¿Ñ-Ñ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ¸Ð¹','ÐÐºÐ°Ð´ÐµÐ¼Ð¸ÑÐµÑÐºÐ°Ñ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ¸Ð¹','ÐÑÐ¾ÑÑÐ¾ÑÐ·Ð½Ð°Ñ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ¸Ð¹',
-    'Ð£Ð½Ð¸Ð²ÐµÑÑÐ¸ÑÐµÑ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ¸Ð¹','ÐÐ¾ÑÐ¾Ð±ÑÑÐ²Ñ Ð³Ð¾ÑÑ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ¸Ð¹',
-    'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ°Ñ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½Ð¾-Ð¡Ð°Ð´Ð¾Ð²Ð½Ð¸ÐºÐ¸',
-    'ÐÐ¾Ð»Ð¾Ð¼ÐµÐ½ÑÐºÐ°Ñ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ¸Ð¹ Ð·Ð°ÑÐ¾Ð½','ÐÐ»ÐµÐ½Ð¾Ð²ÑÐ¹ Ð±ÑÐ»ÑÐ²Ð°Ñ':'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ¸Ð¹ Ð·Ð°ÑÐ¾Ð½',
-    'Ð¢ÑÐ»ÑÑÐºÐ°Ñ':'ÐÐ°Ð½Ð¸Ð»Ð¾Ð²ÑÐºÐ¸Ð¹','Ð¨Ð°Ð±Ð¾Ð»Ð¾Ð²ÑÐºÐ°Ñ':'ÐÐ°Ð½Ð¸Ð»Ð¾Ð²ÑÐºÐ¸Ð¹',
-    'ÐÐ°Ð³Ð¾ÑÐ½Ð°Ñ':'Ð§ÐµÑÑÐ°Ð½Ð¾Ð²Ð¾ Ð¡ÐµÐ²ÐµÑÐ½Ð¾Ðµ','ÐÑÐ°Ð¶ÑÐºÐ°Ñ':'Ð§ÐµÑÑÐ°Ð½Ð¾Ð²Ð¾','ÐÐ½Ð½Ð¸Ð½Ð¾':'Ð§ÐµÑÑÐ°Ð½Ð¾Ð²Ð¾',
-    'ÐÐ¾Ð¹ÐºÐ¾Ð²ÑÐºÐ°Ñ':'ÐÐ¾Ð¹ÐºÐ¾Ð²ÑÐºÐ¸Ð¹','Ð¡Ð¾ÐºÐ¾Ð»':'Ð¡Ð¾ÐºÐ¾Ð»','ÐÐ¸Ð½Ð°Ð¼Ð¾':'ÐÑÑÐ¾Ð¿Ð¾ÑÑ','ÐÑÑÐ¾Ð¿Ð¾ÑÑ':'ÐÑÑÐ¾Ð¿Ð¾ÑÑ',
-    'ÐÐ²Ð¸Ð°Ð¼Ð¾ÑÐ¾ÑÐ½Ð°Ñ':'ÐÐµÑÐ¾ÑÑÐ¾Ð²Ð¾','ÐÐµÑÐ¾ÑÑÐ¾Ð²Ð¾':'ÐÐµÑÐ¾ÑÑÐ¾Ð²Ð¾',
-    'Ð§ÐµÑÐºÐ¸Ð·Ð¾Ð²ÑÐºÐ°Ñ':'ÐÑÐµÐ¾Ð±ÑÐ°Ð¶ÐµÐ½ÑÐºÐ¾Ðµ','ÐÑÐµÐ¾Ð±ÑÐ°Ð¶ÐµÐ½ÑÐºÐ°Ñ Ð¿Ð»Ð¾ÑÐ°Ð´Ñ':'ÐÑÐµÐ¾Ð±ÑÐ°Ð¶ÐµÐ½ÑÐºÐ¾Ðµ',
-    'ÐÑÑÐ°Ð´Ð½Ð¾Ðµ':'ÐÑÑÐ°Ð´Ð½Ð¾Ðµ','ÐÐ¸Ð±Ð¸ÑÐµÐ²Ð¾':'ÐÐ¸Ð±Ð¸ÑÐµÐ²Ð¾','ÐÐ»ÑÑÑÑÐµÐ²Ð¾':'ÐÐ¸Ð±Ð¸ÑÐµÐ²Ð¾',
-    'Ð¡Ð¾ÐºÐ¾Ð»ÑÐ½Ð¸ÐºÐ¸':'Ð¡Ð¾ÐºÐ¾Ð»ÑÐ½Ð¸ÐºÐ¸','ÐÐµÑÐ¾Ð²Ð¾':'ÐÐµÑÐ¾Ð²Ð¾','ÐÐ¾Ð²Ð¾Ð³Ð¸ÑÐµÐµÐ²Ð¾':'ÐÐµÑÐ¾Ð²Ð¾',
-    'ÐÐ°ÑÑÐ¸Ð½Ð¾':'ÐÐ°ÑÑÐ¸Ð½Ð¾','ÐÑÐ±Ð»Ð¸Ð½Ð¾':'ÐÑÐ±Ð»Ð¸Ð½Ð¾','ÐÑÑÐ¸Ð½Ð¾':'ÐÑÐ±Ð»Ð¸Ð½Ð¾',
-    'Ð¯ÑÐµÐ½ÐµÐ²Ð¾':'Ð¯ÑÐµÐ½ÐµÐ²Ð¾','ÐÐ¾Ð½ÑÐºÐ¾Ð²Ð¾':'ÐÐ¾Ð½ÑÐºÐ¾Ð²Ð¾','Ð¢ÑÐ¿Ð»ÑÐ¹ Ð¡ÑÐ°Ð½':'Ð¯ÑÐµÐ½ÐµÐ²Ð¾',
-    'ÐÐ¸ÑÐ¸Ð½Ð¾':'ÐÐ¸ÑÐ¸Ð½Ð¾','Ð©ÑÐºÐ¸Ð½Ð¾':'Ð©ÑÐºÐ¸Ð½Ð¾','Ð¢ÑÑÐ¸Ð½ÑÐºÐ°Ñ':'ÐÐ¸ÑÐ¸Ð½Ð¾',
-    'Ð¡Ð°Ð»Ð°ÑÑÐµÐ²Ð¾':'ÐÐ¾ÑÐºÐ¾Ð²ÑÐºÐ¸Ð¹','ÐÐ¾Ð¼Ð¼ÑÐ½Ð°ÑÐºÐ°':'ÐÐ¾ÑÐºÐ¾Ð²ÑÐºÐ¸Ð¹','ÐÑÑÑÐ¸Ð½Ð¾':'ÐÐ¾ÑÐºÐ¾Ð²ÑÐºÐ¸Ð¹'
+    'Тверская':'Тверской','Чеховская':'Тверской','Пушкинская':'Тверской','Маяковская':'Тверской',
+    'Менделеевская':'Тверской','Новослободская':'Тверской','Охотный Ряд':'Тверской','Театральная':'Тверской',
+    'Боровицкая':'Арбат','Арбатская':'Арбат','Смоленская':'Арбат',
+    'Кропоткинская':'Хамовники','Парк культуры':'Хамовники','Фрунзенская':'Хамовники',
+    'Полянка':'Якиманка','Октябрьская':'Якиманка','Третьяковская':'Якиманка',
+    'Новокузнецкая':'Замоскворечье','Павелецкая':'Замоскворечье','Добрынинская':'Замоскворечье',
+    'Таганская':'Таганский','Крестьянская застава':'Таганский','Пролетарская':'Таганский',
+    'Марксистская':'Таганский','Площадь Ильича':'Таганский',
+    'Проспект Мира':'Мещанский','Сухаревская':'Мещанский','Цветной бульвар':'Мещанский',
+    'Трубная':'Мещанский','Сретенский бульвар':'Мещанский',
+    'Красносельская':'Красносельский','Красные ворота':'Красносельский','Комсомольская':'Красносельский',
+    'Деловой центр':'Пресненский','Выставочная':'Пресненский','Международная':'Пресненский',
+    'Улица 1905 года':'Пресненский','Беговая':'Пресненский',
+    'Киевская':'Дорогомилово','Студенческая':'Дорогомилово','Кутузовская':'Дорогомилово',
+    'Раменки':'Раменки','Мичуринский пр-т':'Раменки',
+    'Крылатское':'Крылатское','Молодёжная':'Крылатское',
+    'Ленинский пр-т':'Гагаринский','Академическая':'Гагаринский','Профсоюзная':'Гагаринский',
+    'Университет':'Гагаринский','Воробьёвы горы':'Гагаринский',
+    'Нагатинская':'Нагатино-Садовники',
+    'Коломенская':'Нагатинский затон','Кленовый бульвар':'Нагатинский затон',
+    'Тульская':'Даниловский','Шаболовская':'Даниловский',
+    'Нагорная':'Чертаново Северное','Пражская':'Чертаново','Аннино':'Чертаново',
+    'Войковская':'Войковский','Сокол':'Сокол','Динамо':'Аэропорт','Аэропорт':'Аэропорт',
+    'Авиамоторная':'Лефортово','Лефортово':'Лефортово',
+    'Черкизовская':'Преображенское','Преображенская площадь':'Преображенское',
+    'Отрадное':'Отрадное','Бибирево':'Бибирево','Алтуфьево':'Бибирево',
+    'Сокольники':'Сокольники','Перово':'Перово','Новогиреево':'Перово',
+    'Марьино':'Марьино','Люблино':'Люблино','Выхино':'Люблино',
+    'Ясенево':'Ясенево','Коньково':'Коньково','Тёплый Стан':'Ясенево',
+    'Митино':'Митино','Щукино':'Щукино','Тушинская':'Митино',
+    'Саларьево':'Московский','Коммунарка':'Московский','Пыхтино':'Московский'
   };
   function metroToDist(metro){return metro&&METRO_TO_DIST[metro]?METRO_TO_DIST[metro]:'';}
 
-// ââ DATA ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── DATA ──────────────────────────────────────────────────────────────────
 const STORAGE_KEY='ttk_realty_v4';
 const DEFAULT_DATA=[
-  {id:1,addr:'ÑÐ». ÐÐ²Ð¾Ð·Ð´ÐµÐ²Ð°, 7/4Ñ1',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:51.8,floor:'5/12',price:35.9,year:2000,metro:'ÐÑÐµÑÑÑÑÐ½ÑÐºÐ°Ñ Ð·Ð°ÑÑÐ°Ð²Ð°',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_518_m_512_et._7609866216',comment:''},
-  {id:2,addr:'ÐÑÑÑÐ·Ð¾Ð²ÑÐºÐ¸Ð¹ Ð¿Ñ-Ñ, 4/2',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:56,floor:'9/11',price:59,year:2000,metro:'ÐÐ¸ÐµÐ²ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_56_m_911_et._7990694368',comment:''},
-  {id:3,addr:'1-Ñ ÐÐ¸ÑÑÑÐºÐ°Ñ ÑÐ»., 22/24Ñ2',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:3,area:87,floor:'6/7',price:88,year:2000,metro:'ÐÐµÐ½Ð´ÐµÐ»ÐµÐµÐ²ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_87_m_67_et._7990110282',comment:''},
-  {id:4,addr:'Ð¿Ñ-Ñ ÐÐ¸ÑÐ°, 53Ñ1',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:72.7,floor:'3/6',price:43,year:2000,metro:'ÐÑÐ¾ÑÐ¿ÐµÐºÑ ÐÐ¸ÑÐ°',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_727_m_36_et._8065651722',comment:''},
-  {id:5,addr:'ÐÑÐ°ÑÐ½Ð¾ÐºÐ°Ð·Ð°ÑÐ¼ÐµÐ½Ð½Ð°Ñ ÑÐ»., 14ÐÐº6',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:60,floor:'21/24',price:33,year:2000,metro:'ÐÐ²Ð¸Ð°Ð¼Ð¾ÑÐ¾ÑÐ½Ð°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_60_m_2124_et._7758018359',comment:''},
-  {id:6,addr:'ÐÑÐºÑÑÑÐ¾Ðµ ÑÐ¾ÑÑÐµ, 6Ñ1',type:'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ',rooms:2,area:70.3,floor:'20/30',price:39.9,year:2000,metro:'Ð§ÐµÑÐºÐ¸Ð·Ð¾Ð²ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_703_m_2030_et._7803084661',comment:''},
-  {id:7,addr:'Ð¡ÑÑÐµÐ¼ÑÐ½Ð½ÑÐ¹ Ð¿ÐµÑ., 2',type:'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ',rooms:0,area:48.8,floor:'4/10',price:37,year:2000,metro:'ÐÐ°Ð²ÐµÐ»ÐµÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/apartamenty-studiya_488_m_410_et._7581436806',comment:''},
-  {id:8,addr:'ÐÑÐ±Ð¾Ð²ÑÐºÐ¸Ð¹ Ð±ÑÐ»., 13',type:'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ',rooms:2,area:77.5,floor:'7/19',price:69,year:2000,metro:'ÐÐ°ÑÐº ÐºÑÐ»ÑÑÑÑÑ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_775_m_719_et._7972170326',comment:''},
-  {id:9,addr:'ÐÐ°Ð»ÑÐ¹ Ð¢Ð¾Ð»Ð¼Ð°ÑÑÐ²ÑÐºÐ¸Ð¹ Ð¿ÐµÑ., 1',type:'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ',rooms:2,area:64,floor:'4/9',price:82,year:2000,metro:'Ð¢ÑÐµÑÑÑÐºÐ¾Ð²ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_64_m_49_et._3915332557',comment:''},
-  {id:10,addr:'ÐÐ¾Ð»ÑÑÐ°Ñ ÐÐ¾Ð»ÑÐ½ÐºÐ°, 54',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:83,floor:'4/5',price:55,year:2000,metro:'ÐÐ¾Ð»ÑÐ½ÐºÐ°',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_83_m_45_et._7979422534',comment:''},
-  {id:11,addr:'ÐÑÐµÑÐ¸ÑÑÐµÐ½ÑÐºÐ°Ñ Ð½Ð°Ð±., 17/19Ñ1',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:56.8,floor:'3/9',price:80.5,year:2000,metro:'ÐÑÐ¾Ð¿Ð¾ÑÐºÐ¸Ð½ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_568_m_39_et._2624047061',comment:''},
-  {id:12,addr:'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ°Ñ Ð½Ð°Ð±., 12Ñ1',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:3,area:104.2,floor:'13/31',price:149.9,year:2000,metro:'ÐÑÑÑÐ°Ð²Ð¾ÑÐ½Ð°Ñ',source:'Ð¡Ð¾Ð±ÑÑÐ²ÐµÐ½Ð½Ð¸Ðº',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_1042_m_1331_et._7910131409',comment:''},
-  {id:13,addr:'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ°Ñ Ð½Ð°Ð±., 10',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:77.8,floor:'15/17',price:55,year:2000,metro:'ÐÐ¾Ð»Ð¾Ð¼ÐµÐ½ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_778_m_1517_et._7929228981',comment:''},
-  {id:14,addr:'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ°Ñ Ð½Ð°Ð±., 12',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:1,area:51,floor:'40/67',price:72.9,year:2000,metro:'ÐÑÑÑÐ°Ð²Ð¾ÑÐ½Ð°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/1-k._kvartira_51_m_4067_et._7779407197',comment:''},
-  {id:15,addr:'ÐÐ¾Ð»ÑÑÐ¾Ð¹ ÐÐ²ÑÐ¸Ð½Ð½Ð¸ÐºÐ¾Ð²ÑÐºÐ¸Ð¹ Ð¿ÐµÑ., 20',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:80,floor:'5/9',price:69.9,year:2000,metro:'ÐÐ¾Ð²Ð¾ÐºÑÐ·Ð½ÐµÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_80_m_59_et._7920352788',comment:''},
-  {id:16,addr:'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ°Ñ ÑÐ»., 16Ðº2',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:1,area:43.4,floor:'16/22',price:38,year:2000,metro:'ÐÐ°Ð³Ð°ÑÐ¸Ð½ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/1-k._kvartira_434_m_1622_et._2686414112',comment:''},
-  {id:17,addr:'ÐÐ¾Ð»ÑÑÐ¾Ð¹ ÐÐ¸ÐºÐ¾Ð»Ð¾Ð²Ð¾ÑÐ¾Ð±Ð¸Ð½ÑÐºÐ¸Ð¹ Ð¿ÐµÑ., 10',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:73,floor:'8/16',price:73,year:2000,metro:'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_73_m_816_et._8054743708',comment:''},
-  {id:18,addr:'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ°Ñ Ð½Ð°Ð±., 8Ñ1',type:'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ',rooms:2,area:85,floor:'57/68',price:70,year:2000,metro:'ÐÐµÐ»Ð¾Ð²Ð¾Ð¹ ÑÐµÐ½ÑÑ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_85_m_5768_et._7894537527',comment:''},
-  {id:19,addr:'ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ°Ñ Ð½Ð°Ð±., 12',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:61.2,floor:'22/67',price:63.5,year:2000,metro:'ÐÑÑÑÐ°Ð²Ð¾ÑÐ½Ð°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_612_m_2267_et._7254620650',comment:''},
-  {id:20,addr:'ÐÐ»ÑÑÐ¾Ð²ÑÐºÐ°Ñ ÑÐ»., 14',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:2,area:62.5,floor:'6/8',price:57.5,year:2000,metro:'ÐÑÐ°ÑÐ½Ð¾ÑÐµÐ»ÑÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_625_m_68_et._7897606983',comment:''},
-  {id:21,addr:'ÐÐ¾Ð»ÑÑÐ°Ñ Ð¡Ð°Ð´Ð¾Ð²Ð°Ñ ÑÐ»., 4',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:4,area:116,floor:'3/5',price:78,year:2000,metro:'ÐÐ°ÑÐºÐ¾Ð²ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_116_m_35_et._8041338250',comment:''},
-  {id:22,addr:'ÐÐµÐ½Ð¸Ð½ÑÐºÐ¸Ð¹ Ð¿Ñ-Ñ, 30',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:4,area:110,floor:'13/20',price:77,year:2000,metro:'ÐÐµÐ½Ð¸Ð½ÑÐºÐ¸Ð¹ Ð¿Ñ-Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_110_m_1320_et._7506101442',comment:''},
-  {id:23,addr:'ÐÐ°Ð½ÑÑÑÐ¾Ð²ÑÐºÐ¸Ð¹ Ð¿ÐµÑ., 4',type:'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ',rooms:2,area:77.2,floor:'4/8',price:100,year:2000,metro:'ÐÑÐ¾Ð¿Ð¾ÑÐºÐ¸Ð½ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_772_m_48_et._7795401582',comment:''},
-  {id:24,addr:'ÐÐµÐ½Ð¸Ð½Ð³ÑÐ°Ð´ÑÐºÐ¾Ðµ ÑÐ¾ÑÑÐµ, 37Ðº2',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:4,area:126,floor:'24/29',price:56,year:2000,metro:'ÐÐ¾Ð¹ÐºÐ¾Ð²ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_126_m_2429_et._8009740459',comment:''},
-  {id:25,addr:'ÐÐ¾Ð³Ð¾Ð»ÐµÐ²ÑÐºÐ¸Ð¹ Ð±ÑÐ»., 29',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:3,area:79,floor:'6/9',price:99,year:2000,metro:'ÐÑÐ¾Ð¿Ð¾ÑÐºÐ¸Ð½ÑÐºÐ°Ñ',source:'Ð¦ÐÐÐ',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_79_m_69_et._7934532356',comment:''},
-  {id:26,addr:'Ð¡ÐµÑÐµÐ±ÑÑÐ½Ð¸ÑÐµÑÐºÐ°Ñ Ð½Ð°Ð±., 27',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:4,area:112,floor:'24/28',price:95,year:2000,metro:'Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_112_m_2428_et._7656237360',comment:''},
-  {id:27,addr:'ÐÐ°Ð»ÑÐ¹ ÐÐ¾Ð·Ð»Ð¾Ð²ÑÐºÐ¸Ð¹ Ð¿ÐµÑ., 3',type:'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ',rooms:3,area:75.5,floor:'2/8',price:119,year:2000,metro:'ÐÑÐ°ÑÐ½ÑÐµ Ð²Ð¾ÑÐ¾ÑÐ°',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._apartamenty_755_m_28_et._7915707518',comment:''},
-  {id:28,addr:'ÐÐ½Ð°Ð¼ÐµÐ½ÐºÐ° ÑÐ»., 9/12Ñ2',type:'ÐÐ²Ð°ÑÑÐ¸ÑÐ°',rooms:3,area:99,floor:'9/14',price:91.1,year:2000,metro:'ÐÐ¾ÑÐ¾Ð²Ð¸ÑÐºÐ°Ñ',source:'ÐÐ²Ð¸ÑÐ¾',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_99_m_914_et._7982671681',comment:''},
+  {id:1,addr:'ул. Гвоздева, 7/4с1',type:'Квартира',rooms:2,area:51.8,floor:'5/12',price:35.9,year:2000,metro:'Крестьянская застава',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_518_m_512_et._7609866216',comment:''},
+  {id:2,addr:'Кутузовский пр-т, 4/2',type:'Квартира',rooms:2,area:56,floor:'9/11',price:59,year:2000,metro:'Киевская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_56_m_911_et._7990694368',comment:''},
+  {id:3,addr:'1-я Миусская ул., 22/24с2',type:'Квартира',rooms:3,area:87,floor:'6/7',price:88,year:2000,metro:'Менделеевская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_87_m_67_et._7990110282',comment:''},
+  {id:4,addr:'пр-т Мира, 53с1',type:'Квартира',rooms:2,area:72.7,floor:'3/6',price:43,year:2000,metro:'Проспект Мира',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_727_m_36_et._8065651722',comment:''},
+  {id:5,addr:'Красноказарменная ул., 14Ак6',type:'Квартира',rooms:2,area:60,floor:'21/24',price:33,year:2000,metro:'Авиамоторная',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_60_m_2124_et._7758018359',comment:''},
+  {id:6,addr:'Открытое шоссе, 6с1',type:'Апартаменты',rooms:2,area:70.3,floor:'20/30',price:39.9,year:2000,metro:'Черкизовская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_703_m_2030_et._7803084661',comment:''},
+  {id:7,addr:'Стремянный пер., 2',type:'Апартаменты',rooms:0,area:48.8,floor:'4/10',price:37,year:2000,metro:'Павелецкая',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/apartamenty-studiya_488_m_410_et._7581436806',comment:''},
+  {id:8,addr:'Зубовский бул., 13',type:'Апартаменты',rooms:2,area:77.5,floor:'7/19',price:69,year:2000,metro:'Парк культуры',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_775_m_719_et._7972170326',comment:''},
+  {id:9,addr:'Малый Толмачёвский пер., 1',type:'Апартаменты',rooms:2,area:64,floor:'4/9',price:82,year:2000,metro:'Третьяковская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_64_m_49_et._3915332557',comment:''},
+  {id:10,addr:'Большая Полянка, 54',type:'Квартира',rooms:2,area:83,floor:'4/5',price:55,year:2000,metro:'Полянка',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_83_m_45_et._7979422534',comment:''},
+  {id:11,addr:'Пречистенская наб., 17/19с1',type:'Квартира',rooms:2,area:56.8,floor:'3/9',price:80.5,year:2000,metro:'Кропоткинская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_568_m_39_et._2624047061',comment:''},
+  {id:12,addr:'Пресненская наб., 12с1',type:'Квартира',rooms:3,area:104.2,floor:'13/31',price:149.9,year:2000,metro:'Выставочная',source:'Собственник',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_1042_m_1331_et._7910131409',comment:''},
+  {id:13,addr:'Нагатинская наб., 10',type:'Квартира',rooms:2,area:77.8,floor:'15/17',price:55,year:2000,metro:'Коломенская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_778_m_1517_et._7929228981',comment:''},
+  {id:14,addr:'Пресненская наб., 12',type:'Квартира',rooms:1,area:51,floor:'40/67',price:72.9,year:2000,metro:'Выставочная',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/1-k._kvartira_51_m_4067_et._7779407197',comment:''},
+  {id:15,addr:'Большой Овчинниковский пер., 20',type:'Квартира',rooms:2,area:80,floor:'5/9',price:69.9,year:2000,metro:'Новокузнецкая',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_80_m_59_et._7920352788',comment:''},
+  {id:16,addr:'Нагатинская ул., 16к2',type:'Квартира',rooms:1,area:43.4,floor:'16/22',price:38,year:2000,metro:'Нагатинская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/1-k._kvartira_434_m_1622_et._2686414112',comment:''},
+  {id:17,addr:'Большой Николоворобинский пер., 10',type:'Квартира',rooms:2,area:73,floor:'8/16',price:73,year:2000,metro:'Таганская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_73_m_816_et._8054743708',comment:''},
+  {id:18,addr:'Пресненская наб., 8с1',type:'Апартаменты',rooms:2,area:85,floor:'57/68',price:70,year:2000,metro:'Деловой центр',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_85_m_5768_et._7894537527',comment:''},
+  {id:19,addr:'Пресненская наб., 12',type:'Квартира',rooms:2,area:61.2,floor:'22/67',price:63.5,year:2000,metro:'Выставочная',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_612_m_2267_et._7254620650',comment:''},
+  {id:20,addr:'Ольховская ул., 14',type:'Квартира',rooms:2,area:62.5,floor:'6/8',price:57.5,year:2000,metro:'Красносельская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._kvartira_625_m_68_et._7897606983',comment:''},
+  {id:21,addr:'Большая Садовая ул., 4',type:'Квартира',rooms:4,area:116,floor:'3/5',price:78,year:2000,metro:'Маяковская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_116_m_35_et._8041338250',comment:''},
+  {id:22,addr:'Ленинский пр-т, 30',type:'Квартира',rooms:4,area:110,floor:'13/20',price:77,year:2000,metro:'Ленинский пр-т',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_110_m_1320_et._7506101442',comment:''},
+  {id:23,addr:'Мансуровский пер., 4',type:'Апартаменты',rooms:2,area:77.2,floor:'4/8',price:100,year:2000,metro:'Кропоткинская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/2-k._apartamenty_772_m_48_et._7795401582',comment:''},
+  {id:24,addr:'Ленинградское шоссе, 37к2',type:'Квартира',rooms:4,area:126,floor:'24/29',price:56,year:2000,metro:'Войковская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_126_m_2429_et._8009740459',comment:''},
+  {id:25,addr:'Гоголевский бул., 29',type:'Квартира',rooms:3,area:79,floor:'6/9',price:99,year:2000,metro:'Кропоткинская',source:'ЦИАН',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_79_m_69_et._7934532356',comment:''},
+  {id:26,addr:'Серебряническая наб., 27',type:'Квартира',rooms:4,area:112,floor:'24/28',price:95,year:2000,metro:'Таганская',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/4-k._kvartira_112_m_2428_et._7656237360',comment:''},
+  {id:27,addr:'Малый Козловский пер., 3',type:'Апартаменты',rooms:3,area:75.5,floor:'2/8',price:119,year:2000,metro:'Красные ворота',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._apartamenty_755_m_28_et._7915707518',comment:''},
+  {id:28,addr:'Знаменка ул., 9/12с2',type:'Квартира',rooms:3,area:99,floor:'9/14',price:91.1,year:2000,metro:'Боровицкая',source:'Авито',stars:3,status:'check',url:'https://www.avito.ru/moskva/kvartiry/3-k._kvartira_99_m_914_et._7982671681',comment:''},
 ];
 const COLS=[
-  {id:'check',label:'ÐÐ° Ð¿ÑÐ¾Ð²ÐµÑÐºÐµ',hbg:'#FEF9C3',hcol:'#713F12',border:'#D97706'},
-  {id:'plan',label:'ÐÑÐ¼Ð¾ÑÑ',hbg:'#DBEAFE',hcol:'#1E3A8A',border:'#2563EB'},
-  {id:'wait',label:'ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ',hbg:'#FFE4E6',hcol:'#9F1239',border:'#E11D48'},
-  {id:'priority',label:'ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑ',hbg:'#DCFCE7',hcol:'#14532D',border:'#16A34A'},
-  {id:'rejected',label:'ÐÑÐºÐ»Ð¾Ð½ÑÐ½',hbg:'#F1F5F9',hcol:'#475569',border:'#94A3B8'},
+  {id:'check',label:'На проверке',hbg:'#FEF9C3',hcol:'#713F12',border:'#D97706'},
+  {id:'plan',label:'Осмотр',hbg:'#DBEAFE',hcol:'#1E3A8A',border:'#2563EB'},
+  {id:'wait',label:'Ожидание',hbg:'#FFE4E6',hcol:'#9F1239',border:'#E11D48'},
+  {id:'priority',label:'Приоритет',hbg:'#DCFCE7',hcol:'#14532D',border:'#16A34A'},
+  {id:'rejected',label:'Отклонён',hbg:'#F1F5F9',hcol:'#475569',border:'#94A3B8'},
 ];
-const COL2STATUS={check:'ÐÐ° Ð¿ÑÐ¾Ð²ÐµÑÐºÐµ',plan:'ÐÑÐ¼Ð¾ÑÑ Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸ÑÐ¾Ð²Ð°Ð½',wait:'ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ Ð¾ÑÐ²ÐµÑÐ°',priority:'ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑ',rejected:'ÐÑÐºÐ»Ð¾Ð½ÑÐ½'};
-const STATUS2COL={'ÐÐ° Ð¿ÑÐ¾Ð²ÐµÑÐºÐµ':'check','ÐÑÐ¼Ð¾ÑÑ Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸ÑÐ¾Ð²Ð°Ð½':'plan','ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ Ð¾ÑÐ²ÐµÑÐ°':'wait','ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑ':'priority','ÐÑÐºÐ»Ð¾Ð½ÑÐ½':'rejected'};
-const DIST_COLORS={ÐÑÐ±Ð°Ñ:'#7C3AED',ÐÐ°ÑÐ¼Ð°Ð½Ð½ÑÐ¹:'#2563EB',ÐÐ°Ð¼Ð¾ÑÐºÐ²Ð¾ÑÐµÑÑÐµ:'#059669',ÐÑÐ°ÑÐ½Ð¾ÑÐµÐ»ÑÑÐºÐ¸Ð¹:'#DC2626',ÐÐµÑÐ°Ð½ÑÐºÐ¸Ð¹:'#D97706',ÐÑÐµÑÐ½ÐµÐ½ÑÐºÐ¸Ð¹:'#0891B2',Ð¢Ð°Ð³Ð°Ð½ÑÐºÐ¸Ð¹:'#7C2D12',Ð¢Ð²ÐµÑÑÐºÐ¾Ð¹:'#1E40AF',Ð¥Ð°Ð¼Ð¾Ð²Ð½Ð¸ÐºÐ¸:'#065F46',Ð¯ÐºÐ¸Ð¼Ð°Ð½ÐºÐ°:'#7E22CE',ÐÐµÑÐ¾ÑÑÐ¾Ð²Ð¾:'#92400E'};
+const COL2STATUS={check:'На проверке',plan:'Осмотр запланирован',wait:'Ожидание ответа',priority:'Приоритет',rejected:'Отклонён'};
+const STATUS2COL={'На проверке':'check','Осмотр запланирован':'plan','Ожидание ответа':'wait','Приоритет':'priority','Отклонён':'rejected'};
+const DIST_COLORS={Арбат:'#7C3AED',Басманный:'#2563EB',Замоскворечье:'#059669',Красносельский:'#DC2626',Мещанский:'#D97706',Пресненский:'#0891B2',Таганский:'#7C2D12',Тверской:'#1E40AF',Хамовники:'#065F46',Якиманка:'#7E22CE',Лефортово:'#92400E'};
 const STATUS_STYLE={
-  'ÐÐ° Ð¿ÑÐ¾Ð²ÐµÑÐºÐµ':'background:#FEF9C3;color:#713F12',
-  'ÐÑÐ¼Ð¾ÑÑ Ð·Ð°Ð¿Ð»Ð°Ð½Ð¸ÑÐ¾Ð²Ð°Ð½':'background:#DBEAFE;color:#1E3A8A',
-  'ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ Ð¾ÑÐ²ÐµÑÐ°':'background:#FFE4E6;color:#9F1239',
-  'ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑ':'background:#DCFCE7;color:#14532D',
-  'ÐÑÐºÐ»Ð¾Ð½ÑÐ½':'background:#F1F5F9;color:#475569',
-  'ÐÑÐ¿Ð»ÐµÐ½':'background:#C8F7C5;color:#14532D',
+  'На проверке':'background:#FEF9C3;color:#713F12',
+  'Осмотр запланирован':'background:#DBEAFE;color:#1E3A8A',
+  'Ожидание ответа':'background:#FFE4E6;color:#9F1239',
+  'Приоритет':'background:#DCFCE7;color:#14532D',
+  'Отклонён':'background:#F1F5F9;color:#475569',
+  'Куплен':'background:#C8F7C5;color:#14532D',
 };
 
 function load(){try{const d=localStorage.getItem(STORAGE_KEY);return d?JSON.parse(d):JSON.parse(JSON.stringify(DEFAULT_DATA))}catch{return JSON.parse(JSON.stringify(DEFAULT_DATA))}}
@@ -407,12 +407,12 @@ let cards=load();
 let nextId=Math.max(...cards.map(c=>c.id))+1;
 let ST={type:'',style:'',drag:null,editId:null,sortCol:'',sortAsc:true};
 
-// ââ UTILS âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── UTILS ─────────────────────────────────────────────────────────────────
 function pm(c){return Math.round(c.price*1e6/c.area/1000)}
 function dc(d){return DIST_COLORS[d]||'#888'}
 function fmt(n){return n.toLocaleString('ru-RU')}
 
-// ââ VIEWS âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── VIEWS ─────────────────────────────────────────────────────────────────
 function showView(id,btn){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -423,17 +423,17 @@ function showView(id,btn){
   if(id==='table')renderTable();
 }
 
-// ââ DASHBOARD âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── DASHBOARD ─────────────────────────────────────────────────────────────
 function renderDash(){
   const active=cards.filter(c=>c.status!=='rejected');
   const avgP=active.length?Math.round(active.reduce((a,c)=>a+c.price,0)/active.length*10)/10:0;
   const pri=cards.filter(c=>c.status==='priority').length;
   const avgPM=active.length?Math.round(active.reduce((a,c)=>a+pm(c),0)/active.length):0;
   document.getElementById('dashMetrics').innerHTML=`
-    <div class="metric-card"><div class="label">ÐÑÐµÐ³Ð¾ Ð¾Ð±ÑÐµÐºÑÐ¾Ð²</div><div class="val" style="color:#1F3864">${cards.length}</div><div class="sub">ÐÐ° Ð²ÑÑ Ð²ÑÐµÐ¼Ñ Ð¿Ð¾Ð¸ÑÐºÐ°</div></div>
-    <div class="metric-card"><div class="label">Ð Ð°ÐºÑÐ¸Ð²Ð½Ð¾Ð¹ ÑÐ°Ð±Ð¾ÑÐµ</div><div class="val" style="color:#059669">${active.length}</div><div class="sub">ÐÑÐºÐ»ÑÑÐ°Ñ Ð¾ÑÐºÐ»Ð¾Ð½ÑÐ½Ð½ÑÐµ</div></div>
-    <div class="metric-card"><div class="label">ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑÐ½ÑÑ</div><div class="val" style="color:#D97706">${pri}</div><div class="sub">Ð¢ÑÐµÐ±ÑÑÑ ÑÐµÑÐµÐ½Ð¸Ñ</div></div>
-    <div class="metric-card"><div class="label">Ð¡ÑÐµÐ´Ð½ÑÑ ÑÐµÐ½Ð°</div><div class="val" style="color:#7C3AED">${avgP} <span style="font-size:14px;font-weight:400">Ð¼Ð»Ð½</span></div><div class="sub">${fmt(avgPM)}k â½/Ð¼Â²</div></div>`;
+    <div class="metric-card"><div class="label">Всего объектов</div><div class="val" style="color:#1F3864">${cards.length}</div><div class="sub">За всё время поиска</div></div>
+    <div class="metric-card"><div class="label">В активной работе</div><div class="val" style="color:#059669">${active.length}</div><div class="sub">Исключая отклонённые</div></div>
+    <div class="metric-card"><div class="label">Приоритетных</div><div class="val" style="color:#D97706">${pri}</div><div class="sub">Требуют решения</div></div>
+    <div class="metric-card"><div class="label">Средняя цена</div><div class="val" style="color:#7C3AED">${avgP} <span style="font-size:14px;font-weight:400">млн</span></div><div class="sub">${fmt(avgPM)}k ₽/м²</div></div>`;
 
   // funnel
   const funnelEl=document.getElementById('funnel');
@@ -448,32 +448,32 @@ function renderDash(){
     </div>`;
   }).join('');
 
-  // top3 â Ð¿ÑÐ¸Ð¾ÑÐ¸ÑÐµÑÐ½ÑÐµ Ð¾Ð±ÑÐµÐºÑÑ
+  // top3 — приоритетные объекты
   const top3=cards.filter(c=>c.status==='priority').slice(0,3);
   const rankColors=['#F59E0B','#94A3B8','#CD7F32'];
-  document.getElementById('top3').innerHTML=top3.length===0?'<div style="padding:24px;text-align:center;color:#94A3B8;font-size:13px">ÐÐµÑ Ð¿ÑÐ¸Ð¾ÑÐ¸ÑÐµÑÐ½ÑÑ Ð¾Ð±ÑÐµÐºÑÐ¾Ð².<br>ÐÐµÑÐµÑÐ°ÑÐ¸ÑÐµ ÐºÐ°ÑÑÐ¾ÑÐºÐ¸ Ð² ÐºÐ¾Ð»Ð¾Ð½ÐºÑ Â«ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑÂ» (Ð¼Ð°ÐºÑ. 3)</div>':top3.map((c,i)=>`
+  document.getElementById('top3').innerHTML=top3.length===0?'<div style="padding:24px;text-align:center;color:#94A3B8;font-size:13px">Нет приоритетных объектов.<br>Перетащите карточки в колонку «Приоритет» (макс. 3)</div>':top3.map((c,i)=>`
     <div class="top3-item">
       <div class="top3-rank" style="background:${rankColors[i]}22;color:${rankColors[i]}">${i+1}</div>
       <div class="top3-info">
-        <div class="top3-addr">${c.url?`<a href="${c.url}" target="_blank" style="color:inherit;text-decoration:none">${c.addr} <span style="color:#3B82F6;font-size:10px">â</span></a>`:c.addr}</div>
-        <div class="top3-meta">${c.dist} Â· ${c.area} Ð¼Â² Â· ${'â'.repeat(c.stars)}</div>
+        <div class="top3-addr">${c.url?`<a href="${c.url}" target="_blank" style="color:inherit;text-decoration:none">${c.addr} <span style="color:#3B82F6;font-size:10px">↗</span></a>`:c.addr}</div>
+        <div class="top3-meta">${c.dist} · ${c.area} м² · ${'★'.repeat(c.stars)}</div>
       </div>
-      <div class="top3-price">${c.price} Ð¼Ð»Ð½</div>
+      <div class="top3-price">${c.price} млн</div>
     </div>`).join('');
 
   // district bars
   const distCount={};
   cards.filter(c=>c.status!=='rejected').forEach(c=>{if(c.dist)distCount[c.dist]=(distCount[c.dist]||0)+1;});
   // summary
-  const kv=cards.filter(c=>c.type==='ÐÐ²Ð°ÑÑÐ¸ÑÐ°').length;
-  const ap=cards.filter(c=>c.type==='ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ').length;
-  const ht=cards.filter(c=>c.style==='Ð¥Ð°Ð¹ÑÐµÐº').length;
-  const mn=cards.filter(c=>c.style==='ÐÐ¸Ð½Ð¸Ð¼Ð°Ð»Ð¸Ð·Ð¼').length;
+  const kv=cards.filter(c=>c.type==='Квартира').length;
+  const ap=cards.filter(c=>c.type==='Апартаменты').length;
+  const ht=cards.filter(c=>c.style==='Хайтек').length;
+  const mn=cards.filter(c=>c.style==='Минимализм').length;
   const minP=Math.min(...cards.map(c=>c.price));
   const maxP=Math.max(...cards.map(c=>c.price));
   document.getElementById('summary').innerHTML=`
     <table style="width:100%;font-size:12px;border-collapse:collapse">
-      ${[['ÐÐ²Ð°ÑÑÐ¸Ñ / ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÐ¾Ð²',`${kv} / ${ap}`],['ÐÐ¸Ð°Ð¿Ð°Ð·Ð¾Ð½ ÑÐµÐ½',`${minP}â${maxP} Ð¼Ð»Ð½ â½`],['Ð Ð°Ð¹Ð¾Ð½Ð¾Ð² Ð¾ÑÐ²Ð°ÑÐµÐ½Ð¾',Object.keys(distCount).length],['ÐÐ±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¾',new Date().toLocaleDateString('ru-RU')]].map(([l,v],i)=>`
+      ${[['Квартир / Апартаментов',`${kv} / ${ap}`],['Диапазон цен',`${minP}–${maxP} млн ₽`],['Районов охвачено',Object.keys(distCount).length],['Обновлено',new Date().toLocaleDateString('ru-RU')]].map(([l,v],i)=>`
       <tr style="border-bottom:1px solid #F1F5F9">
         <td style="padding:7px 0;color:#64748B">${l}</td>
         <td style="padding:7px 0;font-weight:600;text-align:right">${v}</td>
@@ -481,7 +481,7 @@ function renderDash(){
     </table>`;
 }
 
-// ââ KANBAN ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── KANBAN ────────────────────────────────────────────────────────────────
 function vis(){
   return cards.filter(c=>{
     if(ST.type&&c.type!==ST.type)return false;
@@ -493,29 +493,29 @@ function renderKanbanMetrics(){
   const v=cards.filter(c=>c.status!=='rejected');
   const avgP=v.length?Math.round(v.reduce((a,c)=>a+c.price,0)/v.length*10)/10:0;
   document.getElementById('kbMetrics').innerHTML=`
-    <div class="km"><span style="color:#64748B;font-size:11px">ÐÑÐµÐ³Ð¾</span><span class="v">${cards.length}</span></div>
-    <div class="km"><span style="color:#64748B;font-size:11px">Ð ÑÐ°Ð±Ð¾ÑÐµ</span><span class="v">${v.length}</span></div>
-    <div class="km"><span style="color:#64748B;font-size:11px">ÐÑÐ¸Ð¾ÑÐ¸ÑÐµÑ</span><span class="v" style="color:#16A34A">${cards.filter(c=>c.status==='priority').length}</span></div>
-    <div class="km"><span style="color:#64748B;font-size:11px">Ð¡Ñ. ÑÐµÐ½Ð°</span><span class="v">${avgP} Ð¼Ð»Ð½</span></div>`;
+    <div class="km"><span style="color:#64748B;font-size:11px">Всего</span><span class="v">${cards.length}</span></div>
+    <div class="km"><span style="color:#64748B;font-size:11px">В работе</span><span class="v">${v.length}</span></div>
+    <div class="km"><span style="color:#64748B;font-size:11px">Приоритет</span><span class="v" style="color:#16A34A">${cards.filter(c=>c.status==='priority').length}</span></div>
+    <div class="km"><span style="color:#64748B;font-size:11px">Ср. цена</span><span class="v">${avgP} млн</span></div>`;
 }
 function cardHTML(c){
   const colDef=COLS.find(x=>x.id===c.status)||COLS[0];
   return `<div class="card" id="card-${c.id}" draggable="true" style="border-left-color:${colDef.border}"
     ondragstart="onDS(event,${c.id})" ondragend="onDE()">
     <div class="card-top">
-      <div class="card-addr">${c.url?`<a href="${c.url}" target="_blank" style="color:inherit;text-decoration:none;">${c.addr} <span class="link-arrow"> â</span></a>`:c.addr}</div>
-      <span class="pill ${c.type==='ÐÐ²Ð°ÑÑÐ¸ÑÐ°'?'tag-kv':'tag-ap'}">${c.type==='ÐÐ²Ð°ÑÑÐ¸ÑÐ°'?'ÐÐ².':'ÐÐ¿.'}</span>${c.rooms?`<span class="rooms-badge">${c.rooms}\u043a</span>`:''}
+      <div class="card-addr">${c.url?`<a href="${c.url}" target="_blank" style="color:inherit;text-decoration:none;">${c.addr} <span class="link-arrow"> ↗</span></a>`:c.addr}</div>
+      <span class="pill ${c.type==='Квартира'?'tag-kv':'tag-ap'}">${c.type==='Квартира'?'Кв.':'Ап.'}</span>${c.rooms?`<span class="rooms-badge">${c.rooms}\u043a</span>`:''}
     </div>
-    <div class="card-row"><span>${c.area} Ð¼Â²</span><span>ÑÑ. ${c.floor}</span><span>${c.year}</span></div>
-    <div class="card-row" style="color:#94A3B8">${c.dist||''}${c.dist&&c.metro?' Â· ':''}${c.metro||'â'}</div>
-    <div class="card-price">${c.price} Ð¼Ð»Ð½ <span style="font-size:11px;font-weight:400;color:#94A3B8">${pm(c)}k/Ð¼Â²</span></div>
+    <div class="card-row"><span>${c.area} м²</span><span>эт. ${c.floor}</span><span>${c.year}</span></div>
+    <div class="card-row" style="color:#94A3B8">${c.dist||''}${c.dist&&c.metro?' · ':''}${c.metro||'—'}</div>
+    <div class="card-price">${c.price} млн <span style="font-size:11px;font-weight:400;color:#94A3B8">${pm(c)}k/м²</span></div>
     <div class="card-footer">
       <span style="font-size:10px;color:#94A3B8">${c.source||''}</span>
       <span style="display:flex;align-items:center;gap:6px">
-        <span class="stars">${'â'.repeat(c.stars)}${'â'.repeat(5-c.stars)}</span>
+        <span class="stars">${'★'.repeat(c.stars)}${'☆'.repeat(5-c.stars)}</span>
         <span class="card-acts">
-          <button class="ca" onclick="openModal(${c.id})">â</button>
-          <button class="ca del" onclick="delCard(${c.id})">â</button>
+          <button class="ca" onclick="openModal(${c.id})">✎</button>
+          <button class="ca del" onclick="delCard(${c.id})">✕</button>
         </span>
       </span>
     </div>
@@ -534,7 +534,7 @@ function renderKanban(){
     </div>
     <div class="col-body" id="cb-${col.id}"
       ondragover="onDO(event,'${col.id}')" ondragleave="onDL('${col.id}')" ondrop="onDrop(event,'${col.id}')">
-      ${cc.length?cc.map(cardHTML).join(''):'<div class="empty-col">ÐÐµÑ Ð¾Ð±ÑÐµÐºÑÐ¾Ð²</div>'}
+      ${cc.length?cc.map(cardHTML).join(''):'<div class="empty-col">Нет объектов</div>'}
     </div>`;
     board.appendChild(el);
   });
@@ -547,16 +547,16 @@ function onDrop(e,id){
   e.preventDefault();
   if(ST.drag!=null){const c=cards.find(x=>x.id===ST.drag);if(c){
     if(id==='priority'&&cards.filter(x=>x.status==='priority'&&x.id!==c.id).length>=3){
-      alert('ÐÐ°ÐºÑÐ¸Ð¼ÑÐ¼ 3 Ð¾Ð±ÑÐµÐºÑÐ° Ð² Ð¿ÑÐ¸Ð¾ÑÐ¸ÑÐµÑÐµ');
+      alert('Максимум 3 объекта в приоритете');
     }else{c.status=id;save();}
   }}
   renderKanban();
 }
-function ft(t){ST.type=ST.type===t?'':t;['fAll','fKv','fAp'].forEach(i=>document.getElementById(i).classList.remove('on'));if(!t)document.getElementById('fAll').classList.add('on');if(t==='ÐÐ²Ð°ÑÑÐ¸ÑÐ°')document.getElementById('fKv').classList.add('on');if(t==='ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ')document.getElementById('fAp').classList.add('on');renderKanban()}
-function fs(s){ST.style=ST.style===s?'':s;document.getElementById('fHi').classList.toggle('on',ST.style==='Ð¥Ð°Ð¹ÑÐµÐº');document.getElementById('fMn').classList.toggle('on',ST.style==='ÐÐ¸Ð½Ð¸Ð¼Ð°Ð»Ð¸Ð·Ð¼');renderKanban()}
-function delCard(id){if(confirm('Ð£Ð´Ð°Ð»Ð¸ÑÑ Ð¾Ð±ÑÐµÐºÑ?')){cards=cards.filter(c=>c.id!==id);save();renderKanban();renderDash()}}
+function ft(t){ST.type=ST.type===t?'':t;['fAll','fKv','fAp'].forEach(i=>document.getElementById(i).classList.remove('on'));if(!t)document.getElementById('fAll').classList.add('on');if(t==='Квартира')document.getElementById('fKv').classList.add('on');if(t==='Апартаменты')document.getElementById('fAp').classList.add('on');renderKanban()}
+function fs(s){ST.style=ST.style===s?'':s;document.getElementById('fHi').classList.toggle('on',ST.style==='Хайтек');document.getElementById('fMn').classList.toggle('on',ST.style==='Минимализм');renderKanban()}
+function delCard(id){if(confirm('Удалить объект?')){cards=cards.filter(c=>c.id!==id);save();renderKanban();renderDash()}}
 
-// ââ TABLE âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── TABLE ─────────────────────────────────────────────────────────────────
 function sortBy(col){ST.sortAsc=ST.sortCol===col?!ST.sortAsc:true;ST.sortCol=col;renderTable()}
 function renderTable(){
   const q=(document.getElementById('searchInp').value||'').toLowerCase();
@@ -569,33 +569,33 @@ function renderTable(){
     return true;
   });
   if(ST.sortCol){rows.sort((a,b)=>{const av=a[ST.sortCol],bv=b[ST.sortCol];return ST.sortAsc?(av>bv?1:-1):(av<bv?1:-1)})}
-  document.getElementById('tblCount').textContent=`ÐÐ¾ÐºÐ°Ð·Ð°Ð½Ð¾: ${rows.length} Ð¸Ð· ${cards.length}`;
+  document.getElementById('tblCount').textContent=`Показано: ${rows.length} из ${cards.length}`;
   const tbody=document.getElementById('tableBody');
   tbody.innerHTML=rows.map((c,i)=>{
     const ss=STATUS_STYLE[COL2STATUS[c.status]]||'';
     const col=dc(c.dist);
     return `<tr>
       <td style="color:#94A3B8">${i+1}</td>
-      <td><strong>${c.addr}</strong>${c.url?` <a href="${c.url}" target="_blank" style="color:#3B82F6;font-size:10px">â</a>`:''}</td>
+      <td><strong>${c.addr}</strong>${c.url?` <a href="${c.url}" target="_blank" style="color:#3B82F6;font-size:10px">↗</a>`:''}</td>
       <td><span style="color:${col};font-weight:500">${c.dist}</span></td>
-      <td><span class="pill ${c.type==='ÐÐ²Ð°ÑÑÐ¸ÑÐ°'?'tag-kv':'tag-ap'}">${c.type}</span></td>
+      <td><span class="pill ${c.type==='Квартира'?'tag-kv':'tag-ap'}">${c.type}</span></td>
       <td style="text-align:center;font-weight:500">${c.area}</td>
       <td style="text-align:center">${c.floor}</td>
-      <td style="font-weight:700;color:#1F3864">${c.price} Ð¼Ð»Ð½</td>
+      <td style="font-weight:700;color:#1F3864">${c.price} млн</td>
       <td style="color:#64748B">${pm(c)}k</td>
       <td style="color:#475569">${c.rooms}</td>
-      <td style="color:#F59E0B">${'â'.repeat(c.stars)}</td>
-      <td style="color:#64748B;font-size:11px">${c.metro||'â'}</td>
+      <td style="color:#F59E0B">${'★'.repeat(c.stars)}</td>
+      <td style="color:#64748B;font-size:11px">${c.metro||'—'}</td>
       <td><span class="status-badge" style="${ss}">${COL2STATUS[c.status]||c.status}</span></td>
       <td style="white-space:nowrap">
-        <button class="ca" onclick="openModal(${c.id})" style="margin-right:3px">â</button>
-        <button class="ca del" onclick="delCard(${c.id})">â</button>
+        <button class="ca" onclick="openModal(${c.id})" style="margin-right:3px">✎</button>
+        <button class="ca del" onclick="delCard(${c.id})">✕</button>
       </td>
     </tr>`;
   }).join('');
 }
 
-// ââ MODAL âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── MODAL ─────────────────────────────────────────────────────────────────
 function openModal(id){
   var ov=document.getElementById('modalOverlay');if(ov)ov.style.display='flex';
   const overlay=document.getElementById('modalOverlay');
@@ -607,23 +607,23 @@ function openModal(id){
   const g=x=>document.getElementById(x);
   if(g('f-addr'))g('f-addr').value=c?c.addr:'';
   if(g('f-rooms-sel'))g('f-rooms-sel').value=c?(c.rooms||2):2;
-  if(g('f-type'))g('f-type').value=c?(c.type||''):'ÐÐ²Ð°ÑÑÐ¸ÑÐ°';
+  if(g('f-type'))g('f-type').value=c?(c.type||''):'Квартира';
   if(g('f-area'))g('f-area').value=c?c.area:'';
   if(g('f-floor'))g('f-floor').value=c?c.floor:'';
   if(g('f-price'))g('f-price').value=c?c.price:'';
   if(g('f-year'))g('f-year').value=c?(c.year||2000):'';
   if(g('f-metro'))g('f-metro').value=c?c.metro:'';
-  if(g('f-source'))g('f-source').value=c?c.source:'ÐÐ²Ð¸ÑÐ¾';
+  if(g('f-source'))g('f-source').value=c?c.source:'Авито';
   if(g('f-stars'))g('f-stars').value=c?(c.stars||3):3;
   if(g('f-status'))g('f-status').value=c?(c.status||'check'):'check';
   if(g('f-url'))g('f-url').value=c?c.url:'';
   if(g('f-comment'))g('f-comment').value=c?c.comment:'';
   const mt=document.getElementById('modalTitle');
-  if(mt)mt.textContent=id?'Ð ÐµÐ´Ð°ÐºÑÐ¸ÑÐ¾Ð²Ð°ÑÑ Ð¾Ð±ÑÐµÐºÑ':'ÐÐ¾Ð²ÑÐ¹ Ð¾Ð±ÑÐµÐºÑ';
+  if(mt)mt.textContent=id?'Редактировать объект':'Новый объект';
 }
 function saveModal(){
   const addr=document.getElementById('f-addr').value.trim();
-  if(!addr){alert('ÐÐ²ÐµÐ´Ð¸ÑÐµ Ð°Ð´ÑÐµÑ');return}
+  if(!addr){alert('Введите адрес');return}
   const obj={
     id:ST.editId||nextId++,addr,
     rooms:+document.getElementById('f-rooms-sel').value||2,
@@ -648,9 +648,9 @@ function saveModal(){
   renderDash();renderKanban();renderTable();
 }
 
-// ââ CSV EXPORT ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── CSV EXPORT ────────────────────────────────────────────────────────────
 function exportCSV(){
-  const hdr=['ÐÐ´ÑÐµÑ','Ð Ð°Ð¹Ð¾Ð½','Ð¢Ð¸Ð¿','ÐÐ»Ð¾ÑÐ°Ð´Ñ Ð¼Â²','Ð­ÑÐ°Ð¶','Ð¦ÐµÐ½Ð° Ð¼Ð»Ð½','Ð¦ÐµÐ½Ð°/Ð¼Â² k','ÐÐ¾Ð´','ÐÐµÑÑÐ¾','Ð¡ÑÐ¸Ð»Ñ','ÐÑÐµÐ½ÐºÐ°','Ð¢Ð¾ÑÐ³ %','ÐÑÑÐ¾ÑÐ½Ð¸Ðº','Ð¡ÑÐ°ÑÑÑ','ÐÐ¾Ð¼Ð¼ÐµÐ½ÑÐ°ÑÐ¸Ð¹','Ð¡ÑÑÐ»ÐºÐ°'];
+  const hdr=['Адрес','Район','Тип','Площадь м²','Этаж','Цена млн','Цена/м² k','Год','Метро','Стиль','Оценка','Торг %','Источник','Статус','Комментарий','Ссылка'];
   const rows=cards.map(c=>[c.addr,c.dist,c.type,c.area,c.floor,c.price,pm(c),c.year,c.metro,c.style,c.stars,c.torg,c.source,COL2STATUS[c.status]||c.status,c.comment,c.url]);
   const csv=[hdr,...rows].map(r=>r.map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(',')).join('\n');
   const a=document.createElement('a');
@@ -659,13 +659,13 @@ function exportCSV(){
   a.click();
 }
 
-// ââ INIT ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-document.getElementById('navDate').textContent='ÐÐ±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¾: '+new Date().toLocaleDateString('ru-RU');
+// ── INIT ──────────────────────────────────────────────────────────────────
+document.getElementById('navDate').textContent='Обновлено: '+new Date().toLocaleDateString('ru-RU');
 renderDash();
 
 function closeModal(){var o=document.getElementById('modalOverlay');if(o)o.style.display='none';}
 
-// ââ AVITO IMPORT âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── AVITO IMPORT ─────────────────────────────────────────────────────────
 function openAvitoImport(){
   document.getElementById('avitoImportOverlay').classList.add('open');
   document.getElementById('avitoUrlInput').value='';
@@ -679,30 +679,30 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape') closeAvitoImport();
 });
 function parseAvitoUrl(url){
-  // Ð£Ð±Ð¸ÑÐ°ÐµÐ¼ query string
+  // Убираем query string
   const clean = url.split('?')[0].trim();
   
-  // ÐÐ¾Ð¼Ð½Ð°ÑÑ
+  // Комнаты
   const roomsM = clean.match(/\/(\d+)-k\._/);
   const rooms = roomsM ? parseInt(roomsM[1]) : (clean.includes('studiya') ? 0 : 2);
   
-  // Ð¢Ð¸Ð¿
-  const type = clean.includes('apartament') ? 'ÐÐ¿Ð°ÑÑÐ°Ð¼ÐµÐ½ÑÑ' : 'ÐÐ²Ð°ÑÑÐ¸ÑÐ°';
+  // Тип
+  const type = clean.includes('apartament') ? 'Апартаменты' : 'Квартира';
   
-  // ÐÐ»Ð¾ÑÐ°Ð´Ñ â "_87_m_" Ð¸Ð»Ð¸ "_872_m_" (87.2) Ð¸Ð»Ð¸ "_1042_m_" (104.2)
+  // Площадь — "_87_m_" или "_872_m_" (87.2) или "_1042_m_" (104.2)
   const areaM = clean.match(/_(\d{2,4})_m_/);
   let area = 50;
   if(areaM){
     const raw = areaM[1];
-    // 3+ ÑÐ¸ÑÑ: Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑÑ â Ð´ÑÐ¾Ð±Ð½Ð°Ñ (872â87.2, 1042â104.2)
+    // 3+ цифр: последняя — дробная (872→87.2, 1042→104.2)
     area = raw.length >= 3 ? parseFloat(raw.slice(0,-1)+'.'+raw.slice(-1)) : parseFloat(raw);
   }
   
-  // Ð­ÑÐ°Ð¶/Ð²ÑÐµÐ³Ð¾ â "_5_9_et_" Ð¸Ð»Ð¸ "_510_et_"
+  // Этаж/всего — "_5_9_et_" или "_510_et_"
   const floorM = clean.match(/_(\d{1,2})_(\d{1,2})_et_/) || clean.match(/_(\d)(\d{2})_et_/);
   const floor = floorM ? floorM[1]+'/'+floorM[2] : '?/?';
   
-  // ID Ð¾Ð±ÑÑÐ²Ð»ÐµÐ½Ð¸Ñ â Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐµ ÑÐ¸ÑÐ»Ð¾
+  // ID объявления — последнее число
   const idM = clean.match(/_(\d{7,})$/);
   const avitoId = idM ? parseInt(idM[1]) : null;
   
@@ -723,10 +723,10 @@ function doAvitoImport(){
   
   closeAvitoImport();
   
-  // ÐÑÐºÑÑÐ²Ð°ÐµÐ¼ ÑÑÐ°Ð½Ð´Ð°ÑÑÐ½ÑÑ ÑÐ¾ÑÐ¼Ñ Ñ Ð¿ÑÐµÐ´Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð½ÑÐ¼Ð¸ Ð´Ð°Ð½Ð½ÑÐ¼Ð¸
+  // Открываем стандартную форму с предзаполненными данными
   openModal(null);
   setTimeout(()=>{
-    // ÐÐ°Ð¿Ð¾Ð»Ð½ÑÐµÐ¼ Ð¿Ð¾Ð»Ñ
+    // Заполняем поля
     const sel = (id,val)=>{const el=document.getElementById(id);if(el)el.value=val;};
     const selOpt = (id,val)=>{
       const el=document.getElementById(id);
@@ -740,20 +740,20 @@ function doAvitoImport(){
     sel('f-floor', parsed.floor);
     selOpt('f-type', parsed.type);
     
-    // ÐÐ¾Ð¼Ð½Ð°ÑÑ
+    // Комнаты
     const roomsSel=document.getElementById('f-rooms-sel');
     if(roomsSel){
       const opt=[...roomsSel.options].find(o=>parseInt(o.value)===parsed.rooms);
       if(opt)roomsSel.value=opt.value;
     }
     
-    // Ð¤Ð¾ÐºÑÑ Ð½Ð° Ð¿Ð¾Ð»Ðµ ÐÐ´ÑÐµÑ ÑÑÐ¾Ð±Ñ Ð¿Ð¾Ð»ÑÐ·Ð¾Ð²Ð°ÑÐµÐ»Ñ Ð·Ð°Ð¿Ð¾Ð»Ð½Ð¸Ð» ÐµÐ³Ð¾
+    // Фокус на поле Адрес чтобы пользователь заполнил его
     document.getElementById('f-addr').focus();
     
-    // ÐÐ¾Ð´ÑÐ²ÐµÑÐ¸Ð²Ð°ÐµÐ¼ Ð¿Ð¾Ð»Ñ ÐºÐ¾ÑÐ¾ÑÑÐµ Ð½ÑÐ¶Ð½Ð¾ Ð·Ð°Ð¿Ð¾Ð»Ð½Ð¸ÑÑ Ð²ÑÑÑÐ½ÑÑ
+    // Подсвечиваем поля которые нужно заполнить вручную
     ['f-addr','f-price','f-metro'].forEach(id=>{
       const el=document.getElementById(id);
-      if(el){el.style.borderColor='#F59E0B';el.placeholder=el.id==='f-addr'?'â ÐÐ²ÐµÐ´Ð¸ Ð°Ð´ÑÐµÑ Ð¸Ð· ÐÐ²Ð¸ÑÐ¾':el.id==='f-price'?'â ÐÐ²ÐµÐ´Ð¸ ÑÐµÐ½Ñ':el.placeholder;}
+      if(el){el.style.borderColor='#F59E0B';el.placeholder=el.id==='f-addr'?'← Введи адрес из Авито':el.id==='f-price'?'← Введи цену':el.placeholder;}
     });
   }, 150);
 }
@@ -763,13 +763,13 @@ function doAvitoImport(){
 <!-- AVITO IMPORT -->
 <div class="avito-import-overlay" id="avitoImportOverlay">
   <div class="avito-import-box">
-    <h3>ð ÐÐ¼Ð¿Ð¾ÑÑ Ñ ÐÐ²Ð¸ÑÐ¾</h3>
+    <h3>🔗 Импорт с Авито</h3>
     <input id="avitoUrlInput" type="text" placeholder="https://www.avito.ru/moskva/kvartiry/2-k._kvartira_..." />
-    <div class="avito-import-hint">ÐÑÑÐ°Ð²Ñ ÑÑÑÐ»ÐºÑ Ð½Ð° Ð¾Ð±ÑÑÐ²Ð»ÐµÐ½Ð¸Ðµ â Ð°Ð´ÑÐµÑ, Ð¿Ð»Ð¾ÑÐ°Ð´Ñ, ÑÑÐ°Ð¶ Ð¸ ÑÐµÐ½Ð° Ð·Ð°Ð¿Ð¾Ð»Ð½ÑÑÑÑ Ð°Ð²ÑÐ¾Ð¼Ð°ÑÐ¸ÑÐµÑÐºÐ¸</div>
-    <div class="avito-import-error" id="avitoImportError">ÐÐµ ÑÐ´Ð°Ð»Ð¾ÑÑ ÑÐ°ÑÐ¿Ð¾Ð·Ð½Ð°ÑÑ ÑÑÑÐ»ÐºÑ ÐÐ²Ð¸ÑÐ¾</div>
+    <div class="avito-import-hint">Вставь ссылку на объявление — адрес, площадь, этаж и цена заполнятся автоматически</div>
+    <div class="avito-import-error" id="avitoImportError">Не удалось распознать ссылку Авито</div>
     <div class="avito-import-actions">
-      <button class="avito-import-cancel" onclick="closeAvitoImport()">ÐÑÐ¼ÐµÐ½Ð°</button>
-      <button class="avito-import-go" onclick="doAvitoImport()">ÐÑÐºÑÑÑÑ ÑÐ¾ÑÐ¼Ñ â</button>
+      <button class="avito-import-cancel" onclick="closeAvitoImport()">Отмена</button>
+      <button class="avito-import-go" onclick="doAvitoImport()">Открыть форму →</button>
     </div>
   </div>
 </div>
