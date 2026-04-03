@@ -3,94 +3,41 @@ const DEFAULT_CARDS=[{"id":2,"addr":"Кутузовский пр-т, 4/2","type"
 (function(){var K='ttk_realty_v4',e=JSON.parse(localStorage.getItem(K)||'[]');if(e.length<DEFAULT_CARDS.length){if(e.length===0){localStorage.setItem(K,JSON.stringify(DEFAULT_CARDS))}else{var u=new Set(e.map(function(c){return c.url}));var a=0;DEFAULT_CARDS.forEach(function(c){if(c.url&&!u.has(c.url)){e.push(c);a++}});if(a>0)localStorage.setItem(K,JSON.stringify(e))}}})();
 document.addEventListener('DOMContentLoaded',function(){var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);var b=document.querySelector('.btn-avito-nav');if(b)b.remove()});
 
-
-/* === PATCH: Mobile Kanban + PWA + Table Scroll === */
-document.addEventListener('DOMContentLoaded', function() {
-  /* 1. PWA Manifest */
-  var ml = document.createElement('link');
-  ml.rel = 'manifest';
-  ml.href = 'manifest.json';
-  document.head.appendChild(ml);
-  var mt = document.createElement('meta');
-  mt.name = 'theme-color';
-  mt.content = '#1a3a6e';
-  document.head.appendChild(mt);
-  var ai = document.createElement('link');
-  ai.rel = 'apple-touch-icon';
-  ai.href = 'icon.svg';
-  document.head.appendChild(ai);
-
-  /* 2. Table scroll for mobile */
-  var s = document.createElement('style');
-  s.textContent = '.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}.kanban-status-btns{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}.kanban-status-btns button{font-size:10px;padding:2px 6px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;white-space:nowrap}.kanban-status-btns button:active{background:#eee}.kanban-status-btns button.active{background:#1a3a6e;color:#fff;border-color:#1a3a6e}';
-  document.head.appendChild(s);
-
-  /* 3. Remove Avito button */
-  var ab = document.querySelector('.btn-avito-nav');
-  if (ab) ab.remove();
-
-  /* 4. Mobile Kanban: add status buttons to each card */
-  var origRenderKanban = window.renderKanban;
-  if (origRenderKanban) {
-    window.renderKanban = function() {
-      origRenderKanban();
-      addStatusButtons();
-    };
-  }
-  setTimeout(addStatusButtons, 1000);
-
-  function addStatusButtons() {
-    var allCards = document.querySelectorAll('.dash-card .dash-card, [style*="border-left"][style*="4px"]');
-    if (allCards.length === 0) {
-      allCards = document.querySelectorAll('#kanban-board > div > div > div');
-    }
-    /* Find kanban card containers */
-    var kanbanSection = document.querySelector('#kanban-board') || document.querySelector('[style*="display"][style*="flex"]');
-    if (!kanbanSection) return;
-    var cardDivs = kanbanSection.querySelectorAll('[onclick*="openEdit"], [style*="border-left"]');
-    cardDivs.forEach(function(card) {
-      if (card.querySelector('.kanban-status-btns')) return;
-      var cardId = null;
-      var onclick = card.getAttribute('onclick') || '';
-      var m = onclick.match(/(\d+)/);
-      if (m) cardId = parseInt(m[1]);
-      if (!cardId) {
-        var addrEl = card.querySelector('b, strong, [style*="font-weight"]');
-        if (addrEl) {
-          var addr = addrEl.textContent.trim();
-          var found = cards.find(function(c) { return c.addr === addr; });
-          if (found) cardId = found.id;
-        }
-      }
-      if (!cardId) return;
-      var statuses = [
-        {key:'check',label:'Проверка',icon:'🔍'},
-        {key:'view',label:'Осмотр',icon:'👁'},
-        {key:'wait',label:'Ожидание',icon:'⏳'},
-        {key:'priority',label:'Приоритет',icon:'⭐'},
-        {key:'reject',label:'Отклонён',icon:'✗'}
-      ];
-      var currentCard = cards.find(function(c){return c.id===cardId});
-      var div = document.createElement('div');
-      div.className = 'kanban-status-btns';
-      statuses.forEach(function(st) {
-        var btn = document.createElement('button');
-        btn.textContent = st.icon;
-        btn.title = st.label;
-        if (currentCard && currentCard.status === st.key) btn.className = 'active';
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          var c = cards.find(function(x){return x.id===cardId});
-          if (c) {
-            c.status = st.key;
-            save();
-            renderKanban();
-            renderDash();
-          }
-        });
-        div.appendChild(btn);
+/* === PATCH v2: Touch Kanban + PWA + Table Scroll === */
+(function(){
+  function addBtns(){
+    var cc=document.querySelectorAll('.card[draggable]');
+    if(!cc.length)return;
+    cc.forEach(function(card){
+      if(card.querySelector('.ksb'))return;
+      var idM=card.id.match(/card-(\d+)/);
+      if(!idM)return;
+      var cid=parseInt(idM[1]);
+      var sts=[{k:'check',i:'\ud83d\udd0d'},{k:'view',i:'\ud83d\udc41'},{k:'wait',i:'\u23f3'},{k:'priority',i:'\u2b50'},{k:'reject',i:'\u2717'}];
+      var cur=cards.find(function(c){return c.id===cid});
+      var d=document.createElement('div');
+      d.className='ksb';
+      d.style.cssText='display:flex;gap:4px;margin-top:6px';
+      sts.forEach(function(s){
+        var b=document.createElement('button');
+        b.textContent=s.i;
+        b.style.cssText='font-size:11px;padding:2px 6px;border:1px solid #ddd;border-radius:4px;background:'+(cur&&cur.status===s.k?'#1a3a6e;color:#fff':'#fff')+';cursor:pointer';
+        b.addEventListener('click',function(e){e.stopPropagation();var c=cards.find(function(x){return x.id===cid});if(c){c.status=s.k;save();renderKanban();renderDash()}});
+        d.appendChild(b);
       });
-      card.appendChild(div);
+      card.appendChild(d);
     });
   }
-});
+  /* Auto-apply: retry every 500ms until cards exist, then hook renderKanban */
+  var iv=setInterval(function(){var c=document.querySelectorAll('.card[draggable]');if(c.length){clearInterval(iv);addBtns();if(typeof renderKanban==='function'){var orig=renderKanban;window.renderKanban=function(){orig();setTimeout(addBtns,50)}}}},500);
+  /* PWA */
+  document.addEventListener('DOMContentLoaded',function(){
+    var ml=document.createElement('link');ml.rel='manifest';ml.href='manifest.json';document.head.appendChild(ml);
+    var mt=document.createElement('meta');mt.name='theme-color';mt.content='#1a3a6e';document.head.appendChild(mt);
+    var ai=document.createElement('link');ai.rel='apple-touch-icon';ai.href='icon.svg';document.head.appendChild(ai);
+    /* Table scroll */
+    var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);
+    /* Remove Avito btn */
+    var ab=document.querySelector('.btn-avito-nav');if(ab)ab.remove();
+  });
+})();
