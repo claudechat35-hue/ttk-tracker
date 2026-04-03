@@ -1,0 +1,17 @@
+{
+  "name": "Караван — Недвижимость",
+  "short_name": "Караван",
+  "description": "Трекер недвижимости ООО Караван",
+  "start_url": "/ttk-tracker/",
+  "display": "standalone",
+  "background_color": "#1a3a6e",
+  "theme_color": "#1a3a6e",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
