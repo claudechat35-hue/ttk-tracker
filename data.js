@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
       var idM=card.id.match(/card-(\d+)/);
       if(!idM)return;
       var cid=parseInt(idM[1]);
-      var sts=[{k:'check',i:'\ud83d\udd0d'},{k:'view',i:'\ud83d\udc41'},{k:'wait',i:'\u23f3'},{k:'priority',i:'\u2b50'},{k:'reject',i:'\u2717'}];
+      var sts=[{k:'check',i:'\ud83d\udd0d'},{k:'plan',i:'\ud83d\udc41'},{k:'wait',i:'\u23f3'},{k:'priority',i:'\u2b50'},{k:'rejected',i:'\u2717'}];
       var cur=cards.find(function(c){return c.id===cid});
       var d=document.createElement('div');
       d.className='ksb';
