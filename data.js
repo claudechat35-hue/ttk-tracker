@@ -3,82 +3,104 @@ const DEFAULT_CARDS=[{"id":2,"addr":"Кутузовский пр-т, 4/2","type"
 (function(){var K='ttk_realty_v4',e=JSON.parse(localStorage.getItem(K)||'[]');if(e.length<DEFAULT_CARDS.length){if(e.length===0){localStorage.setItem(K,JSON.stringify(DEFAULT_CARDS))}else{var u=new Set(e.map(function(c){return c.url}));var a=0;DEFAULT_CARDS.forEach(function(c){if(c.url&&!u.has(c.url)){e.push(c);a++}});if(a>0)localStorage.setItem(K,JSON.stringify(e))}}})();
 document.addEventListener('DOMContentLoaded',function(){var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);var b=document.querySelector('.btn-avito-nav');if(b)b.remove()});
 
-/* === PATCH v4: Firebase Sync + Touch Kanban + PWA === */
+/* === PATCH v5: Firebase + Touch Drag Kanban + PWA === */
 (function(){
   var KEY='ttk_realty_v4';
   var STATUSES=[{k:"check",i:"\ud83d\udd0d"},{k:"plan",i:"\ud83d\udc41"},{k:"wait",i:"\u23f3"},{k:"priority",i:"\u2b50"},{k:"rejected",i:"\u2717"}];
+  var COL_IDS=['check','plan','wait','priority','rejected'];
 
-  /* Firebase SDK loader */
   function loadScript(url,cb){var s=document.createElement('script');s.src=url;s.onload=cb;document.head.appendChild(s)}
-  
+
   function initFirebase(){
     loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
       loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js',function(){
-        var app=firebase.initializeApp({
-          apiKey:"AIzaSyD6-Ex9Jt-d99ZCMYCjeM5JG06RQYztPTQ",
-          authDomain:"ttk-tracker.firebaseapp.com",
-          projectId:"ttk-tracker",
-          storageBucket:"ttk-tracker.firebasestorage.app",
-          messagingSenderId:"723790000192",
-          appId:"1:723790000192:web:a6de620e3023afa6006fa5"
-        });
-        var db=firebase.firestore();
-        window.__db=db;
-
-        /* Read from Firestore on load */
+        firebase.initializeApp({apiKey:"AIzaSyD6-Ex9Jt-d99ZCMYCjeM5JG06RQYztPTQ",authDomain:"ttk-tracker.firebaseapp.com",projectId:"ttk-tracker",storageBucket:"ttk-tracker.firebasestorage.app",messagingSenderId:"723790000192",appId:"1:723790000192:web:a6de620e3023afa6006fa5"});
+        var db=firebase.firestore();window.__db=db;
         db.collection('tracker').doc('cards').get().then(function(doc){
-          if(doc.exists){
-            var remote=doc.data().items||[];
-            if(remote.length>=cards.length){
-              /* Remote has more or equal cards - use remote */
-              cards.length=0;
-              remote.forEach(function(c){cards.push(c)});
-              localStorage.setItem(KEY,JSON.stringify(cards));
-              if(typeof renderKanban==='function'){renderKanban();renderDash()}
-            }
-          }else{
-            /* First time - upload local cards to Firestore */
-            db.collection('tracker').doc('cards').set({items:cards,updated:Date.now()});
-          }
+          if(doc.exists){var r=doc.data().items||[];if(r.length>=cards.length){cards.length=0;r.forEach(function(c){cards.push(c)});localStorage.setItem(KEY,JSON.stringify(cards));if(typeof renderKanban==='function'){renderKanban();renderDash()}}}
+          else{db.collection('tracker').doc('cards').set({items:cards,updated:Date.now()})}
         });
-
-        /* Real-time sync */
         db.collection('tracker').doc('cards').onSnapshot(function(doc){
-          if(!doc.exists)return;
-          var remote=doc.data().items||[];
-          var remoteTime=doc.data().updated||0;
-          var localTime=parseInt(localStorage.getItem('ttk_sync_time')||'0');
-          if(remoteTime>localTime){
-            cards.length=0;
-            remote.forEach(function(c){cards.push(c)});
-            localStorage.setItem(KEY,JSON.stringify(cards));
-            localStorage.setItem('ttk_sync_time',String(remoteTime));
-            if(typeof renderKanban==='function'){renderKanban();renderDash()}
-          }
+          if(!doc.exists)return;var r=doc.data().items||[];var rt=doc.data().updated||0;var lt=parseInt(localStorage.getItem('ttk_sync_time')||'0');
+          if(rt>lt){cards.length=0;r.forEach(function(c){cards.push(c)});localStorage.setItem(KEY,JSON.stringify(cards));localStorage.setItem('ttk_sync_time',String(rt));if(typeof renderKanban==='function'){renderKanban();renderDash()}}
         });
-
-        /* Override save() to also write to Firestore */
         var origSave=window.save;
-        window.save=function(){
-          if(origSave)origSave();
-          var now=Date.now();
-          localStorage.setItem('ttk_sync_time',String(now));
-          if(window.__db){
-            window.__db.collection('tracker').doc('cards').set({items:cards,updated:now}).catch(function(e){console.error('Firebase save error:',e)});
-          }
-        };
+        window.save=function(){if(origSave)origSave();var now=Date.now();localStorage.setItem('ttk_sync_time',String(now));if(window.__db){window.__db.collection('tracker').doc('cards').set({items:cards,updated:now}).catch(function(e){console.error('Firebase:',e)})}};
         console.log('Firebase connected!');
       });
     });
   }
 
-  /* Touch Kanban buttons */
+  /* Touch Drag & Drop for Kanban */
+  function initTouchDrag(){
+    var dragCard=null,ghost=null,holdTimer=null,startX=0,startY=0,dragging=false;
+
+    document.addEventListener('touchstart',function(e){
+      var card=e.target.closest('.card[draggable]');
+      if(!card||e.target.closest('.ksb'))return;
+      startX=e.touches[0].clientX;startY=e.touches[0].clientY;
+      dragCard=card;
+      holdTimer=setTimeout(function(){
+        dragging=true;
+        card.style.opacity='0.4';
+        ghost=card.cloneNode(true);
+        ghost.style.cssText='position:fixed;z-index:9999;width:'+card.offsetWidth+'px;pointer-events:none;opacity:0.85;transform:rotate(2deg);box-shadow:0 8px 25px rgba(0,0,0,.3);border:2px solid #1a3a6e;left:'+(startX-50)+'px;top:'+(startY-30)+'px';
+        document.body.appendChild(ghost);
+        /* Highlight columns */
+        COL_IDS.forEach(function(id){var el=document.getElementById('cb-'+id);if(el)el.style.outline='2px dashed #ccc'});
+        navigator.vibrate&&navigator.vibrate(30);
+      },300);
+    },{passive:true});
+
+    document.addEventListener('touchmove',function(e){
+      if(!dragCard)return;
+      var dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;
+      if(!dragging&&(Math.abs(dx)>10||Math.abs(dy)>10)){clearTimeout(holdTimer);holdTimer=null;dragCard=null;return}
+      if(!dragging)return;
+      e.preventDefault();
+      var tx=e.touches[0].clientX,ty=e.touches[0].clientY;
+      ghost.style.left=(tx-50)+'px';ghost.style.top=(ty-30)+'px';
+      /* Highlight target column */
+      COL_IDS.forEach(function(id){
+        var el=document.getElementById('cb-'+id);if(!el)return;
+        var r=el.getBoundingClientRect();
+        el.style.outline=(tx>=r.left&&tx<=r.right)?'3px solid #1a3a6e':'2px dashed #ccc';
+        el.style.background=(tx>=r.left&&tx<=r.right)?'rgba(26,58,110,0.05)':'';
+      });
+    },{passive:false});
+
+    document.addEventListener('touchend',function(e){
+      clearTimeout(holdTimer);
+      if(!dragging||!dragCard){dragCard=null;dragging=false;return}
+      var tx=e.changedTouches[0].clientX;
+      /* Find target column */
+      var targetStatus=null;
+      COL_IDS.forEach(function(id){
+        var el=document.getElementById('cb-'+id);if(!el)return;
+        var r=el.getBoundingClientRect();
+        if(tx>=r.left&&tx<=r.right)targetStatus=id;
+        el.style.outline='';el.style.background='';
+      });
+      dragCard.style.opacity='1';
+      if(ghost)ghost.remove();
+      if(targetStatus){
+        var m=dragCard.id.match(/card-(\d+)/);
+        if(m){
+          var cid=parseInt(m[1]);
+          var c=cards.find(function(x){return x.id===cid});
+          if(c&&c.status!==targetStatus){c.status=targetStatus;save();renderKanban();renderDash()}
+        }
+      }
+      dragCard=null;ghost=null;dragging=false;
+    },{passive:true});
+  }
+
+  /* Status buttons */
   function addBtns(){
     document.querySelectorAll('.ksb').forEach(function(e){e.remove()});
     document.querySelectorAll('.card[draggable]').forEach(function(card){
       var m=card.id.match(/card-(\d+)/);if(!m)return;
-      var cid=parseInt(m[1]);
-      var cur=cards.find(function(c){return c.id===cid});
+      var cid=parseInt(m[1]);var cur=cards.find(function(c){return c.id===cid});
       var d=document.createElement('div');d.className='ksb';d.style.cssText='display:flex;gap:4px;margin-top:6px';
       STATUSES.forEach(function(s){
         var b=document.createElement('button');b.textContent=s.i;
@@ -89,32 +111,15 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
       card.appendChild(d);
     });
   }
+  document.addEventListener('click',function(e){var b=e.target;if(!b.hasAttribute('data-st'))return;e.stopPropagation();var cid=parseInt(b.getAttribute('data-cid'));var st=b.getAttribute('data-st');var c=cards.find(function(x){return x.id===cid});if(c){c.status=st;save();renderKanban();renderDash()}},true);
 
-  /* Event delegation for status buttons */
-  document.addEventListener('click',function(e){
-    var b=e.target;if(!b.hasAttribute('data-st'))return;
-    e.stopPropagation();
-    var cid=parseInt(b.getAttribute('data-cid'));
-    var st=b.getAttribute('data-st');
-    var c=cards.find(function(x){return x.id===cid});
-    if(c){c.status=st;save();renderKanban();renderDash()}
-  },true);
+  var iv=setInterval(function(){if(document.querySelectorAll('.card[draggable]').length){clearInterval(iv);addBtns();initTouchDrag();var orig=renderKanban;window.renderKanban=function(){orig();setTimeout(addBtns,50)}}},500);
 
-  /* Auto-apply buttons after renderKanban */
-  var iv=setInterval(function(){
-    if(document.querySelectorAll('.card[draggable]').length){
-      clearInterval(iv);addBtns();
-      var orig=renderKanban;
-      window.renderKanban=function(){orig();setTimeout(addBtns,50)};
-    }
-  },500);
-
-  /* PWA + CSS fixes */
   document.addEventListener('DOMContentLoaded',function(){
     var ml=document.createElement('link');ml.rel='manifest';ml.href='manifest.json';document.head.appendChild(ml);
     var mt=document.createElement('meta');mt.name='theme-color';mt.content='#1a3a6e';document.head.appendChild(mt);
     var ai=document.createElement('link');ai.rel='apple-touch-icon';ai.href='icon.svg';document.head.appendChild(ai);
-    var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);
+    var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}.card[draggable]{touch-action:auto;user-select:none;-webkit-user-select:none}';document.head.appendChild(s);
     var ab=document.querySelector('.btn-avito-nav');if(ab)ab.remove();
     initFirebase();
   });
