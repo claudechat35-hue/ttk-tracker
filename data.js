@@ -77,5 +77,7 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
     document.head.appendChild(s);
     var ab=document.querySelector('.btn-avito-nav');if(ab)ab.remove();
     initFirebase();
+    /* Fix: add missing form fields for saveModal */
+    var mo=document.getElementById('modalOverlay');if(mo){['f-style','f-torg'].forEach(function(id){if(!document.getElementById(id)){var h=document.createElement('input');h.type='hidden';h.id=id;h.value='';mo.appendChild(h)}})}
   });
 })();
