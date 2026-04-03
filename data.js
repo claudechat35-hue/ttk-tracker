@@ -3,13 +3,14 @@ const DEFAULT_CARDS=[{"id":2,"addr":"Кутузовский пр-т, 4/2","type"
 (function(){var K='ttk_realty_v4',e=JSON.parse(localStorage.getItem(K)||'[]');if(e.length<DEFAULT_CARDS.length){if(e.length===0){localStorage.setItem(K,JSON.stringify(DEFAULT_CARDS))}else{var u=new Set(e.map(function(c){return c.url}));var a=0;DEFAULT_CARDS.forEach(function(c){if(c.url&&!u.has(c.url)){e.push(c);a++}});if(a>0)localStorage.setItem(K,JSON.stringify(e))}}})();
 document.addEventListener('DOMContentLoaded',function(){var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);var b=document.querySelector('.btn-avito-nav');if(b)b.remove()});
 
-/* === PATCH v5: Firebase + Touch Drag Kanban + PWA === */
+/* === PATCH v6: Firebase + Touch Drag (fixed) + PWA === */
 (function(){
   var KEY='ttk_realty_v4';
   var STATUSES=[{k:"check",i:"\ud83d\udd0d"},{k:"plan",i:"\ud83d\udc41"},{k:"wait",i:"\u23f3"},{k:"priority",i:"\u2b50"},{k:"rejected",i:"\u2717"}];
   var COL_IDS=['check','plan','wait','priority','rejected'];
+  var isMobile='ontouchstart' in window;
 
-  function loadScript(url,cb){var s=document.createElement('script');s.src=url;s.onload=cb;document.head.appendChild(s)}
+  function loadScript(u,cb){var s=document.createElement('script');s.src=u;s.onload=cb;document.head.appendChild(s)}
 
   function initFirebase(){
     loadScript('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js',function(){
@@ -31,65 +32,76 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
     });
   }
 
-  /* Touch Drag & Drop for Kanban */
+  /* Touch Drag — disable native draggable on mobile, custom implementation */
   function initTouchDrag(){
+    if(!isMobile)return;
     var dragCard=null,ghost=null,holdTimer=null,startX=0,startY=0,dragging=false;
 
+    /* Disable native drag on all cards for mobile */
+    function disableNativeDrag(){
+      document.querySelectorAll('.card[draggable]').forEach(function(c){
+        c.setAttribute('draggable','false');
+        c.style.webkitUserSelect='none';
+        c.style.userSelect='none';
+      });
+    }
+    disableNativeDrag();
+
+    /* Also disable after each renderKanban */
+    var _origRK2=window.renderKanban;
+    window.renderKanban=function(){_origRK2();setTimeout(function(){disableNativeDrag();addBtns()},50)};
+
     document.addEventListener('touchstart',function(e){
-      var card=e.target.closest('.card[draggable]');
-      if(!card||e.target.closest('.ksb'))return;
+      var card=e.target.closest('.card');
+      if(!card||e.target.closest('.ksb')||e.target.closest('a'))return;
       startX=e.touches[0].clientX;startY=e.touches[0].clientY;
       dragCard=card;
       holdTimer=setTimeout(function(){
         dragging=true;
-        card.style.opacity='0.4';
-        ghost=card.cloneNode(true);
-        ghost.style.cssText='position:fixed;z-index:9999;width:'+card.offsetWidth+'px;pointer-events:none;opacity:0.85;transform:rotate(2deg);box-shadow:0 8px 25px rgba(0,0,0,.3);border:2px solid #1a3a6e;left:'+(startX-50)+'px;top:'+(startY-30)+'px';
+        e.preventDefault&&e.preventDefault();
+        card.style.opacity='0.3';
+        ghost=document.createElement('div');
+        ghost.innerHTML='<b>'+card.querySelector('a,b,strong').textContent.trim().substring(0,25)+'</b>';
+        ghost.style.cssText='position:fixed;z-index:9999;padding:10px 14px;background:#1a3a6e;color:#fff;border-radius:8px;font-size:13px;pointer-events:none;box-shadow:0 8px 25px rgba(0,0,0,.4);left:'+(startX-40)+'px;top:'+(startY-20)+'px;max-width:180px';
         document.body.appendChild(ghost);
-        /* Highlight columns */
-        COL_IDS.forEach(function(id){var el=document.getElementById('cb-'+id);if(el)el.style.outline='2px dashed #ccc'});
-        navigator.vibrate&&navigator.vibrate(30);
-      },300);
-    },{passive:true});
+        COL_IDS.forEach(function(id){var el=document.getElementById('cb-'+id);if(el){el.style.outline='2px dashed #aaa';el.style.transition='outline 0.2s'}});
+        try{navigator.vibrate(30)}catch(e){}
+      },350);
+    },{passive:false});
 
     document.addEventListener('touchmove',function(e){
       if(!dragCard)return;
       var dx=e.touches[0].clientX-startX,dy=e.touches[0].clientY-startY;
-      if(!dragging&&(Math.abs(dx)>10||Math.abs(dy)>10)){clearTimeout(holdTimer);holdTimer=null;dragCard=null;return}
+      if(!dragging&&(Math.abs(dx)>8||Math.abs(dy)>8)){clearTimeout(holdTimer);holdTimer=null;dragCard=null;return}
       if(!dragging)return;
       e.preventDefault();
       var tx=e.touches[0].clientX,ty=e.touches[0].clientY;
-      ghost.style.left=(tx-50)+'px';ghost.style.top=(ty-30)+'px';
-      /* Highlight target column */
+      if(ghost){ghost.style.left=(tx-40)+'px';ghost.style.top=(ty-20)+'px'}
       COL_IDS.forEach(function(id){
         var el=document.getElementById('cb-'+id);if(!el)return;
         var r=el.getBoundingClientRect();
-        el.style.outline=(tx>=r.left&&tx<=r.right)?'3px solid #1a3a6e':'2px dashed #ccc';
-        el.style.background=(tx>=r.left&&tx<=r.right)?'rgba(26,58,110,0.05)':'';
+        var over=tx>=r.left&&tx<=r.right&&ty>=r.top&&ty<=r.bottom;
+        el.style.outline=over?'3px solid #F5A623':'2px dashed #aaa';
+        el.style.background=over?'rgba(245,166,35,0.1)':'';
       });
     },{passive:false});
 
     document.addEventListener('touchend',function(e){
       clearTimeout(holdTimer);
       if(!dragging||!dragCard){dragCard=null;dragging=false;return}
-      var tx=e.changedTouches[0].clientX;
-      /* Find target column */
+      var tx=e.changedTouches[0].clientX,ty=e.changedTouches[0].clientY;
       var targetStatus=null;
       COL_IDS.forEach(function(id){
         var el=document.getElementById('cb-'+id);if(!el)return;
         var r=el.getBoundingClientRect();
-        if(tx>=r.left&&tx<=r.right)targetStatus=id;
+        if(tx>=r.left&&tx<=r.right&&ty>=r.top&&ty<=r.bottom)targetStatus=id;
         el.style.outline='';el.style.background='';
       });
       dragCard.style.opacity='1';
       if(ghost)ghost.remove();
       if(targetStatus){
         var m=dragCard.id.match(/card-(\d+)/);
-        if(m){
-          var cid=parseInt(m[1]);
-          var c=cards.find(function(x){return x.id===cid});
-          if(c&&c.status!==targetStatus){c.status=targetStatus;save();renderKanban();renderDash()}
-        }
+        if(m){var cid=parseInt(m[1]);var c=cards.find(function(x){return x.id===cid});if(c&&c.status!==targetStatus){c.status=targetStatus;save();renderKanban();renderDash()}}
       }
       dragCard=null;ghost=null;dragging=false;
     },{passive:true});
@@ -98,7 +110,8 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
   /* Status buttons */
   function addBtns(){
     document.querySelectorAll('.ksb').forEach(function(e){e.remove()});
-    document.querySelectorAll('.card[draggable]').forEach(function(card){
+    document.querySelectorAll('.card').forEach(function(card){
+      if(!card.id||!card.id.startsWith('card-'))return;
       var m=card.id.match(/card-(\d+)/);if(!m)return;
       var cid=parseInt(m[1]);var cur=cards.find(function(c){return c.id===cid});
       var d=document.createElement('div');d.className='ksb';d.style.cssText='display:flex;gap:4px;margin-top:6px';
@@ -111,15 +124,16 @@ document.addEventListener('DOMContentLoaded',function(){var s=document.createEle
       card.appendChild(d);
     });
   }
+
   document.addEventListener('click',function(e){var b=e.target;if(!b.hasAttribute('data-st'))return;e.stopPropagation();var cid=parseInt(b.getAttribute('data-cid'));var st=b.getAttribute('data-st');var c=cards.find(function(x){return x.id===cid});if(c){c.status=st;save();renderKanban();renderDash()}},true);
 
-  var iv=setInterval(function(){if(document.querySelectorAll('.card[draggable]').length){clearInterval(iv);addBtns();initTouchDrag();var orig=renderKanban;window.renderKanban=function(){orig();setTimeout(addBtns,50)}}},500);
+  var iv=setInterval(function(){if(document.querySelectorAll('.card').length>5){clearInterval(iv);addBtns();initTouchDrag();if(!isMobile){var orig=renderKanban;window.renderKanban=function(){orig();setTimeout(addBtns,50)}}}},500);
 
   document.addEventListener('DOMContentLoaded',function(){
     var ml=document.createElement('link');ml.rel='manifest';ml.href='manifest.json';document.head.appendChild(ml);
     var mt=document.createElement('meta');mt.name='theme-color';mt.content='#1a3a6e';document.head.appendChild(mt);
     var ai=document.createElement('link');ai.rel='apple-touch-icon';ai.href='icon.svg';document.head.appendChild(ai);
-    var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}.card[draggable]{touch-action:auto;user-select:none;-webkit-user-select:none}';document.head.appendChild(s);
+    var s=document.createElement('style');s.textContent='.table-wrap{overflow-x:auto!important;-webkit-overflow-scrolling:touch}table{min-width:1100px}';document.head.appendChild(s);
     var ab=document.querySelector('.btn-avito-nav');if(ab)ab.remove();
     initFirebase();
   });
